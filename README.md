@@ -265,7 +265,7 @@ Create file with the parameters of the tests, e.g. enable debug and
 run the tests on the nodes *test_23,test_29*.
 
 ```yaml
-shell> cat examples/test_31-debug.yml
+shell> cat examples/test_31-debug-n2.yml
 ---
 test_iocage: test_23,test_29
 my_jname: test_31
