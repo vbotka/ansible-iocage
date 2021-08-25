@@ -253,7 +253,7 @@ iocage_group_db:
     tests: [test_present, test_absent, test_restart]
 ```
 
-Run playbook *configure.yml and create the group *group_present_absent_restart*
+Run playbook *configure.yml* and create the group *group_present_absent_restart*
 
 ```sh
 shell> ansible-playbook configure.yml
@@ -261,8 +261,8 @@ shell> ansible-playbook configure.yml
 ok: [localhost] => (item=group_present_absent_restart)
 ```
 
-Create file with the parameters of the tests, e.g. enable debug and
-run the tests on the nodes *test_23,test_29*.
+Create file with the parameters of the tests, e.g. run the tests on
+the nodes *test_23,test_29*, use jail *test_31*, and enable debug
 
 ```yaml
 shell> cat examples/test_31-debug-n2.yml
