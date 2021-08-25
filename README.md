@@ -228,8 +228,8 @@ test_23: ok=124 changed=12 unreachable=0 failed=0 skipped=53 rescued=5 ignored=0
 test_29: ok=124 changed=12 unreachable=0 failed=0 skipped=53 rescued=5 ignored=0
 
 CUSTOM STATS: ******************************************************************
-       test_23:   test_pass: 28
-       test_29:   test_pass: 28
+       test_23:   pass: 28
+       test_29:   pass: 28
 ```
 
 
@@ -240,9 +240,9 @@ Most of the tests and groups are generated from templates (see
 directory templates) by the dictionaries *iocage_task_db* and
 *iocage_group_db* stored in the files in directory vars. Do not edit the
 tasks and groups manually. Modify or create new template, modify
-dictionaries, and run the playbook configure.yml if you want to modify
+dictionaries, and run the playbook *configure.yml* if you want to modify
 the tasks and groups or add new ones. For example, add new group of
-tests in vars/iocage_group_db.yml
+tests in *vars/iocage_group_db.yml*
 
 ```yaml
 ---
@@ -282,8 +282,9 @@ This should display a report similar to this abridged one
 
 ```yaml
 
-PLAY [test_23,test_29] *********************************************************
+PLAY [test_23,test_29] *************************************************************
 
+TASK [test_present: Check if test_31 can be created] *******************************
 ok: [test_23] =>
   result.msg: |-
     Jail 'test_31' was created with properties {}.
@@ -293,19 +294,21 @@ ok: [test_29] =>
     Jail 'test_31' was created with properties {}.
     /usr/local/bin/iocage create -n test_31 -r 13.0-RELEASE
 
+TASK [test_absent: Check if jail test_31 can be destroyed] *************************
 ok: [test_23] =>
   result.msg: Jail 'test_31' was destroyed., Jail test_31 removed from iocage_jails.
 ok: [test_29] =>
   result.msg: Jail 'test_31' was destroyed., Jail test_31 removed from iocage_jails.
 
+TASK [test_restart: Check if jail test_31 can be restarted] ************************
 fatal: [test_23]: FAILED! => changed=false
   msg: Jail 'test_31' doesn't exist
 fatal: [test_29]: FAILED! => changed=false
   msg: Jail 'test_31' doesn't exist
 
-CUSTOM STATS: ******************************************************************
-        test_23:   test_crash: test_restart,  test_pass: 2
-        test_29:   test_crash: test_restart,  test_pass: 2
+CUSTOM STATS: **********************************************************************
+        test_23:   crash: test_restart,  ok: 2
+        test_29:   crash: test_restart,  ok: 2
 ```
 
 
