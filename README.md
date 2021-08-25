@@ -304,8 +304,8 @@ fatal: [test_29]: FAILED! => changed=false
   msg: Jail 'test_31' doesn't exist
 
 CUSTOM STATS: ******************************************************************
-	test_23:   test_crash: test_restart,  test_pass: 2
-	test_29:   test_crash: test_restart,  test_pass: 2
+        test_23:   test_crash: test_restart,  test_pass: 2
+        test_29:   test_crash: test_restart,  test_pass: 2
 ```
 
 
