@@ -14,9 +14,7 @@ Description
 This module is an Ansible 'wrapper' of the iocage command.
 
 * Works with new Python3 iocage, not anymore with shell version
-
 * Release is host's one if not specified
-
 * Release is automatically fetched if missing
 
 
@@ -24,7 +22,6 @@ Requirements (on the node)
 --------------------------
 
 * lang/python >= 3.6
-
 * sysutils/iocage
 
 
@@ -220,9 +217,7 @@ the complete collection of the tests on two nodes *test_23* and
 *test_29*
 
 ```sh
-shell> ANSIBLE_SHOW_CUSTOM_STATS=true \
-       ansible-playbook iocage_test.yml -M . \
-       -e test_iocage=test_23,test_29
+shell> ANSIBLE_SHOW_CUSTOM_STATS=true ansible-playbook iocage_test.yml -M . -e test_iocage=test_23,test_29
 ```
 
 This should display a report similar to this one
@@ -242,8 +237,8 @@ Advanced tests
 --------------
 
 Most of the tests and groups are generated from templates (see
-directory templates) by the dictionaries iocage_task_db and
-iocage_group_db stored in the files in directory vars. Do not edit the
+directory templates) by the dictionaries *iocage_task_db* and
+*iocage_group_db* stored in the files in directory vars. Do not edit the
 tasks and groups manually. Modify or create new template, modify
 dictionaries, and run the playbook configure.yml if you want to modify
 the tasks and groups or add new ones. For example, add new group of
@@ -280,10 +275,7 @@ my_debug: true
 Run the tests and display custom stats
 
 ```sh
-shell> ANSIBLE_SHOW_CUSTOM_STATS=true \
-       ansible-playbook iocage_test.yml -M . \
-       -e @examples/test_31-debug-n2.yml \
-       -t group_present_absent_restart
+shell> ANSIBLE_SHOW_CUSTOM_STATS=true ansible-playbook iocage_test.yml -M . -e @examples/test_31-debug-n2.yml -t group_present_absent_restart
 ```
 
 This should display a report similar to this abridged one
@@ -321,5 +313,4 @@ See also
 --------
 
 * [iocage - A FreeBSD Jail Manager - iocage documentation at readthedocs.io](https://iocage.readthedocs.io/en/latest/)
-
 * [iocage - Jail manager using ZFS and VNET - FreeBSD System Manager's Manual](https://www.freebsd.org/cgi/man.cgi?query=iocage)
