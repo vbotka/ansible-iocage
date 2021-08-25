@@ -1,8 +1,8 @@
 ---
-iocage_task_db:
+iocage_test_db:
 
-  sanity:
-    template: sanity
+  # sanity:
+  #   template: sanity
 
   facts:
     template: command
@@ -156,8 +156,8 @@ iocage_task_db:
     vars:
       _msg1: "\"Jail {{ lbr }} basejail {{ rbr }} could not be started\""
 
-  template_start_force:
-    template: to_be_done
+  # template_start_force:
+  #   template: to_be_done
 
   template_stop:
     template: command
