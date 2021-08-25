@@ -228,8 +228,8 @@ test_23: ok=124 changed=12 unreachable=0 failed=0 skipped=53 rescued=5 ignored=0
 test_29: ok=124 changed=12 unreachable=0 failed=0 skipped=53 rescued=5 ignored=0
 
 CUSTOM STATS: ******************************************************************
-       test_23:   pass: 28
-       test_29:   pass: 28
+       test_23:   ok: 28
+       test_29:   ok: 28
 ```
 
 
