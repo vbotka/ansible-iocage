@@ -1,14 +1,19 @@
 CHANGELOG
 =========
 
-Generate tasks from templates. 2020-08-24
+
+Generate tests from templates. 2020-08-28
 -----------------------------------------
 
+* All files related to tests moved to directory test/
 * Add playbook configure.yml
 * Add FQCN ansible.builtin.*
-* Add vars/iocage_task_db.yml with the dictionary iocage_task_db
-* Add templates command.j2 and command_crash.j2
+* Create tests, groups, playbook from templates
+* Store templates in templates/
+* Store configuration files in vars/
+* Store examples of extra-vars files in extra-vars/
 * Update .ansible-lint Skip unnamed-task to simplify code for testing
+* Update README
 
 
 iocage_test.yml 2020-08-24
