@@ -11,11 +11,11 @@
     _crash: false
 
 - block:
-    - name: " >>> TEST START: test_restart_crash: Check if not-existent jail {{ jname }} can not be restarted"
+    - name: " >>> TEST START: test_start_crash: Check if not-existent jail {{ jname }} can not be started"
       iocage:
         {
           "name": "{{ jname }}",
-          "state": "restarted"
+          "state": "started"
         }
       register: result
     - ansible.builtin.debug:
