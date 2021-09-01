@@ -6,6 +6,7 @@ test_exec:
     state: exec
     name: '{{ lbr }} jname {{ rbr }}'
     cmd: '{{ lbr }} cmd {{ rbr }}'
+    user: '{{ lbr }} user|d("root") {{ rbr }}'
   debug:
     - var: result.msg
   assert:
