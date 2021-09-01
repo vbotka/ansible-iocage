@@ -16,7 +16,8 @@
         {
           "cmd": "{{ cmd }}",
           "name": "{{ jname }}",
-          "state": "exec"
+          "state": "exec",
+          "user": "{{ user|d(\"root\") }}"
         }
       register: result
     - ansible.builtin.set_fact:
