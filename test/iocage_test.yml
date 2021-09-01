@@ -37,6 +37,9 @@
     - ansible.builtin.import_tasks: tasks/group_clone_start_exec_pkg.yml
       tags: group_clone_start_exec_pkg
 
+    - ansible.builtin.import_tasks: tasks/group_clone_start_exec_pkg_absent.yml
+      tags: group_clone_start_exec_pkg_absent
+
     - ansible.builtin.import_tasks: tasks/group_jail.yml
       tags: group_jail
 

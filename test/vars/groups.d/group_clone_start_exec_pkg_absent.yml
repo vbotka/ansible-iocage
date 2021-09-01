@@ -1,0 +1,12 @@
+---
+group_clone_start_exec_pkg_absent:
+  template: group
+  tests:
+    - test: test_clone
+    - test: test_start
+    - test: test_exec
+      vars:
+        cmd: /bin/ls -la /root
+        user: root
+    - test: test_pkg
+    - test: test_absent
