@@ -440,11 +440,9 @@ def jail_stop(module, iocage_path, name):
 
 def jail_exec(module, iocage_path, name, user="root", _cmd='/usr/bin/true'):
 
-    rc = 1
+    _changed = True
     out = ""
     err = ""
-    _msg = ""
-    _changed = True
     if not module.check_mode:
         cmd = f"{iocage_path} exec -u {user} {name} -- {_cmd}"
         rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
@@ -453,7 +451,7 @@ def jail_exec(module, iocage_path, name, user="root", _cmd='/usr/bin/true'):
             _command_fail(module,
                           f"Command '{_cmd}' could not be executed in jail '{name}'.",
                           cmd, rc, out, err)
-        _msg = (f"Command '{cmd}' was executed in jail '{name}'.\nrc: {rc}\nstdout:\n{out}\nstderr:\n{err}")
+        _msg = f"Command '{cmd}' was executed in jail '{name}'.\nrc: {rc}\nstdout:\n{out}\nstderr:\n{err}"
     else:
         _msg = f"Command '{_cmd}' would have been executed in jail '{name}'."
 
@@ -462,11 +460,9 @@ def jail_exec(module, iocage_path, name, user="root", _cmd='/usr/bin/true'):
 
 def jail_pkg(module, iocage_path, name, _cmd='info'):
 
-    rc = 1
+    _changed = True
     out = ""
     err = ""
-    _msg = ""
-    _changed = True
     if not module.check_mode:
         cmd = f"{iocage_path} pkg {name} {_cmd}"
         rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
@@ -475,7 +471,7 @@ def jail_pkg(module, iocage_path, name, _cmd='info'):
             _command_fail(module,
                           f"pkg '{_cmd}' could not be executed in jail '{name}'.",
                           cmd, rc, out, err)
-        _msg = (f"pkg '{_cmd}' was executed in jail '{name}'.\nstdout:\n{out}\nstderr:\n{err}")
+        _msg = f"pkg '{_cmd}' was executed in jail '{name}'.\nstdout:\n{out}\nstderr:\n{err}"
 
     else:
         _msg = f"pkg '{_cmd}' would have been executed in jail '{name}'."
