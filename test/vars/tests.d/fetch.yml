@@ -4,11 +4,15 @@ fetch:
   label: 'fetch: Check if release {{ lbr }} release {{ rbr }} exists'
   iocage:
     state: fetched
-    release: "{{ lbr }} release {{ rbr }}"
+    release: "{{ lbr }} release|d(omit) {{ rbr }}"
+    update: "{{ lbr }} update|d(omit) {{ rbr }}"
+    components: "{{ lbr }} components|d(omit) {{ rbr }}"
+    args: "{{ lbr }} args|d(omit) {{ rbr }}"
+  debug:
+    - var: result.msg
   assert:
-    - 'result.msg is search(release)'
-    - 'not result.changed'
-    - 'not result.failed'
-    - 'result.stderr_lines|length == 0'
-    - 'result.stdout_lines|length == 0'
-  msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed.'
+    - '_msg1 in result.msg or _msg2 in result.msg'
+  msg_err: "[ERR] Fetch {{ lbr }} release|d('LATEST') {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }} or {{ lbr }} _msg2 {{ rbr }}"
+  vars:
+    _msg1: "\"Release {{ lbr }} release|d('LATEST') {{ rbr }} already fetched\""
+    _msg2: "\"Release {{ lbr }} release|d('LATEST') {{ rbr }} was successfully fetched.\""

@@ -10,16 +10,17 @@
 
   vars:
 
-    python_required: "{{ lbr }} my_python_required|default('36') {{ rbr }}"
-    jname: "{{ lbr }} my_jname|default('test_jail') {{ rbr }}"
-    release: "{{ lbr }} my_release|default('13.0-RELEASE') {{ rbr }}"
+    debug: "{{ lbr }} my_debug|d(false) {{ rbr }}"
+    debug2: "{{ lbr }} my_debug2|d(false) {{ rbr }}"
+    python_required: "{{ lbr }} my_python_required|d('36') {{ rbr }}"
+
+    jname: "{{ lbr }} my_jname|d('test_jail') {{ rbr }}"
+    release: "{{ lbr }} my_release|d('13.0-RELEASE') {{ rbr }}"
     label_default: "{{ lbr }} release|regex_replace('[\\W]', '_') {{ rbr }}"
-    label: "{{ lbr }} my_label|default(label_default) {{ rbr }}"
+    label: "{{ lbr }} my_label|d(label_default) {{ rbr }}"
     basejail_default: "test_basejail_{{ lbr }} label {{ rbr }}"
-    basejail: "{{ lbr }} my_basejail|default(basejail_default) {{ rbr }}"
-    properties: "{{ lbr }} my_properties|default({}) {{ rbr }}"
-    debug: "{{ lbr }} my_debug|default(false) {{ rbr }}"
-    debug2: "{{ lbr }} my_debug2|default(false) {{ rbr }}"
+    basejail: "{{ lbr }} my_basejail|d(basejail_default) {{ rbr }}"
+    properties: "{{ lbr }} my_properties|d({}) {{ rbr }}"
 
   tasks:
 

@@ -9,16 +9,17 @@
 
   vars:
 
-    python_required: "{{ my_python_required|default('36') }}"
-    jname: "{{ my_jname|default('test_jail') }}"
-    release: "{{ my_release|default('13.0-RELEASE') }}"
+    debug: "{{ my_debug|d(false) }}"
+    debug2: "{{ my_debug2|d(false) }}"
+    python_required: "{{ my_python_required|d('36') }}"
+
+    jname: "{{ my_jname|d('test_jail') }}"
+    release: "{{ my_release|d('13.0-RELEASE') }}"
     label_default: "{{ release|regex_replace('[\\W]', '_') }}"
-    label: "{{ my_label|default(label_default) }}"
+    label: "{{ my_label|d(label_default) }}"
     basejail_default: "test_basejail_{{ label }}"
-    basejail: "{{ my_basejail|default(basejail_default) }}"
-    properties: "{{ my_properties|default({}) }}"
-    debug: "{{ my_debug|default(false) }}"
-    debug2: "{{ my_debug2|default(false) }}"
+    basejail: "{{ my_basejail|d(basejail_default) }}"
+    properties: "{{ my_properties|d({}) }}"
 
   tasks:
 
