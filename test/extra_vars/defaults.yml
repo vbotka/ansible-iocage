@@ -4,15 +4,19 @@ my_strategy: linear
 my_debug: true
 my_debug2: false
 
+my_release: 13.0-RELEASE
+
 my_name: test_jail
-my_jname: "{{ my_name }}"
+jname: "{{ my_name }}"
+
+my_cmd: /bin/ls -la /root
+cmd: "{{ my_cmd }}"
+
 my_pkglist: ""
 my_properties:
   ip4_addr: "em0|10.1.0.99/24"
-my_args: {}
+my_args: ""
 my_user: root
-my_cmd: /bin/ls -la /root
 my_clone_from: ""
-my_release: 13.0-RELEASE
 my_update: False
 my_components: []
