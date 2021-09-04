@@ -370,7 +370,7 @@ def _props_to_str(props):
             argstr += f"{_prop}=1 "
         elif _val in ['no', 'off', False]:
             argstr += f"{_prop}=0 "
-        elif _val in ['-', 'none']:
+        elif isinstance(_val, str):
             argstr += f"{_prop}={_val} "
         else:
             argstr += f"{_prop}={str(_val)} "
@@ -522,7 +522,6 @@ def jail_set(module, iocage_path, name, properties=None):
         if _property == "template":
             continue
 
-        propval = None
         _val = properties[_property]
         _oval = _existing_props[_property]
         if _val in [0, 'no', 'off', False]:
