@@ -38,14 +38,15 @@
         fail_msg: "[ERR] {{ _test_name }}: Failed: {{ result.msg }}"
         success_msg: "[OK]  {{ _test_name }}: Passed: {{ result.msg }}"
         that:
-          - _msg1 in result.msg or _msg2 in result.msg
+          - _msg1 in result.msg or _msg2 in result.msg or _msg3 in result.msg
     - ansible.builtin.import_tasks: custom_stats_pass.yml
   rescue:
     - ansible.builtin.debug:
-        msg: "[ERR] {{ _test_name }} failed. Missing: {{ _msg1 }} or {{ _msg2 }}"
+        msg: "[ERR] {{ _test_name }} failed. Missing: {{ _msg1 }} or {{ _msg2 }} or {{ _msg3 }}"
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
     _msg1: "were set on jail '{{ jname }}'"
     _msg2: "already set for jail {{ jname }}"
+    _msg3: "would have been changed for jail {{ jname }}"
   when: not _crash
