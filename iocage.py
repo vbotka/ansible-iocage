@@ -371,7 +371,7 @@ def _props_to_str(props):
         elif _val in ['no', 'off', False]:
             argstr += f"{_prop}=0 "
         elif isinstance(_val, str):
-            argstr += f"{_prop}={_val} "
+            argstr += f'{_prop}="{_val}" '
         else:
             argstr += f"{_prop}={str(_val)} "
 
@@ -542,7 +542,7 @@ def jail_set(module, iocage_path, name, properties=None):
             _props_to_be_changed[_property] = propval
 
     if len(_props_to_be_changed) > 0:
-        if len(list(set(_props_to_be_changed.keys) & set(['ip4_addr', 'ip6_addr', 'template', 'interfaces', 'vnet', 'host_hostname']))) > 0:
+        if len(list(set(_props_to_be_changed.keys()) & set(['ip4_addr', 'ip6_addr', 'template', 'interfaces', 'vnet', 'host_hostname']))) > 0:
             need_restart = _jail_started(module, iocage_path, name)
         else:
             need_restart = False

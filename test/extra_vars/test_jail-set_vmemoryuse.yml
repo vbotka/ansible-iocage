@@ -1,0 +1,6 @@
+---
+my_hosts: test_23
+my_jname: test_jail
+properties:
+  vmemoryuse: "deny=2g"
+my_debug: true
