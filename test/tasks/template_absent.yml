@@ -11,12 +11,11 @@
     _crash: true
 
 - block:
-    - name: " >>> TEST START: template_create: Check if template {{ basejail }} can be created"
+    - name: " >>> TEST START: template_absent: Check if template {{ basejail }} can be destroyed"
       iocage:
         {
           "name": "{{ basejail }}",
-          "release": "{{ release }}",
-          "state": "template"
+          "state": "absent"
         }
       register: result
     - ansible.builtin.set_fact:
@@ -38,7 +37,7 @@
         fail_msg: "[ERR] {{ _test_name }}: Failed: {{ result.msg }}"
         success_msg: "[OK]  {{ _test_name }}: Passed: {{ result.msg }}"
         that:
-          - _msg1 in result.msg or _msg2 in result.msg
+          - _msg1 in result.msg or _msg2 == result.msg
     - ansible.builtin.import_tasks: custom_stats_pass.yml
   rescue:
     - ansible.builtin.debug:
@@ -46,6 +45,6 @@
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
-    _msg1: "Jail '{{ basejail }}' was created"
-    _msg2: "{{ basejail }} already exists"
+    _msg1: "Jail '{{ basejail }}' was destroyed."
+    _msg2: "Jail {{ basejail }} is already absent."
   when: not _crash

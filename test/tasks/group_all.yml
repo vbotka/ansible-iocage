@@ -46,6 +46,11 @@
     _test_name: base_set_template_no
   tags: [never, base_set_template_no]
 
+- ansible.builtin.import_tasks: tasks/base_stop.yml
+  vars:
+    _test_name: base_stop
+  tags: [never, base_stop]
+
 - ansible.builtin.import_tasks: tasks/facts.yml
   vars:
     _test_name: facts
@@ -65,6 +70,11 @@
   vars:
     _test_name: jail_restore
   tags: [never, jail_restore]
+
+- ansible.builtin.import_tasks: tasks/template_absent.yml
+  vars:
+    _test_name: template_absent
+  tags: [never, template_absent]
 
 - ansible.builtin.import_tasks: tasks/template_create.yml
   vars:

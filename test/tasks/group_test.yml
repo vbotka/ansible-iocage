@@ -6,9 +6,19 @@
 - ansible.builtin.import_tasks: tasks/test_absent.yml
   vars:
     _test_name: test_absent
+- ansible.builtin.import_tasks: tasks/base_stop.yml
+  vars:
+    _test_name: base_stop
 - ansible.builtin.import_tasks: tasks/test_clone.yml
   vars:
     _test_name: test_clone
+  when:
+    - ansible_python.version.minor < 8
+- ansible.builtin.import_tasks: tasks/test_present.yml
+  vars:
+    _test_name: test_present
+  when:
+    - ansible_python.version.minor >= 8
 - ansible.builtin.import_tasks: tasks/test_start.yml
   vars:
     _test_name: test_start

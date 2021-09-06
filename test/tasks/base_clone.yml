@@ -16,6 +16,7 @@
         {
           "clone_from": "{{ basejail }}",
           "name": "{{ jname }}",
+          "properties": "{{ properties }}",
           "state": "cloned"
         }
       register: result
@@ -46,6 +47,6 @@
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
-    _msg1: "'{{ jname }}' was created with properties {}."
+    _msg1: "'{{ jname }}' was created with properties"
     _msg2: "{{ jname }} already exists"
   when: not _crash

@@ -4,7 +4,7 @@
 
 - hosts: "{{ lbr }} my_hosts|default('localhost') {{ rbr }}"
   strategy: "{{ lbr }} my_strategy|default('linear') {{ rbr }}"
-  gather_facts: false
+  gather_facts: true
   become: true
   become_method: sudo
 

@@ -30,7 +30,7 @@
         var: result.msg
       when: debug|bool
     - ansible.builtin.debug:
-        var: iocage_templates[basejail].properties.template
+        var: iocage_jails[basejail].properties.template
       when: debug|bool
   rescue:
     - ansible.builtin.debug:
