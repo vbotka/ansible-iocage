@@ -45,6 +45,6 @@
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
-    _msg1: "Jail '{{ jname }}' was created with properties {}."
+    _msg1: "Jail '{{ jname }}' was created with properties"
     _msg2: "{{ jname }} already exists"
   when: not _crash

@@ -9,4 +9,10 @@
 {%- if i.vars is defined %}
     {{ i.vars|to_nice_yaml(indent=2)|indent(width=4) }}
 {%- endif %}
+{%- if i.when is defined %}
+  when:
+{%- for j in i.when %}
+    - {{ j }}
+{%- endfor %}
+{%- endif %}
 {%- endfor %}

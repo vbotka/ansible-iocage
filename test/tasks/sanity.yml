@@ -9,7 +9,7 @@
     - ansible.builtin.assert:
         that:
           - ansible_python.version.major >= python_required.0|int
-          - ansible_python.version.micro >= python_required.1|int
+          - ansible_python.version.minor >= python_required.1|int
         fail_msg: "[ERR] {{ _test_name }} failes. Pyhton >= {{ python_required }} is required on the node."
   tags: sanity_python
 
