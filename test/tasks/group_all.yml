@@ -161,6 +161,11 @@
     _test_name: test_start_crash
   tags: [never, test_start_crash]
 
+- ansible.builtin.import_tasks: tasks/test_start_rc.yml
+  vars:
+    _test_name: test_start_rc
+  tags: [never, test_start_rc]
+
 - ansible.builtin.import_tasks: tasks/test_stop.yml
   vars:
     _test_name: test_stop

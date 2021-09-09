@@ -11,10 +11,10 @@
     _crash: true
 
 - block:
-    - name: " >>> TEST START: test_start: Check if jail {{ jname }} can be started"
+    - name: " >>> TEST START: test_start_rc: Check if jail {{ jname }} can be started"
       iocage:
         {
-          "name": "{{ jname }}",
+          "args": " --rc",
           "state": "started"
         }
       register: result
@@ -37,15 +37,14 @@
         fail_msg: "[ERR] {{ _test_name }}: Failed: {{ result.msg }}"
         success_msg: "[OK]  {{ _test_name }}: Passed: {{ result.msg }}"
         that:
-          - _msg1 == result.msg or _msg2 == result.msg or _msg3 == result.msg
+          - _msg1 == result.msg or _msg2 == result.msg
     - ansible.builtin.import_tasks: custom_stats_pass.yml
   rescue:
     - ansible.builtin.debug:
-        msg: "[ERR] {{ _test_name }} failed. Missing: {{ _msg1 }} or {{ _msg2 }} or {{ _msg3 }}"
+        msg: "[ERR] {{ _test_name }} failed. Missing: {{ _msg1 }} or {{ _msg2 }}"
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
-    _msg1: "Jail {{ jname }} already started."
-    _msg2: "Jail {{ jname }} started."
-    _msg3: "Jail {{ jname }} would have been started."
+    _msg1: "Jail(s) started."
+    _msg2: "Jail(s) would have been started."
   when: not _crash
