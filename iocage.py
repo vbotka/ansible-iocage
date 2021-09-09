@@ -60,7 +60,10 @@ options:
       type: dict
     args:
       description:
-          - Additional arguments.
+        - Additional arguments of B(iocage) applied to the I(state). They will be applied to the sub-command B(create)
+          if the I(state) is I(basejail, thickjail, template, present). If the same Ansible task also fetches a release
+          as apart of the creation the arguments will not be applied to the sub-command B(fetch). Use separate task
+          I(state=fetched) and set I(args) there if needed.
       type: str
       default: ""
     user:
@@ -82,7 +85,8 @@ options:
       type: str
     update:
       description:
-        - Update the fetch to the latest patch level.
+        - Update the fetch to the latest patch level when I(state=fetched).
+          Update the jail when I(name) is defined.
       type: bool
       default: False
     components:
@@ -132,10 +136,20 @@ EXAMPLES = r'''
       {{ iocage_templates.keys()|list }}
       {{ iocage_jails.keys()|list }}
 
-- name: Create jail without cloning
+- name: Start jail
   iocage:
+    state: started
     name: foo
+
+- name: Start all jails with boot=on
+  iocage:
+    state: started
+    args: ' --rc'
+
+- name: Create jail without cloning install packages and set propreties
+  iocage:
     state: present
+    name: foo
     pkglist: /path/to/pkglist.json
     properties:
       ip4_addr: 'lo1|10.1.0.5'
@@ -298,7 +312,7 @@ def _get_iocage_facts(module, iocage_path, argument="all", name=None):
     return _jails
 
 
-def _jail_started(module, iocage_path, name):
+def jail_started(module, iocage_path, name):
 
     cmd = f"{iocage_path} list -h"
     rc, state, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
@@ -338,21 +352,52 @@ def jail_exists(module, iocage_path, name):
     return st
 
 
-def jail_start(module, iocage_path, name):
+def jail_start(module, iocage_path, name=None, args=""):
+    '''Start jail if name is defined. Optionally use args with or without
+       name. Multiple names are not supported. If you want to start a list of
+       jails iterate the module.
 
-    cmd = f"{iocage_path} start {name}"
+       # iocage start help
+       Usage:  [OPTIONS] [JAILS]...
+
+         Starts the specified jails or ALL.
+
+       Options:
+         --rc          Will start all jails with boot=on, in the specified order with
+                       smaller value for priority starting first.
+
+         -i, --ignore  Suppress exceptions for jails which fail to start
+         --help        Show this message and exit.
+    '''
+
+    if name is None and not args:
+        module.fail_json(msg="jail_start do not know what to start. Name is not defined and there are no arguments.")
+
     _changed = True
+    cmd = f"{iocage_path} start"
+    if args:
+        cmd += f" {args}"
+    if name is not None:
+        cmd += f" {name}"
 
     if not module.check_mode:
         rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
                                           errors='surrogate_or_strict')
         if not rc == 0:
-            _command_fail(module, f"Jail {name} could not be started.", cmd, rc, out, err)
-        _msg = f"Jail {name} was started.\n{out}"
+            _command_fail(module, f"Jail(s) could not be started.", cmd, rc, out, err)
+        if name is not None:
+            _msg = f"Jail {name} started."
+        else:
+            _msg = f"Jail(s) started."
     else:
-        _msg = f"Jail {name} would have been started."
+        out = ""
+        err = ""
+        if name is not None:
+            _msg = f"Jail {name} would have been started."
+        else:
+            _msg = f"Jail(s) would have been started."
 
-    return _changed, _msg
+    return _changed, _msg, out, err
 
 
 def _props_to_str(props):
@@ -541,7 +586,7 @@ def jail_set(module, iocage_path, name, properties=None):
 
     if len(_props_to_be_changed) > 0:
         if len(list(set(_props_to_be_changed.keys()) & set(['ip4_addr', 'ip6_addr', 'template', 'interfaces', 'vnet', 'host_hostname']))) > 0:
-            need_restart = _jail_started(module, iocage_path, name)
+            need_restart = jail_started(module, iocage_path, name)
         else:
             need_restart = False
 
@@ -612,9 +657,8 @@ def jail_create(module, iocage_path, name=None, properties=None, clone_from_name
 
     else:
         _msg = f"Jail {name} would be created with command:\n{cmd}\n"
-        name = f"CHECK_MODE_FAKE_UUID_FOR_{name}"
 
-    return name, _changed, _msg
+    return _changed, _msg
 
 
 def jail_update(module, iocage_path, name):
@@ -708,10 +752,8 @@ def run_module():
     facts = _get_iocage_facts(module, iocage_path, "all")
 
     jails = {}
-    for u in facts["iocage_jails"]:
-        jails[u] = facts["iocage_jails"][u]
-    for u in facts["iocage_templates"]:
-        jails[u] = facts["iocage_templates"][u]
+    jails.update(facts["iocage_jails"])
+    jails.update(facts["iocage_templates"])
 
     if p["state"] == "facts":
         result = dict(changed=changed,
@@ -727,8 +769,9 @@ def run_module():
     # Input validation
 
     # states that need name of jail
-    if name is None and p["state"] in ["started", "stopped", "restarted", "exists", "set", "exec", "pkg", "absent"]:
-        module.fail_json(msg=f"name needed for state {p['state']}")
+    if p["state"] in ["stopped", "restarted", "exists", "set", "exec", "pkg", "absent"]:
+        if name is None:
+            module.fail_json(msg=f"name needed for state {p['state']}")
 
     # states that need release defined
     if p["state"] in ["basejail", "thickjail", "template", "fetched", "present"] or p["update"]:
@@ -736,7 +779,6 @@ def run_module():
             rc, out, err = module.run_command("uname -r")
             if rc != 0:
                 module.fail_json(msg="Unable to run uname -r ???")
-
             matches = re.match(r'(\d+\.\d+)\-(RELEASE|RC\d+).*', out.strip())
             if matches is not None:
                 release = matches.group(1) + "-RELEASE"
@@ -744,24 +786,31 @@ def run_module():
                 module.fail_json(msg=f"Release not recognised: {out}")
 
     # need existing jail
-    if p["state"] in ["started", "stopped", "restarted", "set", "exec", "pkg", "exists"]:
+    if p["state"] in ["stopped", "restarted", "set", "exec", "pkg", "exists"]:
+        if name not in jails:
+            module.fail_json(msg=f"Jail '{name}' doesn't exist")
+    if name is not None and update:
         if name not in jails:
             module.fail_json(msg=f"Jail '{name}' doesn't exist")
 
     # states that need running jail
-    if p["state"] in ["exec", "pkg"] and jails[name]["state"] != "up":
-        module.fail_json(msg=f"Jail '{name}' not running")
+    if p["state"] in ["exec", "pkg"]:
+        if jails[name]["state"] != "up":
+            module.fail_json(msg=f"Jail '{name}' not running")
+
+    # Execution of states
 
     if p["state"] == "started":
-        if jails[name]["state"] != "up":
-            changed, _msg = jail_start(module, iocage_path, name)
-            msgs.append(_msg)
-            if not module.check_mode:
-                jails[name] = _get_iocage_facts(module, iocage_path, "jails", name)
-                if jails[name]["state"] != "up":
-                    module.fail_json(msg=f"Starting jail {name} failed with {_msg}")
+        if name is not None and jails[name]["state"] == "up":
+            msgs.append(f"Jail {name} already started.")
         else:
-            msgs.append(f"Jail {name} already started")
+            changed, _msg, out, err = jail_start(module, iocage_path, name, args)
+            msgs.append(_msg)
+        if not module.check_mode:
+            facts["iocage_jails"] = _get_iocage_facts(module, iocage_path, "jails")
+            jails.update(facts["iocage_jails"])
+            if name is not None and jails[name]["state"] != "up":
+                module.fail_json(msg=f"Jail {name} is not up.\n {out}\n {err}")
 
     elif p["state"] == "stopped":
         if jails[name]["state"] != "down":
@@ -816,7 +865,7 @@ def run_module():
         clone_from_template = None
 
         if p["state"] != "cloned" and release not in facts["iocage_releases"]:
-            _release_changed, _release_msg = release_fetch(module, iocage_path, update, release, components, args)
+            _release_changed, _release_msg = release_fetch(module, iocage_path, update, release, components)
             if _release_changed:
                 facts["iocage_releases"] = _get_iocage_facts(module, iocage_path, "releases")
                 msgs.append(_release_msg)
@@ -846,14 +895,13 @@ def run_module():
                     module.fail_json(msg=f"unable to create jail {name}\nbasejail {clone_from} doesn't exist")
 
         if name not in jails:
-            name, changed, _msg = jail_create(module, iocage_path, name, properties, clone_from_name,
-                                              clone_from_template, release, do_basejail, do_thickjail,
-                                              pkglist, args)
+            changed, _msg = jail_create(module, iocage_path, name, properties, clone_from_name, clone_from_template,
+                                        release, do_basejail, do_thickjail, pkglist, args)
             msgs.append(_msg)
 
         else:
-            changed, _msg = jail_set(module, iocage_path, name, properties)
             msgs.append(f"{name} already exists")
+            changed, _msg = jail_set(module, iocage_path, name, properties)
             if changed:
                 msgs.append(_msg)
 
