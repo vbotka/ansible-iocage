@@ -9,7 +9,8 @@ test_pkg:
   debug:
     - var: result.msg
   assert:
-    - '_msg1 in result.msg'
-  msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }}'
+    - '_msg1 == result.msg or _msg2 in result.msg'
+  msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }} or {{ lbr }} _msg2 {{ rbr }}'
   vars:
-    _msg1: "\"was executed in jail '{{ lbr }} jname {{ rbr }}'\""
+    _msg1: "\"pkg 'info' would have been executed in jail '{{ lbr }} jname {{ rbr }}'.\""
+    _msg2: "\"pkg 'info' was executed in jail '{{ lbr }} jname {{ rbr }}'.\""

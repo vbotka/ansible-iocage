@@ -45,6 +45,6 @@
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
-    _msg1: "Jail '{{ jname }}' was destroyed., Jail {{ jname }} removed from iocage_jails."
-    _msg2: "Jail {{ jname }} is already absent."
+    _msg1: "Jail '{{ jname }}' was destroyed., Jail '{{ jname }}' removed from iocage_jails."
+    _msg2: "Jail '{{ jname }}' is already absent."
   when: not _crash

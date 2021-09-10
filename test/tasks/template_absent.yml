@@ -46,5 +46,5 @@
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
     _msg1: "Jail '{{ basejail }}' was destroyed."
-    _msg2: "Jail {{ basejail }} is already absent."
+    _msg2: "Jail '{{ basejail }}' is already absent."
   when: not _crash

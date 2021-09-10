@@ -45,7 +45,7 @@
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
-    _msg1: "Jail {{ jname }} already started."
-    _msg2: "Jail {{ jname }} started."
-    _msg3: "Jail {{ jname }} would have been started."
+    _msg1: "Jail '{{ jname }}' already started."
+    _msg2: "Jail '{{ jname }}' started."
+    _msg3: "Jail '{{ jname }}' would start."
   when: not _crash

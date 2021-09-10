@@ -43,6 +43,6 @@
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
-    _msg1: "Jail '{{ jname }}' doesn't exist"
-    _msg2: "Jail '{{ jname }}' not running"
+    _msg1: "Jail '{{ jname }}' doesn't exist."
+    _msg2: "Jail '{{ jname }}' not running."
   when: _crash

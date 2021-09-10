@@ -46,5 +46,5 @@
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
     _msg1: "Jail(s) started."
-    _msg2: "Jail(s) would have been started."
+    _msg2: "Jail(s) would start."
   when: not _crash
