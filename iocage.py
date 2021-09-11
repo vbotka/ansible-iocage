@@ -146,6 +146,16 @@ EXAMPLES = r'''
     state: started
     args: ' --rc'
 
+- name: Stop jail
+  iocage:
+    state: stopped
+    name: foo
+
+- name: Stop all jails with boot=on
+  iocage:
+    state: stopped
+    args: ' --rc'
+
 - name: Create jail without cloning install packages and set propreties
   iocage:
     state: present
@@ -971,7 +981,7 @@ def run_module():
     elif p["state"] == "absent":
         if name in jails:
             if jails[name]['state'] == "up":
-                changed, _msg = jail_stop(module, iocage_path, name)
+                changed, _msg, out, err = jail_stop(module, iocage_path, name)
                 msgs.append(_msg)
             name, changed, _msg = jail_destroy(module, iocage_path, name)
             msgs.append(_msg)
