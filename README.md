@@ -5,8 +5,7 @@ ansible-iocage
 
 [iocage](https://github.com/iocage/iocage) module for Ansible.
 
-Home on https://github.com/fractalcells/ansible-iocage
-
+Current branch https://github.com/vbotka/ansible-iocage
 
 Description
 -----------

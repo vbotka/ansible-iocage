@@ -114,6 +114,7 @@ seealso:
     link: https://www.freebsd.org/cgi/man.cgi?query=iocage
 author:
   - Johannes Meixner (@xmj)
+  - Vladimir Botka (@vbotka)
   - dgeo (@dgeo)
   - Berend de Boer (@berenddeboer)
   - Dr Josef Karthauser (@Infiniverse)
@@ -123,7 +124,6 @@ author:
   - luto (@luto)
   - Keve Müller (@kevemueller)
   - Mårten Lindblad (@martenlindblad)
-  - Vladimir Botka (@vbotka)
 '''
 
 EXAMPLES = r'''
