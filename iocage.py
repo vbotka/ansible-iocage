@@ -816,7 +816,7 @@ def run_module():
     # Input validation
 
     # states that need name of jail
-    if p["state"] in ["stopped", "restarted", "exists", "set", "exec", "pkg", "absent"]:
+    if p["state"] in ["restarted", "exists", "set", "exec", "pkg", "absent"]:
         if name is None:
             module.fail_json(msg=f"name needed for state {p['state']}")
 
@@ -833,7 +833,7 @@ def run_module():
                 module.fail_json(msg=f"Release not recognised: {out}")
 
     # need existing jail
-    if p["state"] in ["stopped", "restarted", "set", "exec", "pkg", "exists"]:
+    if p["state"] in ["restarted", "set", "exec", "pkg", "exists"]:
         if name not in jails:
             module.fail_json(msg=f"Jail '{name}' doesn't exist.")
     if name is not None and update:

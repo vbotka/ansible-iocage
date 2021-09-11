@@ -11,11 +11,11 @@
     _crash: true
 
 - block:
-    - name: " >>> TEST START: test_start_rc: Check if jails boot=on can be started"
+    - name: " >>> TEST START: test_stop_rc: Check if jails boot=on can be stopped"
       iocage:
         {
           "args": " --rc",
-          "state": "started"
+          "state": "stopped"
         }
       register: result
     - ansible.builtin.set_fact:
@@ -45,6 +45,6 @@
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
-    _msg1: "Jail(s) started."
-    _msg2: "Jail(s) would start."
+    _msg1: "Jail(s) stopped."
+    _msg2: "Jail(s) would stop."
   when: not _crash

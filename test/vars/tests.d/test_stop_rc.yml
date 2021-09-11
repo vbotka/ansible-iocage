@@ -1,9 +1,9 @@
 ---
-test_start_rc:
+test_stop_rc:
   template: command
-  label: 'test_start_rc: Check if jails boot=on can be started'
+  label: 'test_stop_rc: Check if jails boot=on can be stopped'
   iocage:
-    state: started
+    state: stopped
     args: ' --rc'
   debug:
     - var: result.msg
@@ -11,5 +11,5 @@ test_start_rc:
     - '_msg1 in result.msg or _msg2 == result.msg'
   msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }} or {{ lbr }} _msg2 {{ rbr }}'
   vars:
-    _msg1: "\"Jail(s) started.\""
-    _msg2: "\"Jail(s) would start.\""
+    _msg1: "\"Jail(s) stopped.\""
+    _msg2: "\"Jail(s) would stop.\""
