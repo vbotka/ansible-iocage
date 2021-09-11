@@ -11,11 +11,11 @@
     _crash: true
 
 - block:
-    - name: " >>> TEST START: base_exists: Check if {{ basejail }} exists"
+    - name: " >>> TEST START: test_restart_all: Check if ALL jails can be restarted"
       iocage:
         {
-          "name": "{{ basejail }}",
-          "state": "exists"
+          "name": "ALL",
+          "state": "restarted"
         }
       register: result
     - ansible.builtin.set_fact:
@@ -37,13 +37,14 @@
         fail_msg: "[ERR] {{ _test_name }}: Failed: {{ result.msg }}"
         success_msg: "[OK]  {{ _test_name }}: Passed: {{ result.msg }}"
         that:
-          - _msg1 == result.msg
+          - _msg1 == result.msg or _msg2 in result.msg
     - ansible.builtin.import_tasks: custom_stats_pass.yml
   rescue:
     - ansible.builtin.debug:
-        msg: "[ERR] {{ _test_name }} failed. Missing: {{ _msg1 }}"
+        msg: "[ERR] {{ _test_name }} failed. Missing: {{ _msg1 }} or {{ _msg2 }}"
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
-    _msg1: "Jail '{{ basejail }}' exists."
+    _msg1: "ALL jails would restart."
+    _msg2: "ALL jails restarted."
   when: not _crash

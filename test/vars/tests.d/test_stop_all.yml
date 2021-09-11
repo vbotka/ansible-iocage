@@ -1,0 +1,16 @@
+---
+test_stop_all:
+  template: command
+  label: 'test_stop_all: Check if jail {{ lbr }} jname {{ rbr }} can be stopped'
+  iocage:
+    state: stopped
+    name: ALL
+  debug:
+    - var: result.msg
+  assert:
+    - '_msg1 == result.msg or _msg2 in result.msg or _msg3 == result.msg'
+  msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }} or {{ lbr }} _msg2 {{ rbr }} or {{ lbr }} _msg3 {{ rbr }}'
+  vars:
+    _msg1: "\"All jails would stop.\""
+    _msg2: "\"All jails stopped.\""
+    _msg3: "\"All jails already stopped.\""

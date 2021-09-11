@@ -56,6 +56,9 @@
     - ansible.builtin.import_tasks: tasks/group_start_restart_stop.yml
       tags: group_start_restart_stop
 
+    - ansible.builtin.import_tasks: tasks/group_start_restart_stop_all.yml
+      tags: group_start_restart_stop_all
+
     - ansible.builtin.import_tasks: tasks/group_start_restart_stop_crash.yml
       tags: group_start_restart_stop_crash
 

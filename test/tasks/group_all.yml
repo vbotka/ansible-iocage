@@ -131,6 +131,11 @@
     _test_name: test_restart
   tags: [never, test_restart]
 
+- ansible.builtin.import_tasks: tasks/test_restart_all.yml
+  vars:
+    _test_name: test_restart_all
+  tags: [never, test_restart_all]
+
 - ansible.builtin.import_tasks: tasks/test_restart_crash.yml
   vars:
     _test_name: test_restart_crash
@@ -156,6 +161,11 @@
     _test_name: test_start3
   tags: [never, test_start3]
 
+- ansible.builtin.import_tasks: tasks/test_start_all.yml
+  vars:
+    _test_name: test_start_all
+  tags: [never, test_start_all]
+
 - ansible.builtin.import_tasks: tasks/test_start_crash.yml
   vars:
     _test_name: test_start_crash
@@ -170,6 +180,11 @@
   vars:
     _test_name: test_stop
   tags: [never, test_stop]
+
+- ansible.builtin.import_tasks: tasks/test_stop_all.yml
+  vars:
+    _test_name: test_stop_all
+  tags: [never, test_stop_all]
 
 - ansible.builtin.import_tasks: tasks/test_stop_crash.yml
   vars:
