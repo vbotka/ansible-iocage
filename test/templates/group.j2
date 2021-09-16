@@ -9,6 +9,11 @@
 {%- if i.vars is defined %}
     {{ i.vars|to_nice_yaml(indent=2)|indent(width=4) }}
 {%- endif %}
+{%- if i.var_file is defined %}
+{%- for j in i.var_file %}
+    {{ j.var }}: "{{ lbr }} (lookup('file', '{{ j.file }}')|from_yaml).{{ j.var }} {{ rbr }}"
+{%- endfor %}
+{%- endif %}
 {%- if i.when is defined %}
   when:
 {%- for j in i.when %}

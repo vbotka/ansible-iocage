@@ -15,7 +15,7 @@
       iocage:
         {
           "name": "{{ basejail }}",
-          "release": "{{ release }}",
+          "release": "{{ my_release|d(omit) }}",
           "state": "basejail"
         }
       register: result

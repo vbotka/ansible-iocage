@@ -1,0 +1,3 @@
+---
+my_plugin: 'Tarsnap'
+my_args: '-k'

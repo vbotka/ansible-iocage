@@ -5,3 +5,6 @@ group_setup:
     - test: sanity
     - test: facts
     - test: fetch
+      var_file:
+        - var: release
+          file: extra_vars/fetch_release.yml

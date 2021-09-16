@@ -11,14 +11,15 @@
     _crash: true
 
 - block:
-    - name: " >>> TEST START: fetch: Check if release {{ release }} exists"
+    - name: " >>> TEST START: fetch: Fetch release, components and plugin"
       iocage:
         {
-          "args": "{{ args|d(omit) }}",
-          "components": "{{ components|d(omit) }}",
-          "release": "{{ release|d(omit) }}",
+          "args": "{{ my_args|d(omit) }}",
+          "components": "{{ my_components|d(omit) }}",
+          "plugin": "{{ my_plugin|d(omit) }}",
+          "release": "{{ my_release|d(omit) }}",
           "state": "fetched",
-          "update": "{{ update|d(omit) }}"
+          "update": "{{ my_update|d(omit) }}"
         }
       register: result
     - ansible.builtin.set_fact:
@@ -40,14 +41,15 @@
         fail_msg: "[ERR] {{ _test_name }}: Failed: {{ result.msg }}"
         success_msg: "[OK]  {{ _test_name }}: Passed: {{ result.msg }}"
         that:
-          - _msg1 in result.msg or _msg2 in result.msg
+          - _msg1 in result.msg or _msg2 in result.msg or _msg3 in result.msg
     - ansible.builtin.import_tasks: custom_stats_pass.yml
   rescue:
     - ansible.builtin.debug:
-        msg: "[ERR] Fetch {{ release|d('LATEST') }} failed. Missing: {{ _msg1 }} or {{ _msg2 }}"
+        msg: "[ERR] Fetch failed. Missing: {{ _msg1 }} or {{ _msg2 }} or {{ _msg3 }}"
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
-    _msg1: "Release {{ release|d('LATEST') }} already fetched"
-    _msg2: "Release {{ release|d('LATEST') }} was successfully fetched."
+    _msg1: "already fetched"
+    _msg2: "Successfully fetched"
+    _msg3: "Would be fetched"
   when: not _crash

@@ -24,6 +24,8 @@
           iocage_releases = {{ ansible_facts.iocage_releases }}
           iocage_templates.keys() = {{ ansible_facts.iocage_templates.keys()|list }}
           iocage_jails.keys() = {{ ansible_facts.iocage_jails.keys()|list }}
+          iocage_plugins.keys() = {{ ansible_facts.iocage_plugins.keys()|list }}
+          iocage_states = {{ ansible_facts.iocage_states }}
       when: debug|bool
   rescue:
     - ansible.builtin.debug:
