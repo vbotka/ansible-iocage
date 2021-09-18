@@ -14,7 +14,7 @@
     - name: " >>> TEST START: test_stop_rc: Check if jails boot=on can be stopped"
       iocage:
         {
-          "args": " --rc",
+          "args": "--rc",
           "state": "stopped"
         }
       register: result

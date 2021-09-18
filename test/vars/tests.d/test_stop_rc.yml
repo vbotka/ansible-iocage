@@ -4,7 +4,7 @@ test_stop_rc:
   label: 'test_stop_rc: Check if jails boot=on can be stopped'
   iocage:
     state: stopped
-    args: ' --rc'
+    args: --rc
   debug:
     - var: result.msg
   assert:

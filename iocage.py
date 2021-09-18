@@ -186,7 +186,7 @@ EXAMPLES = r'''
 - name: Start all jails with boot=on
   iocage:
     state: started
-    args: ' --rc'
+    args: '--rc'
 
 - name: Stop jail
   iocage:
@@ -201,7 +201,7 @@ EXAMPLES = r'''
 - name: Stop all jails with boot=on
   iocage:
     state: stopped
-    args: ' --rc'
+    args: '--rc'
 
 - name: Restart jail
   iocage:
