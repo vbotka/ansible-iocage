@@ -406,11 +406,9 @@ def _get_iocage_facts(module, iocage_path, argument='all', name=None):
 
 def _jail_get_properties(module, iocage_path, name):
 
-    rc = 1
-    out = ""
     if name is not None and name != "":
         properties = {}
-        cmd = f"{iocage_path} get all {name}"
+        cmd = f"{iocage_path} get --all {name}"
         rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
                                           errors='surrogate_or_strict')
         if rc == 0:
@@ -423,10 +421,9 @@ def _jail_get_properties(module, iocage_path, name):
                         module.fail_json(msg=f"error parsing property {p} from {str(properties)}")
         else:
             _command_fail(module, f"_jail_get_properties({name})", cmd, rc, out, err)
-    elif module.check_mode and name == "CHECK_MODE_FAKE_UUID":
-        properties = {"CHECK_NEW_JAIL": True}
     else:
-        module.fail_json(msg=f"jail {name} not found.")
+        module.fail_json(msg=f"_jail_get_properties:\njail {name} not found.")
+
     return properties
 
 
@@ -506,21 +503,21 @@ def jail_start(module, iocage_path, name=None, args=""):
             _command_fail(module, f"Jail(s) could not be started.", cmd, rc, out, err)
         if name is not None:
             if name == "ALL":
-                _msg = f"All jails started.\n{out}"
+                _msg = f"All jails started.\n{cmd}\n{out}"
             else:
-                _msg = f"Jail '{name}' started.\n{out}"
+                _msg = f"Jail '{name}' started.\n{cmd}\n{out}"
         else:
-            _msg = f"Jail(s) started.\n{out}"
+            _msg = f"Jail(s) started.\n{cmd}\n{out}"
     else:
         out = ""
         err = ""
         if name is not None:
-            if name == "ALL":
-                _msg = f"All jails would start."
+            if name == 'ALL':
+                _msg = f"All jails would start.\n{cmd}"
             else:
-                _msg = f"Jail '{name}' would start."
+                _msg = f"Jail '{name}' would start.\n{cmd}"
         else:
-            _msg = f"Jail(s) would start."
+            _msg = f"Jail(s) would start.\n{cmd}"
 
     return _changed, _msg, out, err
 
@@ -561,22 +558,22 @@ def jail_stop(module, iocage_path, name=None, args=""):
         if rc != 0:
             _command_fail(module, f"Jail(s) could not be stopped.", cmd, rc, out, err)
         if name is not None:
-            if name == "ALL":
-                _msg = f"All jails stopped.\n{out}"
+            if name == 'ALL':
+                _msg = f"All jails stopped.\n{cmd}\n{out}"
             else:
-                _msg = f"Jail '{name}' stopped.\n{out}"
+                _msg = f"Jail '{name}' stopped.\n{cmd}\n{out}"
         else:
-            _msg = f"Jail(s) stopped.\n{out}"
+            _msg = f"Jail(s) stopped.\n{cmd}\n{out}"
     else:
         out = ""
         err = ""
         if name is not None:
             if name == "ALL":
-                _msg = f"All jails would stop."
+                _msg = f"All jails would stop.\n{cmd}"
             else:
-                _msg = f"Jail '{name}' would stop."
+                _msg = f"Jail '{name}' would stop.\n{cmd}"
         else:
-            _msg = f"Jail(s) would stop."
+            _msg = f"Jail(s) would stop.\n{cmd}"
 
     return _changed, _msg, out, err
 
@@ -591,7 +588,8 @@ def jail_restart(module, iocage_path, name=None, args=""):
 
        Options:
          -s, --soft  Restarts the jail but does not tear down the network stack.
-         --help      Show this message and exit.'''
+         --help      Show this message and exit.
+    '''
 
     _changed = True
     cmd = f"{iocage_path} restart"
@@ -605,93 +603,121 @@ def jail_restart(module, iocage_path, name=None, args=""):
         if rc != 0:
             _command_fail(module, f"Jail(s) could not be restarted.", cmd, rc, out, err)
         if name == 'ALL':
-            _msg = f"ALL jails restarted.\n{out}"
+            _msg = f"ALL jails restarted.\n{cmd}\n{out}"
         else:
-            _msg = f"Jail '{name}' restarted.\n{out}"
+            _msg = f"Jail '{name}' restarted.\n{cmd}\n{out}"
     else:
         out = ""
         err = ""
         if name == 'ALL':
-            _msg = f"ALL jails would restart."
+            _msg = f"ALL jails would restart.\n{cmd}"
         else:
-            _msg = f"Jail '{name}' would restart."
+            _msg = f"Jail '{name}' would restart.\n{cmd}"
 
     return _changed, _msg, out, err
 
 
-def release_fetch(module, iocage_path, update=False, release=None, components=None, plugin=None, args=''):
+def release_fetch(module, iocage_path, update=False, release=None, components=None, plugin=None, args=""):
     '''Fetch a version of FreeBSD for jail usage or a preconfigured plugin.
 
        $ iocage fetch --help
-       Usage: iocage fetch [OPTIONS] [PROPS]...'''
+       Usage: iocage fetch [OPTIONS] [PROPS]...
+    '''
 
     _changed = True
+    if update:
+        args += " -U"
+    if release is not None:
+        args += f" -r {release}"
+    if components is not None:
+        for _component in components:
+            if _component != '':
+                args += f" -F {_component}"
+    if plugin is not None:
+        args += f" -P {plugin}"
+    cmd = f"{iocage_path} fetch {args}"
+
     if not module.check_mode:
-        if update:
-            args += " -U"
-        if release is not None:
-            args += f" -r {release}"
-        if components is not None:
-            for _component in components:
-                if _component != "":
-                    args += f" -F {_component}"
-        if plugin is not None:
-            args += f" -P {plugin}"
-        cmd = f"{iocage_path} fetch {args}"
         rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
                                           errors='surrogate_or_strict')
         if rc != 0:
             _command_fail(module, f"Function release_fetch failed.", cmd, rc, out, err)
         if update:
-            _msg = f"Successfully fetched and updated.\n{out}"
+            _msg = f"Successfully fetched and updated.\n{cmd}\n{out}"
         else:
-            _msg = f"Successfully fetched.\n{out}"
+            _msg = f"Successfully fetched.\n{cmd}\n{out}"
     else:
+        out = ""
+        err = ""
         if update:
-            _msg = f"Would be fetched and updated."
+            _msg = f"Would fetch and update.\n{cmd}"
         else:
-            _msg = f"Would be fetched."
+            _msg = f"Would fetch.\n{cmd}"
 
     return _changed, _msg, out, err
 
 
-def jail_exec(module, iocage_path, name, user="root", _cmd='/usr/bin/true'):
+def jail_exec(module, iocage_path, name, user='root', _cmd='/usr/bin/true'):
+    '''Run a command inside a specified jail.
+
+       $ iocage exec --help
+       Usage: iocage exec [OPTIONS] JAIL [COMMAND]...
+
+         Run a command inside a specified jail.
+
+       Options:
+         -u, --host_user TEXT  The host user to use.
+         -U, --jail_user TEXT  The jail user to use.
+         -f, --force           Start the jail if it's not running.
+         --help                Show this message and exit.
+    '''
 
     _changed = True
-    out = ""
-    err = ""
+    cmd = f"{iocage_path} exec -u {user} {name} -- {_cmd}"
+
     if not module.check_mode:
-        cmd = f"{iocage_path} exec -u {user} {name} -- {_cmd}"
         rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
                                           errors='surrogate_or_strict')
         if rc != 0:
             _command_fail(module,
                           f"Command '{_cmd}' could not be executed in jail '{name}'.",
                           cmd, rc, out, err)
-        _msg = f"Command '{cmd}' was executed in jail '{name}'.\nrc: {rc}\nstdout:\n{out}\nstderr:\n{err}"
+        _msg = f"Jail '{name}' executed command '{_cmd}'\n{cmd}\nrc: {rc}\nstdout:\n{out}\nstderr:\n{err}"
     else:
-        _msg = f"Command '{_cmd}' would have been executed in jail '{name}'."
+        out = ""
+        err = ""
+        _msg = f"Jail '{name}' would execute command '{_cmd}'\n{cmd}"
 
     return _changed, _msg, out, err
 
 
 def jail_pkg(module, iocage_path, name, _cmd='info'):
+    '''Use pkg inside a specified jail.
+
+       $ iocage pkg --help
+       Usage: iocage pkg [OPTIONS] JAIL [COMMAND]...
+
+         Use pkg inside a specified jail.
+
+       Options:
+         --help  Show this message and exit.
+    '''
 
     _changed = True
-    out = ""
-    err = ""
+    cmd = f"{iocage_path} pkg {name} {_cmd}"
+
     if not module.check_mode:
-        cmd = f"{iocage_path} pkg {name} {_cmd}"
         rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
                                           errors='surrogate_or_strict')
         if rc != 0:
             _command_fail(module,
-                          f"pkg '{_cmd}' could not be executed in jail '{name}'.",
+                          f"Command 'pkg {_cmd}' could not be executed in jail '{name}'.",
                           cmd, rc, out, err)
-        _msg = f"pkg '{_cmd}' was executed in jail '{name}'.\nstdout:\n{out}\nstderr:\n{err}"
-
+        _msg = f"Jail '{name}' executed command 'pkg {_cmd}'\n{cmd}\nrc: {rc}\nstdout:\n{out}\nstderr:\n{err}"
     else:
-        _msg = f"pkg '{_cmd}' would have been executed in jail '{name}'."
+        out = ""
+        err = ""
+        _msg = f"Jail '{name}' would execute command 'pkg {_cmd}'\n{cmd}"
 
     return _changed, _msg, out, err
 
@@ -1018,9 +1044,10 @@ def run_module():
         if update or release not in facts['iocage_releases']:
             changed, _msg, out, err = release_fetch(module, iocage_path, update, release, components, None, args)
             msgs.append(_msg)
-            facts['iocage_releases'] = _get_iocage_facts(module, iocage_path, 'releases')
-            if release not in facts['iocage_releases']:
-                module.fail_json(msg=f"Fetching release {release} failed.\n{out}\n{err}")
+            if not module.check_mode:
+                facts['iocage_releases'] = _get_iocage_facts(module, iocage_path, 'releases')
+                if release not in facts['iocage_releases']:
+                    module.fail_json(msg=f"Fetching release {release} failed.\n{out}\n{err}")
         else:
             msgs.append(f"Release {release} already fetched.")
         # Fetch or update plugin if defined
@@ -1028,9 +1055,10 @@ def run_module():
             if update or plugin not in facts['iocage_plugins']:
                 changed, _msg, out, err = release_fetch(module, iocage_path, update, None, None, plugin, args)
                 msgs.append(_msg)
-                facts['iocage_plugins'] = _get_iocage_facts(module, iocage_path, 'plugins')
-                if plugin not in facts['iocage_plugins']:
-                    module.fail_json(msg=f"Fetching plugin {plugin} failed.\n{out}\n{err}")
+                if not module.check_mode:
+                    facts['iocage_plugins'] = _get_iocage_facts(module, iocage_path, 'plugins')
+                    if plugin not in facts['iocage_plugins']:
+                        module.fail_json(msg=f"Fetching plugin {plugin} failed.\n{out}\n{err}")
             else:
                 msgs.append(f"Plugin {plugin} already fetched.")
 

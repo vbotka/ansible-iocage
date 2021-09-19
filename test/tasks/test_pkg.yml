@@ -38,7 +38,7 @@
         fail_msg: "[ERR] {{ _test_name }}: Failed: {{ result.msg }}"
         success_msg: "[OK]  {{ _test_name }}: Passed: {{ result.msg }}"
         that:
-          - _msg1 == result.msg or _msg2 in result.msg
+          - _msg1 in result.msg or _msg2 in result.msg
     - ansible.builtin.import_tasks: custom_stats_pass.yml
   rescue:
     - ansible.builtin.debug:
@@ -46,6 +46,6 @@
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
-    _msg1: "pkg 'info' would have been executed in jail '{{ jname }}'."
-    _msg2: "pkg 'info' was executed in jail '{{ jname }}'."
+    _msg1: "Jail '{{ jname }}' executed command 'pkg info'"
+    _msg2: "Jail '{{ jname }}' would execute command 'pkg info'"
   when: not _crash

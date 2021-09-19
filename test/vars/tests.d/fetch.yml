@@ -17,4 +17,4 @@ fetch:
   vars:
     _msg1: "\"already fetched\""
     _msg2: "\"Successfully fetched\""
-    _msg3: "\"Would be fetched\""
+    _msg3: "\"Would fetch\""
