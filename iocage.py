@@ -731,12 +731,25 @@ def jail_pkg(module, iocage_path, name, _cmd='info'):
 
 
 def jail_set(module, iocage_path, name, properties=None):
+    '''Sets the specified property.
+
+       $ iocage set --help
+       Usage: iocage set [OPTIONS] [PROPS]... JAIL
+
+         Sets the specified property.
+
+       Options:
+         -P, --plugin  Set the specified key for a plugin jail, if accessing a nested key use . as a
+                         separator. Example: iocage set -P foo.bar.baz=VALUE PLUGIN
+
+         --help        Show this message and exit.
+    '''
 
     if properties is None:
         properties = {}
 
-    _msg = ""
     _changed = False
+    _msg = ""
     _existing_props = _jail_get_properties(module, iocage_path, name)
     _props_to_be_changed = {}
     for _property in properties:
@@ -744,7 +757,7 @@ def jail_set(module, iocage_path, name, properties=None):
             continue
         if _existing_props[_property] == '-' and not properties[_property]:
             continue
-        if _property == "template":
+        if _property == 'template':
             continue
 
         _val = properties[_property]
@@ -767,6 +780,7 @@ def jail_set(module, iocage_path, name, properties=None):
             _props_to_be_changed[_property] = propval
 
     if len(_props_to_be_changed) > 0:
+        _changed = True
         if len(list(set(_props_to_be_changed.keys()) & set(['ip4_addr', 'ip6_addr', 'template', 'interfaces', 'vnet', 'host_hostname']))) > 0:
             need_restart = jail_started(module, iocage_path, name)
         else:
@@ -777,20 +791,20 @@ def jail_set(module, iocage_path, name, properties=None):
         if not module.check_mode:
             if need_restart:
                 jail_stop(module, iocage_path, name)
-            rc, out, err = module.run_command(cmd)
+            rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
+                                              errors='surrogate_or_strict')
             if need_restart:
                 jail_start(module, iocage_path, name)
             if rc != 0:
                 _command_fail(module, f"Attributes could not be set on jail '{name}'.", cmd, rc, out, err)
-            _msg = f"properties {str(_props_to_be_changed.keys())} were set on jail '{name}' with cmd={cmd}."
+            _msg = f"properties {str(_props_to_be_changed.keys())} were set in jail '{name}'\n{cmd}"
         else:
-            _msg = f"properties {str(_props_to_be_changed.keys())} would have been changed for jail '{name}' with command {cmd}"
+            _msg = f"properties {str(_props_to_be_changed.keys())} would be set in jail '{name}'\n{cmd}"
             _msg += str(_props_to_be_changed)
-        _changed = True
 
     else:
         _changed = False
-        _msg = f"properties {properties.keys()} already set for jail '{name}'"
+        _msg = f"properties {properties.keys()} already set in jail '{name}'"
 
     return _changed, _msg
 

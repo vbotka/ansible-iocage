@@ -11,8 +11,9 @@ test_set:
   debug2:
     - var: iocage_templates[basejail].properties
   assert:
-    - '_msg1 in result.msg or _msg2 in result.msg'
-  msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }} or {{ lbr }} _msg2 {{ rbr }}'
+    - '_msg1 in result.msg or _msg2 in result.msg or _msg3 in result.msg'
+  msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }} or {{ lbr }} _msg2 {{ rbr }} or {{ lbr }} _msg3 {{ rbr }}'
   vars:
-    _msg1: "\"were set on jail '{{ lbr }} jname {{ rbr }}'\""
-    _msg2: "\"already set for jail '{{ lbr }} jname {{ rbr }}'\""
+    _msg1: "\"already set in jail '{{ lbr }} jname {{ rbr }}'\""
+    _msg2: "\"were set in jail '{{ lbr }} jname {{ rbr }}'\""
+    _msg3: "\"would be set in jail '{{ lbr }} jname {{ rbr }}'\""
