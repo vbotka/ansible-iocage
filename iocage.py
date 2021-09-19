@@ -86,7 +86,9 @@ options:
       type: str
     release:
       description:
-        - Specify which RELEASE to fetch, update, or create a jail from.
+        - Specify which RELEASE to fetch, update, or create a jail from. I(release) defaults to the
+          relese of the remote host if I(states) is one of C(basejail, thickjail, template, fetched,
+          present). I(release) also defaults to the relese of the remote host if I(update=true).
       type: str
     update:
       description:
@@ -254,6 +256,12 @@ EXAMPLES = r'''
     state: exec
     name: foo
     cmd: service sshd start
+
+- name: Execute pkg command in running jail
+  iocage:
+    state: pkg
+    name: foo
+    cmd: info
 
 - name: Destroy jail
   iocage:
