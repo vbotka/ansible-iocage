@@ -57,7 +57,8 @@ options:
       type: path
     properties:
       description:
-          - I(properties) of the jail.
+          - I(properties) of the jail. The jail will restart if any of the properties B(ip4_addr,
+            ip6_addr, template, interfaces, vnet, host_hostname) changes.
       type: dict
     args:
       description:
@@ -214,6 +215,13 @@ EXAMPLES = r'''
   iocage:
     state: restarted
     name: ALL
+
+- name: Set IP address of the jail
+  iocage:
+    state: set
+    name: foo
+    properties:
+      ip4_addr: 'lo1|10.1.0.6'
 
 - name: Create jail without cloning, install packages, and set propreties.
         Use release of the remote host.
