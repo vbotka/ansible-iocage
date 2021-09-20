@@ -15,7 +15,7 @@
       iocage:
         {
           "name": "{{ basejail }}",
-          "state": "exists"
+          "state": "facts"
         }
       register: result
     - ansible.builtin.set_fact:
@@ -25,6 +25,9 @@
       when: debug2|bool
     - ansible.builtin.debug:
         var: result.msg
+      when: debug|bool
+    - ansible.builtin.debug:
+        var: iocage_templates.keys()|list
       when: debug|bool
   rescue:
     - ansible.builtin.debug:
@@ -37,13 +40,11 @@
         fail_msg: "[ERR] {{ _test_name }}: Failed: {{ result.msg }}"
         success_msg: "[OK]  {{ _test_name }}: Passed: {{ result.msg }}"
         that:
-          - _msg1 == result.msg
+          - basejail in iocage_templates.keys()|list
     - ansible.builtin.import_tasks: custom_stats_pass.yml
   rescue:
     - ansible.builtin.debug:
-        msg: "[ERR] {{ _test_name }} failed. Missing: {{ _msg1 }}"
+        msg: "[ERR] {{ _test_name }} failed. {{ basejail }} does not exist."
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
-  vars:
-    _msg1: "Jail '{{ basejail }}' exists."
   when: not _crash

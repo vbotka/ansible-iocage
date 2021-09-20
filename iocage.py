@@ -42,9 +42,8 @@ options:
       description:
           - I(state) of the desired result.
       type: str
-      choices: [basejail, thickjail, template, present, cloned, started,
-                stopped, restarted, fetched, exec, pkg, exists, absent,
-                set, facts]
+      choices: [basejail, thickjail, template, present, cloned, started, stopped, restarted,
+                fetched, exec, pkg, absent, set, facts]
       default: facts
     name:
       description:
@@ -759,6 +758,7 @@ def jail_set(module, iocage_path, name, properties=None):
 
     _changed = False
     _msg = ""
+
     _existing_props = _jail_get_properties(module, iocage_path, name)
     _props_to_be_changed = {}
     for _property in properties:
@@ -768,7 +768,6 @@ def jail_set(module, iocage_path, name, properties=None):
             continue
         if _property == 'template':
             continue
-
         _val = properties[_property]
         _oval = _existing_props[_property]
         if _val in [0, 'no', 'off', False]:
@@ -783,7 +782,6 @@ def jail_set(module, iocage_path, name, properties=None):
         else:
             module.fail_json(msg="Unable to set attribute {0} to {1} for jail {2}"
                              .format(_property, str(_val).replace("'", "'\\''"), name))
-
         if 'CHECK_NEW_JAIL' in _existing_props or \
            (str(_existing_props[_property]) != str(propval) and propval is not None):
             _props_to_be_changed[_property] = propval
@@ -922,8 +920,9 @@ def run_module():
     module_args = dict(
         state=dict(type='str',
                    default='facts',
-                   choices=['absent', 'basejail', 'cloned', 'exec', 'exists', 'facts', 'fetched', 'pkg',
-                            'present', 'restarted', 'set', 'started', 'stopped', 'template', 'thickjail']),
+                   choices=['absent', 'basejail', 'cloned', 'exec', 'facts', 'fetched', 'pkg',
+                            'present', 'restarted', 'set', 'started', 'stopped', 'template',
+                            'thickjail']),
         name=dict(type='str'),
         pkglist=dict(type='path'),
         properties=dict(type='dict'),
@@ -982,7 +981,7 @@ def run_module():
     # Input validation
 
     # states that need name of jail
-    if p['state'] in ['restarted', 'exists', 'set', 'exec', 'pkg', 'absent']:
+    if p['state'] in ['restarted', 'set', 'exec', 'pkg', 'absent']:
         if name is None:
             module.fail_json(msg=f"name needed for state {p['state']}")
 
@@ -999,7 +998,7 @@ def run_module():
                 module.fail_json(msg=f"Release not recognised: {out}")
 
     # need existing jail
-    if p['state'] in ['set', 'exec', 'pkg', 'exists']:
+    if p['state'] in ['set', 'exec', 'pkg']:
         if name not in jails:
             module.fail_json(msg=f"Jail '{name}' doesn't exist.")
     if name is not None and update:
@@ -1072,9 +1071,6 @@ def run_module():
     elif p['state'] == 'pkg':
         changed, _msg, out, err = jail_pkg(module, iocage_path, name, cmd)
         msgs.append(_msg)
-
-    elif p['state'] == 'exists':
-        msgs.append(f"Jail '{name}' exists.")
 
     elif p['state'] == 'fetched':
         # Fetch or update release and componenets. The var release is always defined.

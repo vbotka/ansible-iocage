@@ -3,12 +3,11 @@ base_exists:
   template: command
   label: 'base_exists: Check if {{ lbr }} basejail {{ rbr }} exists'
   iocage:
-    state: exists
+    state: facts
     name: '{{ lbr }} basejail {{ rbr }}'
   debug:
     - var: result.msg
+    - var: iocage_templates.keys()|list
   assert:
-    - '_msg1 == result.msg'
-  msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }}'
-  vars:
-    _msg1: "\"Jail '{{ lbr }} basejail {{ rbr }}' exists.\""
+    - basejail in iocage_templates.keys()|list
+  msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. {{ lbr }} basejail {{ rbr }} does not exist.'
