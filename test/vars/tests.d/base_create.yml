@@ -9,8 +9,9 @@ base_create:
   debug:
     - var: result.msg
   assert:
-    - '_msg1 in result.msg or _msg2 == result.msg'
-  msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }} or {{ lbr }} _msg2 {{ rbr }}'
+    - '_msg1 in result.msg or _msg2 in result.msg or _msg3 == result.msg'
+  msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }} or {{ lbr }} _msg2 {{ rbr }} or {{ lbr }} _msg3 {{ rbr }}'
   vars:
-    _msg1: "\"Jail '{{ lbr }} basejail {{ rbr }}' was created with properties\""
-    _msg2: "\"'{{ lbr }} basejail {{ rbr }}' already exists.\""
+    _msg1: "\"'{{ lbr }} basejail {{ rbr }}' already exists\""
+    _msg2: "\"'{{ lbr }} basejail {{ rbr }}' was created with properties\""
+    _msg3: "\"'{{ lbr }} basejail {{ rbr }}' would be created.\""
