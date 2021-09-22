@@ -1,0 +1,17 @@
+---
+test_update:
+  template: command
+  label: 'test_update: Check if test jail can be updated'
+  iocage:
+    state: present
+    name: '{{ lbr }} jname {{ rbr }}'
+    update: True
+  debug:
+    - var: result.msg
+  assert:
+    - '_msg1 in result.msg or _msg2 in result.msg or _msg3 in result.msg'
+  msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }} or {{ lbr }} _msg2 {{ rbr }} or {{ lbr }} _msg3 {{ rbr }}'
+  vars:
+    _msg1: "\"'{{ lbr }} jname {{ rbr }}' is up-to-date.\""
+    _msg2: "\"'{{ lbr }} jname {{ rbr }}' was updated\""
+    _msg3: "\"'{{ lbr }} jname {{ rbr }}' would be updated.\""

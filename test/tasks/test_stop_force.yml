@@ -11,11 +11,12 @@
     _crash: true
 
 - block:
-    - name: " >>> TEST START: jail_absent: Check if cloned jail {{ jname }} can be destroyed"
+    - name: " >>> TEST START: test_stop_force: Check if jail {{ jname }} can be stopped"
       iocage:
         {
+          "args": "--ignore",
           "name": "{{ jname }}",
-          "state": "absent"
+          "state": "stopped"
         }
       register: result
     - ansible.builtin.set_fact:
@@ -41,11 +42,11 @@
     - ansible.builtin.import_tasks: custom_stats_pass.yml
   rescue:
     - ansible.builtin.debug:
-        msg: "[ERR] {{ _test_name }} failed. Missing: {{ _msg1 }} or {{ _msg2 }}"
+        msg: "[ERR] {{ _test_name }} failed. Missing: {{ _msg1 }} or {{ _msg2 }} or {{ _msg3 }}"
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
-    _msg1: "'{{ jname }}' already destroyed."
-    _msg2: "'{{ jname }}' was destroyed."
-    _msg3: "'{{ jname }}' would be destroyed."
+    _msg1: "Jail(s) would stop."
+    _msg2: "Jail '{{ jname }}' stopped."
+    _msg3: "Jail '{{ jname }}' already stopped."
   when: not _crash

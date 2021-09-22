@@ -42,5 +42,5 @@
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
-    _msg1: "Jail(s) could not be started."
+    _msg1: "Jail(s) not started."
   when: _crash

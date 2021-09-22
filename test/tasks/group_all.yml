@@ -191,7 +191,17 @@
     _test_name: test_stop_crash
   tags: [never, test_stop_crash]
 
+- ansible.builtin.import_tasks: tasks/test_stop_force.yml
+  vars:
+    _test_name: test_stop_force
+  tags: [never, test_stop_force]
+
 - ansible.builtin.import_tasks: tasks/test_stop_rc.yml
   vars:
     _test_name: test_stop_rc
   tags: [never, test_stop_rc]
+
+- ansible.builtin.import_tasks: tasks/test_update.yml
+  vars:
+    _test_name: test_update
+  tags: [never, test_update]

@@ -11,6 +11,6 @@ base_stop:
     - '_msg1 == result.msg or _msg2 == result.msg or _msg3 == result.msg'
   msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }} or {{ lbr }} _msg2 {{ rbr }} or {{ lbr }} _msg3 {{ rbr }}'
   vars:
-    _msg1: "\"Jail '{{ lbr }} basejail {{ rbr }}' would have been stopped.\""
+    _msg1: "\"Jail '{{ lbr }} basejail {{ rbr }}' would stop.\""
     _msg2: "\"Jail '{{ lbr }} basejail {{ rbr }}' already stopped.\""
     _msg3: "\"Jail '{{ lbr }} basejail {{ rbr }}' was stopped.\""

@@ -45,5 +45,5 @@
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
-    _msg1: "Jail 'absent' is already absent."
+    _msg1: "'absent' already destroyed."
   when: not _crash

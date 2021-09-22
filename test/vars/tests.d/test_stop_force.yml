@@ -1,10 +1,11 @@
 ---
-test_stop:
+test_stop_force:
   template: command
-  label: 'test_stop: Check if jail {{ lbr }} jname {{ rbr }} can be stopped'
+  label: 'test_stop_force: Check if jail {{ lbr }} jname {{ rbr }} can be stopped'
   iocage:
     state: stopped
     name: '{{ lbr }} jname {{ rbr }}'
+    args: '--ignore'
   debug:
     - var: result.msg
   assert:

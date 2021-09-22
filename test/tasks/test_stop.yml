@@ -45,7 +45,7 @@
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
-    _msg1: "Jail '{{ jname }}' would stop."
+    _msg1: "Jail(s) would stop."
     _msg2: "Jail '{{ jname }}' stopped."
     _msg3: "Jail '{{ jname }}' already stopped."
   when: not _crash
