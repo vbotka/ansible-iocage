@@ -106,6 +106,11 @@
     _test_name: test_clone
   tags: [never, test_clone]
 
+- ansible.builtin.import_tasks: tasks/test_create_uuid.yml
+  vars:
+    _test_name: test_create_uuid
+  tags: [never, test_create_uuid]
+
 - ansible.builtin.import_tasks: tasks/test_exec.yml
   vars:
     _test_name: test_exec

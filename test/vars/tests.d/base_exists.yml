@@ -9,5 +9,5 @@ base_exists:
     - var: result.msg
     - var: iocage_templates.keys()|list
   assert:
-    - basejail in iocage_templates.keys()|list
-  msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. {{ lbr }} basejail {{ rbr }} does not exist.'
+    - 'basejail in iocage_templates'
+  msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Template {{ lbr }} basejail {{ rbr }} not among iocage_templates'

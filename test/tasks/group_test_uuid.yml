@@ -1,0 +1,20 @@
+---
+# Ansible managed
+- ansible.builtin.import_tasks: tasks/test_create_uuid.yml
+  vars:
+    _test_name: test_create_uuid
+- ansible.builtin.import_tasks: tasks/set_jname_uuid.yml
+  vars:
+    _test_name: set_jname_uuid
+- ansible.builtin.import_tasks: tasks/test_start.yml
+  vars:
+    _test_name: test_start
+- ansible.builtin.import_tasks: tasks/test_stop.yml
+  vars:
+    _test_name: test_stop
+- ansible.builtin.import_tasks: tasks/test_absent.yml
+  vars:
+    _test_name: test_absent
+- ansible.builtin.import_tasks: tasks/set_jname_backup.yml
+  vars:
+    _test_name: set_jname_backup

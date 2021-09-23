@@ -40,11 +40,11 @@
         fail_msg: "[ERR] {{ _test_name }}: Failed: {{ result.msg }}"
         success_msg: "[OK]  {{ _test_name }}: Passed: {{ result.msg }}"
         that:
-          - basejail in iocage_templates.keys()|list
+          - basejail in iocage_templates
     - ansible.builtin.import_tasks: custom_stats_pass.yml
   rescue:
     - ansible.builtin.debug:
-        msg: "[ERR] {{ _test_name }} failed. {{ basejail }} does not exist."
+        msg: "[ERR] {{ _test_name }} failed. Template {{ basejail }} not among iocage_templates"
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   when: not _crash

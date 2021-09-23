@@ -11,12 +11,11 @@
     _crash: true
 
 - block:
-    - name: " >>> TEST START: base_create: Check if {{ basejail }} can be created"
+    - name: " >>> TEST START: test_create_uuid: Create jail from template"
       iocage:
         {
-          "name": "{{ basejail }}",
-          "release": "{{ my_release|d(omit) }}",
-          "state": "basejail"
+          "clone_from": "{{ basejail|default(omit) }}",
+          "state": "present"
         }
       register: result
     - ansible.builtin.set_fact:
@@ -25,7 +24,16 @@
         var: result
       when: debug2|bool
     - ansible.builtin.debug:
+        var: iocage_jails[result.uuid_short]
+      when: debug2|bool
+    - ansible.builtin.debug:
         var: result.msg
+      when: debug|bool
+    - ansible.builtin.debug:
+        var: result.uuid
+      when: debug|bool
+    - ansible.builtin.debug:
+        var: result.uuid_short
       when: debug|bool
   rescue:
     - ansible.builtin.debug:

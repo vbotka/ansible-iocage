@@ -1,0 +1,7 @@
+---
+- name: "set_jname: Restore jname from backup"
+  set_fact:
+    jname: "{{_jname_backup }}"
+- debug:
+    var: jname
+  when: debug|bool

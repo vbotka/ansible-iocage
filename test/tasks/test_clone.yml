@@ -39,7 +39,7 @@
         fail_msg: "[ERR] {{ _test_name }}: Failed: {{ result.msg }}"
         success_msg: "[OK]  {{ _test_name }}: Passed: {{ result.msg }}"
         that:
-          - _msg1 in result.msg or _msg2 in result.msg or _msg3 == result.msg
+          - _msg1 in result.msg or _msg2 in result.msg or _msg3 in result.msg
     - ansible.builtin.import_tasks: custom_stats_pass.yml
   rescue:
     - ansible.builtin.debug:
@@ -47,7 +47,7 @@
       when: debug|bool
     - ansible.builtin.import_tasks: custom_stats_fail.yml
   vars:
-    _msg1: "'{{ jname }}' already exists"
-    _msg2: "'{{ jname }}' was created with properties"
-    _msg3: "'{{ jname }}' would be created."
+    _msg1: "Jail already exists."
+    _msg2: "Jail was created."
+    _msg3: "Jail would be created."
   when: not _crash

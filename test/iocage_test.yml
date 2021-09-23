@@ -69,5 +69,8 @@
     - ansible.builtin.import_tasks: tasks/group_test.yml
       tags: group_test
 
+    - ansible.builtin.import_tasks: tasks/group_test_uuid.yml
+      tags: group_test_uuid
+
     - ansible.builtin.import_tasks: tasks/custom_stats_end.yml
       tags: always

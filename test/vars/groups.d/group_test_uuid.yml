@@ -1,0 +1,10 @@
+---
+group_test_uuid:
+  template: group
+  tests:
+    - test: test_create_uuid
+    - test: set_jname_uuid
+    - test: test_start
+    - test: test_stop
+    - test: test_absent
+    - test: set_jname_backup

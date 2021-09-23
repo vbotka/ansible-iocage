@@ -41,15 +41,16 @@ options:
     state:
       description:
           - I(state) of the desired result.
-          - State C(absent) by default force the destructions B(iocage destroy --force name).
+          - State C(absent) by default force the destruction B(iocage destroy --force name).
       type: str
       choices: [basejail, thickjail, template, present, cloned, started, stopped, restarted,
                 fetched, exec, pkg, absent, set, facts]
       default: facts
     name:
       description:
-          - I(name) of the jail (former uuid). States I(started, stopped, restarted) accept C(ALL)
-            to start, stop, or restart all jails.
+          - I(name) of the jail.
+          - States I(started, stopped, restarted) accept C(ALL) to start, stop, or restart all jails.
+          - States I(present, cloned, template, basejail, thickjail) will return B(uuid) and B(uuid_short) if I(name) is C(None) or empty.
       type: str
     pkglist:
       description:
@@ -88,8 +89,8 @@ options:
     release:
       description:
         - Specify which RELEASE to fetch, update, or create a jail from. I(release) defaults to the
-          relese of the remote host if I(state) is one of C(basejail, thickjail, template, fetched,
-          present). I(release) also defaults to the relese of the remote host if I(update=True).
+          release of the remote host if I(state) is one of C(basejail, thickjail, template, fetched,
+          present). I(release) also defaults to the release of the remote host if I(update=True).
       type: str
     update:
       description:
@@ -155,7 +156,7 @@ EXAMPLES = r'''
     state: fetched
     release: 13.0-RELEASE
 
-- name: Fetch only componenets base.txz and doc.txz of the base 13.0-RELEASE
+- name: Fetch only components base.txz and doc.txz of the base 13.0-RELEASE
   iocage:
     state: fetched
     release: 13.0-RELEASE
@@ -167,7 +168,7 @@ EXAMPLES = r'''
     plugin: Tarsnap
     args: -k
 
-- name: Update or fetch componenets base.txz and doc.txz of the remote host's release.
+- name: Update or fetch components base.txz and doc.txz of the remote host's release.
         Fetch plugin Tarsnap. Keep jails on failure.
   iocage:
     state: fetched
@@ -229,7 +230,7 @@ EXAMPLES = r'''
     properties:
       ip4_addr: 'lo1|10.1.0.6'
 
-- name: Create jail without cloning, install packages, and set propreties.
+- name: Create jail without cloning, install packages, and set properties.
         Use release of the remote host.
   iocage:
     state: present
@@ -241,7 +242,7 @@ EXAMPLES = r'''
       allow_sysvipc: true
       defaultrouter: '10.1.0.1'
 
-- name: Create template, install packages, and set propreties.
+- name: Create template, install packages, and set properties.
         Use release of the remote host.
   iocage:
     state: template
@@ -265,6 +266,15 @@ EXAMPLES = r'''
       allow_sysvipc: true
       defaultrouter: '10.1.0.1'
 
+- name: Create a cloned jail. Name is automatically generated.
+  iocage:
+    state: present
+    clone_from: tplfoo
+  register: result
+- name: Set variable contains the name of the created jail.
+  set_fact:
+    jname: "{{ result.uuid_short }}"
+
 - name: Execute command in running jail
   iocage:
     state: exec
@@ -284,6 +294,14 @@ EXAMPLES = r'''
 '''
 
 RETURN = r'''
+uuid:
+  description: Automatically generated unique ID of a jail.
+  returned: States I(present, cloned, template, basejail, thickjail) if I(name) is C(None) or empty.
+  type: str
+uuid_short:
+  description: First 8 characters of I(uuid). Set as a name of the jail.
+  returned: States I(present, cloned, template, basejail, thickjail) if I(name) is C(None) or empty.
+  type: str
 ansible_facts:
   description: Facts to add to ansible_facts.
   returned: always
@@ -805,9 +823,14 @@ def jail_create(module, iocage_path, name=None, properties=None, clone_from_name
     '''
 
     _changed = True
+    _uuid = ""
+    _uuid_short = ""
 
     if clone_from_name is None and clone_from_template is None:
-        cmd = f"{iocage_path} create -n {name} -r {release}"
+        if name is None or len(name) == 0:
+            cmd = f"{iocage_path} create -r {release}"
+        else:
+            cmd = f"{iocage_path} create -n {name} -r {release}"
         if basejail:
             cmd += " -b"
         elif thickjail:
@@ -818,14 +841,20 @@ def jail_create(module, iocage_path, name=None, properties=None, clone_from_name
             cmd += f" -p {pkglist}"
 
     elif clone_from_template is not None:
-        cmd = f"{iocage_path} create -n {name} -t {clone_from_template}"
+        if name is None or len(name) == 0:
+            cmd = f"{iocage_path} create -t {clone_from_template}"
+        else:
+            cmd = f"{iocage_path} create -n {name} -t {clone_from_template}"
         if args:
             cmd += f" {args}"
         if pkglist is not None:
             cmd += " -p " + pkglist
 
     elif clone_from_name is not None:
-        cmd = f"{iocage_path} clone -n {name}"
+        if name is None or len(name) == 0:
+            cmd = f"{iocage_path} clone"
+        else:
+            cmd = f"{iocage_path} clone -n {name}"
         if args:
             cmd += f" {args}"
         cmd += f" {clone_from_name}"
@@ -837,14 +866,23 @@ def jail_create(module, iocage_path, name=None, properties=None, clone_from_name
         rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
                                           errors='surrogate_or_strict')
         if rc != 0:
-            _command_fail(module, f"'{name}' not created.", cmd, rc, out, err)
-        _msg = f"'{name}' was created with properties {str(properties)}.\n{cmd}"
+            _command_fail(module, f"Jail not created.", cmd, rc, out, err)
+        _msg = f"'Jail was created.\n{cmd}\n{out}"
+        if name is None or len(name) == 0:
+            _uuid = out.split()[0]
+            _uuid_short = _uuid.split('-')[0]
+            name = _uuid_short
+            cmd = f"{iocage_path} rename {_uuid} {_uuid_short}"
+            rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
+                                              errors='surrogate_or_strict')
+            if rc != 0:
+                _command_fail(module, f"Jail not renamed.", cmd, rc, out, err)
         if not jail_exists(module, iocage_path, name):
             module.fail_json(msg=f"'{name}' not created ???\ncmd: {cmd}\nstdout:\n{out}\nstderr:\n{err}")
     else:
-        _msg = f"'{name}' would be created.\n{cmd}"
+        _msg = f"Jail would be created.\n{cmd}"
 
-    return _changed, _msg
+    return _changed, _msg, _uuid, _uuid_short
 
 
 def jail_update(module, iocage_path, name):
@@ -1013,6 +1051,8 @@ def run_module():
     # Execution of states
 
     msgs = []
+    _uuid = ''
+    _uuid_short = ''
 
     if p['state'] == 'started':
         if name is not None and name != 'ALL' and name not in jails:
@@ -1136,17 +1176,17 @@ def run_module():
                 clone_from_template = clone_from
             else:
                 if module.check_mode:
-                    msgs.append(f"Jail '{name}' would be cloned from (nonexisting) jail or template '{clone_from}'")
+                    msgs.append(f"Jail would be cloned from (nonexisting) jail or template '{clone_from}'")
                 else:
-                    module.fail_json(msg=f"Unable to create jail '{name}'\nbasejail '{clone_from}' doesn't exist.")
+                    module.fail_json(msg=f"Unable to create jail.\nbasejail '{clone_from}' doesn't exist.")
 
-        if name not in jails:
-            _changed, _msg = jail_create(module, iocage_path, name, properties, clone_from_name, clone_from_template,
-                                         release, do_basejail, do_thickjail, pkglist, args)
+        if name is None or len(name) == 0 or name not in jails:
+            _changed, _msg, _uuid, _uuid_short = jail_create(module, iocage_path, name, properties, clone_from_name,
+                                                             clone_from_template, release, do_basejail, do_thickjail,
+                                                             pkglist, args)
             msgs.append(_msg)
-
         else:
-            msgs.append(f"'{name}' already exists")
+            msgs.append(f"'Jail already exists.")
             _changed, _msg = jail_set(module, iocage_path, name, properties)
             if _changed:
                 msgs.append(_msg)
@@ -1162,9 +1202,9 @@ def run_module():
 
         if _changed:
             if p['state'] == 'template':
-                facts['iocage_templates'][name] = _get_iocage_facts(module, iocage_path, 'templates', name)
+                facts['iocage_templates'] = _get_iocage_facts(module, iocage_path, 'templates')
             else:
-                facts['iocage_jails'][name] = _get_iocage_facts(module, iocage_path, 'jails', name)
+                facts['iocage_jails'] = _get_iocage_facts(module, iocage_path, 'jails')
 
     elif p['state'] == 'absent':
         if name not in jails:
@@ -1190,6 +1230,9 @@ def run_module():
                   )
     if module._debug:
         result['module_args'] = f"{(json.dumps(module.params, indent=4))}"
+    if len(_uuid) > 0:
+        result['uuid'] = f"{_uuid}"
+        result['uuid_short'] = f"{_uuid_short}"
 
     module.exit_json(**result)
 

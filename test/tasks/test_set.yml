@@ -25,6 +25,9 @@
         var: result
       when: debug2|bool
     - ansible.builtin.debug:
+        var: iocage_templates[basejail].properties
+      when: debug2|bool
+    - ansible.builtin.debug:
         var: result.msg
       when: debug|bool
   rescue:

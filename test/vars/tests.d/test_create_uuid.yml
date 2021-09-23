@@ -1,13 +1,16 @@
 ---
-template_create:
+test_create_uuid:
   template: command
-  label: 'template_create: Check if template {{ lbr }} basejail {{ rbr }} can be created'
+  label: 'test_create_uuid: Create jail from template'
   iocage:
-    state: template
-    name: '{{ lbr }} basejail {{ rbr }}'
-    release: '{{ lbr }} my_release|d(omit) {{ rbr }}'
+    state: present
+    clone_from: '{{ lbr }} basejail|default(omit) {{ rbr }}'
   debug:
     - var: result.msg
+    - var: result.uuid
+    - var: result.uuid_short
+  debug2:
+    - var: iocage_jails[result.uuid_short]
   assert:
     - '_msg1 in result.msg or _msg2 in result.msg or _msg3 in result.msg'
   msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }} or {{ lbr }} _msg2 {{ rbr }} or {{ lbr }} _msg3 {{ rbr }}'
