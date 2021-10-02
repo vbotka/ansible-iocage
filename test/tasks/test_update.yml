@@ -14,9 +14,9 @@
     - name: " >>> TEST START: test_update: Check if test jail can be updated"
       iocage:
         {
+          "bupdate": true,
           "name": "{{ jname }}",
-          "state": "present",
-          "update": true
+          "state": "present"
         }
       register: result
     - ansible.builtin.set_fact:

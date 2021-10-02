@@ -4,7 +4,7 @@ fetch:
   label: 'fetch: Fetch release, components and plugin'
   iocage:
     state: fetched
-    update: "{{ lbr }} my_update|d(omit) {{ rbr }}"
+    bupdate: "{{ lbr }} my_update|d(omit) {{ rbr }}"
     release: "{{ lbr }} my_release|d(omit) {{ rbr }}"
     components: "{{ lbr }} my_components|d(omit) {{ rbr }}"
     plugin: "{{ lbr }} my_plugin|d(omit) {{ rbr }}"

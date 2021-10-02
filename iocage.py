@@ -90,12 +90,12 @@ options:
       description:
         - Specify which RELEASE to fetch, update, or create a jail from. I(release) defaults to the
           release of the remote host if I(state) is one of C(basejail, thickjail, template, fetched,
-          present). I(release) also defaults to the release of the remote host if I(update=True).
+          present). I(release) also defaults to the release of the remote host if I(bupdate=True).
       type: str
-    update:
+    bupdate:
       description:
         - Update the fetch to the latest patch level when I(state=fetched).
-          Update the jail when I(name) is defined. This will start the jail.
+          Fetch and install binary updates when I(name) is defined. This will start the jail.
       type: bool
       default: False
     components:
@@ -172,7 +172,7 @@ EXAMPLES = r'''
         Fetch plugin Tarsnap. Keep jails on failure.
   iocage:
     state: fetched
-    update: True
+    bupdate: True
     components: 'base.txz,doc.txz'
     plugin: Tarsnap
     args: -k
@@ -180,7 +180,7 @@ EXAMPLES = r'''
 - name: Update the jail. This will start the jail.
   iocage:
     state: present
-    update: True
+    bupdate: True
     name: foo
 
 - name: Start jail
@@ -645,7 +645,7 @@ def jail_restart(module, iocage_path, name=None, args=""):
     return _changed, _msg, out, err
 
 
-def release_fetch(module, iocage_path, update=False, release=None, components=None, plugin=None, args=""):
+def release_fetch(module, iocage_path, bupdate=False, release=None, components=None, plugin=None, args=""):
     '''Fetch a version of FreeBSD for jail usage or a preconfigured plugin.
 
        $ iocage fetch --help
@@ -654,7 +654,7 @@ def release_fetch(module, iocage_path, update=False, release=None, components=No
     '''
 
     _changed = True
-    if update:
+    if bupdate:
         args += " -U"
     if release is not None:
         args += f" -r {release}"
@@ -671,14 +671,14 @@ def release_fetch(module, iocage_path, update=False, release=None, components=No
                                           errors='surrogate_or_strict')
         if rc != 0:
             _command_fail(module, f"Function release_fetch failed.", cmd, rc, out, err)
-        if update:
+        if bupdate:
             _msg = f"Successfully fetched and updated.\n{cmd}\n{out}"
         else:
             _msg = f"Successfully fetched.\n{cmd}\n{out}"
     else:
         out = ""
         err = ""
-        if update:
+        if bupdate:
             _msg = f"Would fetch and update.\n{cmd}"
         else:
             _msg = f"Would fetch.\n{cmd}"
@@ -970,7 +970,7 @@ def run_module():
         clone_from=dict(type='str'),
         plugin=dict(type='str'),
         release=dict(type='str'),
-        update=dict(type='bool', default=False),
+        bupdate=dict(type='bool', default=False),
         components=dict(type='list', elements='path', aliases=['files', 'component']),)
 
     module = AnsibleModule(argument_spec=module_args,
@@ -989,7 +989,7 @@ def run_module():
     user = p['user']
     plugin = p['plugin']
     release = p['release']
-    update = p['update']
+    bupdate = p['bupdate']
     components = p['components']
     pkglist = p['pkglist']
 
@@ -1024,7 +1024,7 @@ def run_module():
             module.fail_json(msg=f"name needed for state {p['state']}")
 
     # states that need release defined
-    if p['state'] in ['basejail', 'thickjail', 'template', 'fetched', 'present'] or p['update']:
+    if p['state'] in ['basejail', 'thickjail', 'template', 'fetched', 'present'] or bupdate:
         if release is None or release == '':
             rc, out, err = module.run_command("uname -r")
             if rc != 0:
@@ -1039,7 +1039,7 @@ def run_module():
     if p['state'] in ['set', 'exec', 'pkg']:
         if name not in jails:
             module.fail_json(msg=f"Jail '{name}' doesn't exist.")
-    if name is not None and update:
+    if name is not None and bupdate:
         if name not in jails:
             module.fail_json(msg=f"Jail '{name}' doesn't exist.")
 
@@ -1116,8 +1116,8 @@ def run_module():
 
     elif p['state'] == 'fetched':
         # Fetch or update release and componenets. The var release is always defined.
-        if update or release not in facts['iocage_releases']:
-            _changed, _msg, out, err = release_fetch(module, iocage_path, update, release, components, None, args)
+        if bupdate or release not in facts['iocage_releases']:
+            _changed, _msg, out, err = release_fetch(module, iocage_path, bupdate, release, components, None, args)
             msgs.append(_msg)
             if not module.check_mode:
                 facts['iocage_releases'] = _get_iocage_facts(module, iocage_path, 'releases')
@@ -1127,8 +1127,8 @@ def run_module():
             msgs.append(f"Release {release} already fetched.")
         # Fetch or update plugin if defined
         if plugin is not None:
-            if update or plugin not in facts['iocage_plugins']:
-                _changed, _msg, out, err = release_fetch(module, iocage_path, update, None, None, plugin, args)
+            if bupdate or plugin not in facts['iocage_plugins']:
+                _changed, _msg, out, err = release_fetch(module, iocage_path, bupdate, None, None, plugin, args)
                 msgs.append(_msg)
                 if not module.check_mode:
                     facts['iocage_plugins'] = _get_iocage_facts(module, iocage_path, 'plugins')
@@ -1151,7 +1151,7 @@ def run_module():
         clone_from_template = None
 
         if p['state'] != 'cloned' and release not in facts['iocage_releases']:
-            _changed, _msg = release_fetch(module, iocage_path, update, release, components)
+            _changed, _msg = release_fetch(module, iocage_path, bupdate, release, components)
             msgs.append(_msg)
             if _changed:
                 facts['iocage_releases'] = _get_iocage_facts(module, iocage_path, 'releases')
@@ -1191,9 +1191,9 @@ def run_module():
             if _changed:
                 msgs.append(_msg)
 
-        if p['update']:
+        if bupdate:
             if release not in facts['iocage_releases']:
-                _changed, _msg = release_fetch(module, iocage_path, update, release, components)
+                _changed, _msg = release_fetch(module, iocage_path, bupdate, release, components)
                 if _changed:
                     msgs.append(_msg)
                     facts['iocage_releases'] = _get_iocage_facts(module, iocage_path, 'releases')

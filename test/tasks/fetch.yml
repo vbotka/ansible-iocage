@@ -15,11 +15,11 @@
       iocage:
         {
           "args": "{{ my_args|d(omit) }}",
+          "bupdate": "{{ my_update|d(omit) }}",
           "components": "{{ my_components|d(omit) }}",
           "plugin": "{{ my_plugin|d(omit) }}",
           "release": "{{ my_release|d(omit) }}",
-          "state": "fetched",
-          "update": "{{ my_update|d(omit) }}"
+          "state": "fetched"
         }
       register: result
     - ansible.builtin.set_fact:
