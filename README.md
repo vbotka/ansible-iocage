@@ -1,43 +1,57 @@
-ansible-iocage
-==============
+# ansible-iocage
 
 [![license](https://img.shields.io/badge/license-BSD-red.svg)](https://www.freebsd.org/doc/en/articles/bsdl-gpl/article.html)
 
 [iocage](https://github.com/iocage/iocage) module for Ansible.
 
-Current branch https://github.com/vbotka/ansible-iocage
 
-Description
------------
+## Use current branch
+
+[Upstream](https://github.com/fractalcells/ansible-iocage/pulls) is too late with accepting PRs. No
+patches were accepted since September 2021. Therefor, the development is not submitted to the
+upstream anymore. Use the current branch https://github.com/vbotka/ansible-iocage/tree/current until
+this problem is resolved.
+
+
+## Description
 
 This module is an Ansible 'wrapper' of the iocage command.
 
 * Works with new Python3 iocage, not anymore with shell version
-* Release is host's one if not specified
+* Release of a jail is the same as the release of the host if not specified
 * Release is automatically fetched if missing
 
 
-Requirements (on the node)
---------------------------
+## Requirements (on the node)
 
 * lang/python >= 3.6
 * sysutils/iocage
 
 
-Install
--------
+## Installation
 
-Put the module to DEFAULT_MODULE_PATH
+The module can be installed either as a standalone module or as a part of the collection
+[vbotka.freebsd](https://galaxy.ansible.com/vbotka/freebsd). Do not mix the installations of the
+collection and the standalone module.
+
+### Standalone installation
+
+Put the file iocage.py to DEFAULT_MODULE_PATH
 
 ```
 shell> ansible-config dump|grep DEFAULT_MODULE_PATH
 DEFAULT_MODULE_PATH(default) = ['/home/admin/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
 ```
 
+### Install the collection vbotka.freebsd from Ansible Galaxy
+
+```
+shell> ansible-galaxy collection install vbotka.freebsd
+```
+
 
 Documentation
 -------------
-
 Only the inline documentation of the module is available. Run the command
 
 ```
