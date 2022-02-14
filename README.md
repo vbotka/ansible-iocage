@@ -7,17 +7,18 @@
 
 ## Use current branch
 
-[Upstream](https://github.com/fractalcells/ansible-iocage/pulls) is too late with accepting PRs. No
-patches were accepted since September 2021. Therefor, the development is not submitted to the
-upstream anymore. Use the current branch https://github.com/vbotka/ansible-iocage/tree/current until
-this problem is resolved.
+[Upstream](https://github.com/fractalcells/ansible-iocage/pulls) is too late
+with accepting PRs. No patches were accepted since September 2021. Therefor, the
+development is not submitted to the upstream anymore. Use the current branch
+https://github.com/vbotka/ansible-iocage/tree/current until this problem is
+resolved.
 
 
 ## Description
 
 This module is an Ansible 'wrapper' of the iocage command.
 
-* Works with new Python3 iocage, not anymore with shell version
+* Works with Python3 iocage
 * Release of a jail is the same as the release of the host if not specified
 * Release is automatically fetched if missing
 
@@ -30,42 +31,43 @@ This module is an Ansible 'wrapper' of the iocage command.
 
 ## Installation
 
-The module can be installed either as a standalone module or as a part of the collection
-[vbotka.freebsd](https://galaxy.ansible.com/vbotka/freebsd). Do not mix the installations of the
-collection and the standalone module.
+The module can be installed either as a standalone module or as a part of the
+collection [vbotka.freebsd](https://galaxy.ansible.com/vbotka/freebsd). Do not
+mix the installations of the collection and the standalone module.
+
 
 ### Standalone installation
 
 Put the file iocage.py to DEFAULT_MODULE_PATH
 
-```
+```sh
 shell> ansible-config dump|grep DEFAULT_MODULE_PATH
 DEFAULT_MODULE_PATH(default) = ['/home/admin/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
 ```
 
+
 ### Install the collection vbotka.freebsd from Ansible Galaxy
 
-```
+```sh
 shell> ansible-galaxy collection install vbotka.freebsd
 ```
 
 
-Documentation
--------------
+## Documentation
+
 Only the inline documentation of the module is available. Run the command
 
-```
+```sh
 shell> ansible-doc -t module iocage
 ```
 
 Read the [iocage documentation at readthedocs.io](https://iocage.readthedocs.io/en/latest/)
 
 
-Example
--------
+## Example
 
-No option of the module is required. Without any option the module
-gathers facts about the jails. For example the play below
+No option of the module is required. Without any option the module gathers facts
+about the jails. For example the play below
 
 ```yaml
 shell> cat playbook.yml
@@ -92,13 +94,12 @@ shell> ansible-playbook playbook.yml
 ```
 
 
-Use-cases
----------
+## Use-cases
 
-* Fetch 11.0-RELEASE
+* Fetch 13.0-RELEASE
 
 ```
-iocage: state=fetched release=11.0-RELEASE
+iocage: state=fetched release=13.0-RELEASE
 ```
 
 * Fetch host's RELEASE
@@ -107,7 +108,7 @@ iocage: state=fetched release=11.0-RELEASE
 iocage: state=fetched
 ```
 
-* Fetch just the base component of host's RELEASE
+* Fetch the base component of host's RELEASE only
 
 ```
 iocage: state=fetched components=base.txz
@@ -120,13 +121,14 @@ iocage: state=fetched components=base.txz,doc.txz
 ```
 
 * Create basejail
+
 ```
-iocage: state=basejail name="foo" release=11.0-RELEASE
+iocage: state=basejail name="foo" release=13.0-RELEASE
 ```
 
 * Create template
 
-```
+```yaml
 iocage:
   state: template
   name: mytemplate
@@ -137,7 +139,7 @@ iocage:
 
 * Clone existing jail
 
-```
+```yaml
 iocage:
   state: present
   name: "foo"
@@ -153,7 +155,7 @@ iocage:
 
 * Create jail (without cloning)
 
-```
+```yaml
 iocage:
   state: present
   name: "foo"
@@ -198,7 +200,7 @@ iocage: state=absent name="myjail"
 
 * Set attributes on jail
 
-```
+```yaml
 iocage:
   state: set
   name: "myjail"
@@ -207,13 +209,12 @@ iocage:
 ```
 
 
-Tests
------
+## Tests
 
-The project comes with set of tests stored in the directory test/tasks. Run
-the complete collection of the tests at localhost
+The project comes with set of tests stored in the directory test/tasks. Run the
+complete collection of the tests at localhost
 
-```
+```ah
 shell> cd test
 shell> ansible-playbook -M . iocage_test.yml
 ```
@@ -225,10 +226,9 @@ PLAY RECAP *********************************************************************
 localhost: ok=158 changed=17 unreachable=0 failed=0 skipped=65 rescued=6 ignored=0
 ```
 
-Custom stats will provide you with more details if you run the tests
-on multiple nodes. See *ansible.builtin.set_stats*. For example run
-the complete collection of the tests on two nodes *test_23* and
-*test_29*
+Custom stats will provide you with more details if you run the tests on multiple
+nodes. See *ansible.builtin.set_stats*. For example run the complete collection
+of the tests on two nodes *test_23* and *test_29*
 
 ```sh
 shell> ANSIBLE_SHOW_CUSTOM_STATS=true ansible-playbook iocage_test.yml -M . -e my_hosts=test_23,test_29
@@ -237,25 +237,23 @@ shell> ANSIBLE_SHOW_CUSTOM_STATS=true ansible-playbook iocage_test.yml -M . -e m
 This should display a report similar to this one
 
 ```sh
-PLAY RECAP *********************************************************************
+PLAY RECAP ***********************************************************************
 test_23: ok=207 changed=17 unreachable=0 failed=0 skipped=28 rescued=6 ignored=0
 test_29: ok=207 changed=17 unreachable=0 failed=0 skipped=28 rescued=6 ignored=0
 
-CUSTOM STATS: ******************************************************************
+CUSTOM STATS: ********************************************************************
        test_23:   a1: Aug 29 21:46:23  a2: Aug 29 21:52:12  ok: 35
        test_29:   a1: Aug 29 21:46:23  a2: Aug 29 22:03:57  ok: 35
 ```
 
 
-Advanced tests
---------------
+## Advanced tests
 
-Most of the tests and groups are generated from templates (see
-directory templates) by the dictionaries *iocage_test_db* and
-*iocage_group_db* stored in the files in directory vars. Do not edit
-the tasks and groups manually. Modify or create new templates and
-dictionaries, and run the playbook *configure.yml*. For example, add
-new group of tests in *vars/groups.d/group_present_absent_restart.yml*
+Most of the tests and groups are generated from templates (see directory templates) by the
+dictionaries *iocage_test_db* and *iocage_group_db* stored in the files in directory vars. Do not
+edit the tasks and groups manually. Modify or create new templates and dictionaries, and run the
+playbook *configure.yml*. For example, add new group of tests in
+*vars/groups.d/group_present_absent_restart.yml*
 
 ```yaml
 ---
@@ -272,16 +270,15 @@ Run playbook *configure.yml* and create the group *group_present_absent_restart*
 ```sh
 shell> ansible-playbook configure.yml -e my_groups=group_present_absent_restart -t create_groups,create_iocage_test
 ...
-TASK [Create group files in directory tasks] *********************************
+TASK [Create group files in directory tasks] *******************************************
 ok: [localhost] => (item=group_present_absent_restart)
 
-TASK [Create playbook iocage_test.yml] ***************************************
+TASK [Create playbook iocage_test.yml] *************************************************
 ok: [localhost]
 ```
 
-Create file with the parameters of the tests, e.g. run the tests on
-the nodes *test_23,test_29*, use jail *test_31*, enable debug, and set
-strategy *free*
+Create file with the parameters of the tests, e.g. run the tests on the nodes *test_23,test_29*, use
+jail *test_31*, enable debug, and set strategy *free*
 
 ```yaml
 shell> cat extra_vars/test_31-debug-n2.yml
@@ -350,30 +347,26 @@ CUSTOM STATS: ******************************************************************
 ```
 
 
-Variables and parameters of the tests
--------------------------------------
+## Variables and parameters of the tests
 
 In this framework, there are three sources of the tests' parameters
 
-* Hard-coded parameters in the test files and group files. If you want
-  to customize them change the data in vars/ and run the playbook
-  *configure.yml*. You can also add you own test and group files
-  preferably in the form of the data in vars/ and templates. Add
-  templates if needed.
+* Hard-coded parameters in the test files and group files. If you want to
+  customize them change the data in *vars/* and run the playbook
+  *configure.yml*. You can also add you own tests and group files preferably in
+  the form of the data in *vars/* and *templates/*. Add templates if needed.
 
-* Defaults in the playbook iocage_test.yml. If you want to customize
-  them change the template *iocage_test.yml.j2* and run the playbook
-  *configure.yml*.
+* Defaults in the playbook *iocage_test.yml*. If you want to customize them
+  *change the template iocage_test.yml.j2* and run the playbook *configure.yml*.
 
-* Extra vars on the command line. See examples in the directory
-  extra_vars/ on how to create files with extra variables.
+* Extra vars on the command line. See examples in the directory *extra_vars/* on
+  how to create files with extra variables.
 
-Except of this you can customize the variables at any other precedence
-you want to, of course.
+Except of this you can customize the variables at any other precedence you want
+to, of course.
 
 
-See also
---------
+## See also
 
 * [iocage - A FreeBSD Jail Manager - iocage documentation at readthedocs.io](https://iocage.readthedocs.io/en/latest/)
 * [iocage - Jail manager using ZFS and VNET - FreeBSD System Manager's Manual](https://www.freebsd.org/cgi/man.cgi?query=iocage)
