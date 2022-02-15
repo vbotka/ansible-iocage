@@ -907,9 +907,9 @@ def jail_update(module, iocage_path, name):
             _msg = f"Jail '{name}' is up-to-date.\n{out}"
         elif rc != 0:
             _command_fail(module, f"Jail '{name}' not updated.", cmd, rc, out, err)
-        elif "updating to" in out:
-            nv = re.search(r' ([^ ]*):$', filter((lambda x: 'updating to' in x), out.split('\n'))[0]).group(1)
-            _msg = f"Jail '{name}' was updated to {nv}\n{out}"
+        # elif "updating to" in out:
+        #     nv = re.search(r' ([^ ]*):$', filter((lambda x: 'updating to' in x), out.split('\n'))[0]).group(1)
+        #     _msg = f"Jail '{name}' was updated to {nv}\n{out}"
         else:
             _msg = f"Jail '{name}' was updated\n{out}"
     else:
