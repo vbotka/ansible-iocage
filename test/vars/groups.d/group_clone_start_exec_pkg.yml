@@ -3,6 +3,9 @@ group_clone_start_exec_pkg:
   template: group
   tests:
     - test: test_clone
+      vars:
+        properties:
+          ip4_addr: em0|10.1.0.98/24
     - test: test_start
     - test: test_exec
       vars:

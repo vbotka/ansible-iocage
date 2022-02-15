@@ -3,6 +3,9 @@
 - ansible.builtin.import_tasks: tasks/test_clone.yml
   vars:
     _test_name: test_clone
+    properties:
+      ip4_addr: em0|10.1.0.98/24
+
 - ansible.builtin.import_tasks: tasks/test_start.yml
   vars:
     _test_name: test_start
