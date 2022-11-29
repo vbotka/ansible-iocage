@@ -1163,7 +1163,8 @@ def run_module():
             properties['boot'] = 0
 
         elif p['state'] == 'basejail':
-            properties = {}
+            if properties is None:
+                properties = {}
             do_basejail = True
 
         elif p['state'] == 'thickjail':
