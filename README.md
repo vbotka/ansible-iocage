@@ -8,8 +8,8 @@
 ## Use current branch
 
 [Upstream](https://github.com/fractalcells/ansible-iocage/pulls) is too late
-with accepting PRs. No patches were accepted since September 2021. Therefor, the
-development is not submitted to the upstream anymore. Use the current branch
+with accepting PRs. No patches were accepted since September 2021. Therefore,
+the development is not submitted to the upstream anymore. Use the current branch
 https://github.com/vbotka/ansible-iocage/tree/current until this problem is
 resolved.
 
