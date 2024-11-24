@@ -1,6 +1,7 @@
 # ansible-iocage
 
 [![license](https://img.shields.io/badge/license-BSD-red.svg)](https://www.freebsd.org/doc/en/articles/bsdl-gpl/article.html)
+[![GitHub tag](https://img.shields.io/github/v/tag/vbotka/ansible-iocage)](https://github.com/vbotka/ansible-iocage/tags)
 
 [iocage](https://github.com/iocage/iocage) module for Ansible.
 
