@@ -115,7 +115,7 @@ shell> ansible-playbook playbook.yml
 See *test/tasks/debug.yml* and display the *iocage* lists. Fit
 *my_hosts* to your needs
 
-```bash
+```sh
 shell> ansible-playbook iocage_test.yml -t debug -e my_hosts=test_18 \
                                                  -e debug=true \
                                                  -e debug_iocage_lists=true
@@ -271,7 +271,7 @@ line in the file. Update these file directly if you want to.
 The play should be idempotent. You're encouraged to fit the *vars* and
 *templates* to your needs and run
 
-```bash
+```sh
 shell> ansible-playbook configure.yml
 ```
 
@@ -283,7 +283,7 @@ new tests.
 
 Create inventory. For example,
 
-```bash
+```sh
 shell> cat hosts
 test_18
 test_23
@@ -307,7 +307,7 @@ ansible_python_interpreter=/usr/local/bin/python3.9
 
 Create *group_vars* and fit the variables to your needs. For example,
 
-```bash
+```sh
 shell> cat group_vars/all/iocage_test_defaults.yml
 python_required: '3.11'
 release: 14.0-RELEASE
@@ -333,9 +333,9 @@ cmd: /bin/ls -la /root
 properties:
   vnet: 'on'
   defaultrouter: 10.1.0.10
-  ip4_addr: "vnet0|10.1.0.199/24"
-
+  ip4_addr: "vnet0|10.1.0.198/24"
 ```
+
 ```yaml
 shell> cat host_vars/test_23/iocage_test.yml
 release: 14.1-RELEASE
@@ -343,11 +343,11 @@ python_required: 3.11
 cmd: /bin/ls -la /root
 properties:
   vnet: 'off'
-  ip4_addr: "em0|10.1.0.198/24"
+  ip4_addr: "em0|10.1.0.199/24"
 ```
 Take a look at the variables. For example,
 
-```bash
+```sh
 shell> ansible-playbook iocage_test.yml -t debug -e debug=true -e my_hosts=test_23
   ...
 ok: [test_23] =>
