@@ -93,7 +93,6 @@ shell> cat playbook.yml
 gives
 
 ```yaml
-
 shell> ansible-playbook playbook.yml
   ...
   msg: |-
@@ -122,122 +121,122 @@ shell> ansible-playbook iocage_test.yml -t debug -e my_hosts=test_18 \
 ```
 
 
-## Use-cases
+### Use-cases
 
 * Fetch 14.1-RELEASE
 
 ```yaml
-iocage: state=fetched release=14.1-RELEASE
+- iocage: state=fetched release=14.1-RELEASE
 ```
 
 * Fetch host's RELEASE
 
 ```yaml
-iocage: state=fetched
+- iocage: state=fetched
 ```
 
 * Fetch the base component of host's RELEASE only
 
 ```yaml
-iocage: state=fetched components=base.txz
+- iocage: state=fetched components=base.txz
 ```
 
 * Fetch host's RELEASE, limited to base and doc components
 
 ```yaml
-iocage: state=fetched components=base.txz,doc.txz
+- iocage: state=fetched components=base.txz,doc.txz
 ```
 
 * Create basejail
 
 ```yaml
-iocage: state=basejail name=foo release=14.1-RELEASE
+- iocage: state=basejail name=foo release=14.1-RELEASE
 ```
 
 * Create template
 
 ```yaml
-iocage:
-  state: template
-  name: mytemplate
-  properties:
-    vnet: 'on'
-    defaultrouter: 10.1.0.10
-    ip4_addr: "vnet0|10.1.0.199/24"
-    resolver: "nameserver 127.0.0.1"
+- iocage:
+    state: template
+    name: mytemplate
+    properties:
+      vnet: 'on'
+      defaultrouter: 10.1.0.10
+      ip4_addr: "vnet0|10.1.0.199/24"
+      resolver: "nameserver 127.0.0.1"
 ```
 
 * Clone existing jail
 
 ```yaml
-iocage:
-  state: present
-  name: foo
-  clone_from: mytemplate
-  pkglist: /path/to/pkglist.json
-  properties:
-    vnet: 'on'
-    defaultrouter: 10.1.0.10
-    ip4_addr: "vnet0|10.1.0.199/24"
-    boot: "on"
-    allow_sysvipc: 1
-    host_hostname: 'myjail.my.domain'
+- iocage:
+    state: present
+    name: foo
+    clone_from: mytemplate
+    pkglist: /path/to/pkglist.json
+    properties:
+      vnet: 'on'
+      defaultrouter: 10.1.0.10
+      ip4_addr: "vnet0|10.1.0.199/24"
+      boot: "on"
+      allow_sysvipc: 1
+      host_hostname: 'myjail.my.domain'
 ```
 
 * Create jail (without cloning)
 
 ```yaml
-iocage:
-  state: present
-  name: foo
-  pkglist: /path/to/pkglist.json
-  properties:
-    vnet: 'on'
-    defaultrouter: 10.1.0.10
-    ip4_addr: "vnet0|10.1.0.199/24"
-    boot: 'on'
-    allow_sysvipc: 1
-    host_hostname: 'myjail.my.domain'
+- iocage:
+    state: present
+    name: foo
+    pkglist: /path/to/pkglist.json
+    properties:
+      vnet: 'on'
+      defaultrouter: 10.1.0.10
+      ip4_addr: "vnet0|10.1.0.199/24"
+      boot: 'on'
+      allow_sysvipc: 1
+      host_hostname: 'myjail.my.domain'
 ```
 
 * Ensure a jail is started
 
 ```yaml
-iocage: state=started name=foo
+- iocage: state=started name=foo
 ```
 
 * Ensure a jail is stopped
 
 ```yaml
-iocage: state=stopped name=foo
+- iocage: state=stopped name=foo
 ```
 
 * Restart an existing jail
 
 ```yaml
-iocage: state=restarted name=foo
+- iocage: state=restarted name=foo
 ```
 
 * Execute the command *cmd* in running jail *myjail* as user *root*
 
 ```yaml
-iocage: state=exec name=foo user=root cmd="service sshd start"
+- iocage: state=exec name=foo user=root cmd="service sshd start"
 ```
 
 * Destroy a jail
 
 ```yaml
-iocage: state=absent name=foo
+- iocage: state=absent name=foo
 ```
 
 * Set attributes on a jail
 
 ```yaml
-iocage:
-  state: set
-  name: foo
-  properties:
-    template: 'yes'
+- iocage:
+    state: set
+    name: foo
+    properties:
+      template: 'yes'
 ```
 
 
@@ -419,7 +418,7 @@ Run playbook *configure.yml*, create the group
 ```sh
 shell> ansible-playbook configure.yml -e my_groups=group_present_absent_restart \
                                       -t create_groups,create_iocage_test
-...
+  ...
 TASK [Create group files in directory tasks] *************************************************
 ok: [localhost] => (item=group_present_absent_restart)
 
