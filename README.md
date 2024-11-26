@@ -283,7 +283,7 @@ new tests.
 
 Create inventory. For example,
 
-```sh
+```ini
 shell> cat hosts
 test_18
 test_23
@@ -307,7 +307,7 @@ ansible_python_interpreter=/usr/local/bin/python3.9
 
 Create *group_vars* and fit the variables to your needs. For example,
 
-```sh
+```yaml
 shell> cat group_vars/all/iocage_test_defaults.yml
 python_required: '3.11'
 release: 14.0-RELEASE
@@ -347,7 +347,7 @@ properties:
 ```
 Take a look at the variables. For example,
 
-```sh
+```yaml
 shell> ansible-playbook iocage_test.yml -t debug -e debug=true -e my_hosts=test_23
   ...
 ok: [test_23] =>
