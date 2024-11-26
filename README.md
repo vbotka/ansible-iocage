@@ -106,10 +106,10 @@ shell> ansible-playbook playbook.yml
 
     iocage_jails:
       - test_jail
-	  - 81c26e24
-	  - ebeb44d9
+      - 81c26e24
+      - ebeb44d9
 
-	iocage_plugins: []
+    iocage_plugins: []
 ```
 
 See *test/tasks/debug.yml* and display the *iocage* lists. Fit
@@ -162,8 +162,8 @@ iocage:
   name: mytemplate
   properties:
     vnet: 'on'
-	defaultrouter: 10.1.0.10
-	ip4_addr: "vnet0|10.1.0.199/24"
+    defaultrouter: 10.1.0.10
+    ip4_addr: "vnet0|10.1.0.199/24"
     resolver: "nameserver 127.0.0.1"
 ```
 
@@ -177,8 +177,8 @@ iocage:
   pkglist: /path/to/pkglist.json
   properties:
     vnet: 'on'
-	defaultrouter: 10.1.0.10
-	ip4_addr: "vnet0|10.1.0.199/24"
+    defaultrouter: 10.1.0.10
+    ip4_addr: "vnet0|10.1.0.199/24"
     boot: "on"
     allow_sysvipc: 1
     host_hostname: 'myjail.my.domain'
@@ -193,8 +193,8 @@ iocage:
   pkglist: /path/to/pkglist.json
   properties:
     vnet: 'on'
-	defaultrouter: 10.1.0.10
-	ip4_addr: "vnet0|10.1.0.199/24"
+    defaultrouter: 10.1.0.10
+    ip4_addr: "vnet0|10.1.0.199/24"
     boot: 'on'
     allow_sysvipc: 1
     host_hostname: 'myjail.my.domain'
