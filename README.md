@@ -49,7 +49,7 @@ DEFAULT_MODULE_PATH(default) = ['/home/admin/.ansible/plugins/modules', '/usr/sh
 ```
 
 If you want to use the module
-[for selected playbooks or a single role](https://docs.ansible.com/ansible/latest/dev_guide/developing_locally.html#adding-standalone-local-modules-for-selected-playbooks-or-a-single-role).
+[for selected playbooks or a single role](https://docs.ansible.com/ansible/latest/dev_guide/developing_locally.html#adding-standalone-local-modules-for-selected-playbooks-or-a-single-role)
 put it into the directory *library*. This is how the module is used by
 the playbook *iocage_test.yml* in the directory *test*.
 
@@ -118,7 +118,7 @@ See *test/tasks/debug.yml* and display the *iocage* lists. Fit
 ```bash
 shell> ansible-playbook iocage_test.yml -t debug -e my_hosts=test_18 \
                                                  -e debug=true \
-												 -e debug_iocage_lists=true
+                                                 -e debug_iocage_lists=true
 ```
 
 
@@ -126,31 +126,31 @@ shell> ansible-playbook iocage_test.yml -t debug -e my_hosts=test_18 \
 
 * Fetch 14.1-RELEASE
 
-```
+```yaml
 iocage: state=fetched release=14.1-RELEASE
 ```
 
 * Fetch host's RELEASE
 
-```
+```yaml
 iocage: state=fetched
 ```
 
 * Fetch the base component of host's RELEASE only
 
-```
+```yaml
 iocage: state=fetched components=base.txz
 ```
 
 * Fetch host's RELEASE, limited to base and doc components
 
-```
+```yaml
 iocage: state=fetched components=base.txz,doc.txz
 ```
 
 * Create basejail
 
-```
+```yaml
 iocage: state=basejail name=foo release=14.1-RELEASE
 ```
 
@@ -200,37 +200,37 @@ iocage:
     host_hostname: 'myjail.my.domain'
 ```
 
-* Ensure jail is started
+* Ensure a jail is started
 
-```
+```yaml
 iocage: state=started name=foo
 ```
 
-* Ensure jail is stopped
+* Ensure a jail is stopped
 
-```
+```yaml
 iocage: state=stopped name=foo
 ```
 
-* Restart existing jail
+* Restart an existing jail
 
-```
+```yaml
 iocage: state=restarted name=foo
 ```
 
-* Execute command *cmd* in running jail *myjail* as user *root*
+* Execute the command *cmd* in running jail *myjail* as user *root*
 
-```
+```yaml
 iocage: state=exec name=foo user=root cmd="service sshd start"
 ```
 
-* Destroy jail
+* Destroy a jail
 
-```
+```yaml
 iocage: state=absent name=foo
 ```
 
-* Set attributes on jail
+* Set attributes on a jail
 
 ```yaml
 iocage:
@@ -247,6 +247,9 @@ The project comes with a set of tests stored in the directory
 *test*. It is expected that
 [iocage](https://man.freebsd.org/cgi/man.cgi?iocage) has already been
 installed and activated.
+
+See the Ansible role
+[vbotka.freebsd_iocage](https://galaxy.ansible.com/ui/standalone/roles/vbotka/freebsd_iocage/)
 
 
 ### Configure tests
@@ -340,7 +343,7 @@ python_required: 3.11
 cmd: /bin/ls -la /root
 properties:
   vnet: 'off'
-  ip4_addr: "em0|10.1.0.199/24"
+  ip4_addr: "em0|10.1.0.198/24"
 ```
 Take a look at the variables. For example,
 
@@ -373,12 +376,13 @@ stats at hosts *test_18* and *test_23*
 ```sh
 shell> ANSIBLE_SHOW_CUSTOM_STATS=true ansible-playbook iocage_test.yml \
                                       -e my_hosts=test_18,test_23 \
-									  --skip-tags group_all
+                                      --skip-tags group_all
 ```
 
 This should display a report similar to this one
 
 ```sh
+  ...
 PLAY RECAP ***********************************************************************************
 test_18: ok=358  changed=41   unreachable=0    failed=0    skipped=158  rescued=11   ignored=0
 test_23: ok=361  changed=42   unreachable=0    failed=0    skipped=157  rescued=10   ignored=0
@@ -440,12 +444,13 @@ Run the tests and display custom stats
 ```sh
 shell> ANSIBLE_SHOW_CUSTOM_STATS=true ansible-playbook iocage_test.yml \
                                       -e @extra_vars/test_31-debug-n2.yml \
-									  -t group_present_absent_restart
+                                      -t group_present_absent_restart
 ```
 
 This should display a report similar to this abridged one
 
 ```yaml
+  ...
 PLAY RECAP ***********************************************************************************
 test_18: ok=20   changed=2    unreachable=0    failed=0    skipped=2    rescued=1    ignored=0
 test_23: ok=20   changed=2    unreachable=0    failed=0    skipped=2    rescued=1    ignored=0
@@ -460,15 +465,14 @@ test_23:   a1: Nov 26 18:29:44  a2: Nov 26 18:30:39  ok: 3
 
 There are more sources of the tests' variables in this framework
 
-* Hard-coded variables in the test files and group files. If you want to
-  customize them change the data in *vars/* and run the playbook
-  *configure.yml*. You can also add you own tests and group files preferably in
-  the form of the data in *vars/* and *templates/*. Add also templates if
-  needed.
+* The hard-coded variables in the test files and group files. If you want to
+  customize them, change the data in *vars/* and run the playbook
+  *configure.yml*. You can also add your own tests and group files preferably in
+  the form of the data in *vars/* and *templates/*.
 
 * The variables in *group_vars* and *host_vars*
 
-* The variables in the playbook *iocage_test.yml*. If you want to customize them
+* The variables in the playbook *iocage_test.yml*. If you want to customize them,
   change the template *iocage_test.yml.j2* and run the playbook *configure.yml*.
 
 * The extra vars on the command line. See the directory *extra_vars/*

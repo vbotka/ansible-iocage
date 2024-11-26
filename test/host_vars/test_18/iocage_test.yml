@@ -4,4 +4,4 @@ cmd: /bin/ls -la /root
 properties:
   vnet: 'on'
   defaultrouter: 10.1.0.10
-  ip4_addr: "vnet0|10.1.0.199/24"
+  ip4_addr: "vnet0|10.1.0.198/24"
