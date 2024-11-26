@@ -381,7 +381,7 @@ shell> ANSIBLE_SHOW_CUSTOM_STATS=true ansible-playbook iocage_test.yml \
 
 This should display a report similar to this one
 
-```sh
+```yaml
   ...
 PLAY RECAP ***********************************************************************************
 test_18: ok=358  changed=41   unreachable=0    failed=0    skipped=158  rescued=11   ignored=0
