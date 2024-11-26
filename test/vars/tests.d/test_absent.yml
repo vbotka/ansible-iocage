@@ -1,16 +1,18 @@
 ---
 test_absent:
   template: command
-  label: 'test_absent: Check if jail {{ lbr }} jname {{ rbr }} can be destroyed'
+  label: "test_absent: Check if jail {{ lbr }} jname {{ rbr }} can be destroyed"
   iocage:
     state: absent
-    name: '{{ lbr }} jname {{ rbr }}'
+    name: "{{ lbr }} jname {{ rbr }}"
   debug:
     - var: result.msg
   assert:
-    - '_msg1 == result.msg or _msg2 in result.msg or _msg3 == result.msg'
-  msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }} or {{ lbr }} _msg2 {{ rbr }}'
+    - "_msg1 == result.msg or _msg2 in result.msg or _msg3 == result.msg"
+  msg_err: "[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }} or {{ lbr }} _msg2 {{ rbr }}"
   vars:
     _msg1: "\"'{{ lbr }} jname {{ rbr }}' already destroyed.\""
     _msg2: "\"'{{ lbr }} jname {{ rbr }}' was destroyed.\""
     _msg3: "\"'{{ lbr }} jname {{ rbr }}' would be destroyed.\""
+
+# EOF

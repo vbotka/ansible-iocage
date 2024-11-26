@@ -1,6 +1,8 @@
 .*~
 *~
 .*.sw*
+__init__.py
+__pycache__
 collections
 hosts
 ansible.cfg

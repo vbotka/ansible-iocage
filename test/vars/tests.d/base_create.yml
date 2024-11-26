@@ -5,13 +5,15 @@ base_create:
   iocage:
     state: basejail
     name: '{{ lbr }} basejail {{ rbr }}'
-    release: '{{ lbr }} my_release|d(omit) {{ rbr }}'
+    release: '{{ lbr }} release | d(omit) {{ rbr }}'
   debug:
     - var: result.msg
   assert:
     - '_msg1 in result.msg or _msg2 in result.msg or _msg3 in result.msg'
   msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }} or {{ lbr }} _msg2 {{ rbr }} or {{ lbr }} _msg3 {{ rbr }}'
   vars:
-    _msg1: "\"Jail already exists.\""
-    _msg2: "\"Jail was created.\""
-    _msg3: "\"Jail would be created.\""
+    _msg1: '"Jail already exists."'
+    _msg2: '"Jail was created."'
+    _msg3: '"Jail would be created."'
+
+# EOF

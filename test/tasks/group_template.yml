@@ -12,3 +12,5 @@
 - ansible.builtin.import_tasks: tasks/template_start_crash.yml
   vars:
     _test_name: template_start_crash
+
+# EOF

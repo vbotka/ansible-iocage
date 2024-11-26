@@ -10,41 +10,57 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- block:
+- name: "test_start_rc: Check if jails boot=on can be started"
+  block:
+
     - name: " >>> TEST START: test_start_rc: Check if jails boot=on can be started"
-      iocage:
-        {
-          "args": "--rc",
-          "state": "started"
-        }
       register: result
+      iocage:
+        args: --rc
+        state: started
+
     - ansible.builtin.set_fact:
         _crash: false
+
     - ansible.builtin.debug:
         var: result
-      when: debug2|bool
+      when: debug2 | bool
     - ansible.builtin.debug:
         var: result.msg
-      when: debug|bool
+      when: debug | bool
+
   rescue:
+
     - ansible.builtin.debug:
         var: ansible_failed_result
-      when: debug|bool
+      when: debug | bool
+
     - ansible.builtin.import_tasks: custom_stats_crash.yml
 
-- block:
+- name: No crash
+  when: not _crash
+  vars:
+    _msg1: "Jail(s) started."
+    _msg2: "Jail(s) would start."
+  block:
+
     - ansible.builtin.assert:
         fail_msg: "[ERR] {{ _test_name }}: Failed: {{ result.msg }}"
         success_msg: "[OK]  {{ _test_name }}: Passed: {{ result.msg }}"
         that:
           - _msg1 in result.msg or _msg2 == result.msg
+
     - ansible.builtin.import_tasks: custom_stats_pass.yml
+
   rescue:
+
     - ansible.builtin.debug:
-        msg: "[ERR] {{ _test_name }} failed. Missing: {{ _msg1 }} or {{ _msg2 }}"
-      when: debug|bool
+        msg: |
+          [ERR] {{ _test_name }} failed. Missing: {{ _msg1 }} or {{ _msg2 }}
+          {{ ansible_failed_task }}
+          {{ ansible_failed_result }}
+      when: debug | bool
+
     - ansible.builtin.import_tasks: custom_stats_fail.yml
-  vars:
-    _msg1: "Jail(s) started."
-    _msg2: "Jail(s) would start."
-  when: not _crash
+
+# EOF

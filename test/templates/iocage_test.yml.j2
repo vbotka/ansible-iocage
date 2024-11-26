@@ -2,34 +2,38 @@
 ---
 # {{ ansible_managed }}
 
-- hosts: "{{ lbr }} my_hosts|default('localhost') {{ rbr }}"
-  strategy: "{{ lbr }} my_strategy|default('linear') {{ rbr }}"
+- name: Test iocage
+  hosts: "{{ lbr }} my_hosts | d('localhost') {{ rbr }}"
+  strategy: "{{ lbr }} my_strategy | d('linear') {{ rbr }}"
   gather_facts: true
   become: true
-  become_method: sudo
+  become_method: ansible.builtin.sudo
+  environment: "{{ lbr }} iocage_environment {{ rbr }}"
 
   vars:
 
-    debug: "{{ lbr }} my_debug|d(false) {{ rbr }}"
-    debug2: "{{ lbr }} my_debug2|d(false) {{ rbr }}"
-    python_required: "{{ lbr }} my_python_required|d('36') {{ rbr }}"
-
-    jname: "{{ lbr }} my_jname|d('test_jail') {{ rbr }}"
-    properties: "{{ lbr }} my_properties|d({}) {{ rbr }}"
-
-    label_default: "{{ lbr }} release|d('13.0-RELEASE')|
-                               regex_replace('[\\W]', '_') {{ rbr }}"
-    label: "{{ lbr }} my_label|d(label_default) {{ rbr }}"
-    basejail_default: "test_basejail_{{ lbr }} label {{ rbr }}"
-    basejail: "{{ lbr }} my_basejail|d(basejail_default) {{ rbr }}"
+    debug: false
+    debug2: false
+    debug_iocage_lists: false
+    sanity: false
 
   tasks:
 
+    - ansible.builtin.import_tasks: tasks/debug.yml
+      when: debug | bool
+      tags: debug
+
+    - ansible.builtin.import_tasks: tasks/sanity.yml
+      when: sanity | bool
+      tags: sanity
+
     - ansible.builtin.import_tasks: tasks/custom_stats_start.yml
       tags: always
-{% for i in iocage_group_db.keys()|sort %}
+{% for i in iocage_group_db.keys() | sort %}
     - ansible.builtin.import_tasks: tasks/{{ i }}.yml
       tags: {{ i }}
 {% endfor %}
     - ansible.builtin.import_tasks: tasks/custom_stats_end.yml
       tags: always
+
+# EOF

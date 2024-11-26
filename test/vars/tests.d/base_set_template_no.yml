@@ -15,3 +15,5 @@ base_set_template_no:
   msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }}'
   vars:
     _msg1: "\"already set in jail '{{ lbr }} basejail {{ rbr }}'\""
+
+# EOF

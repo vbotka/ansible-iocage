@@ -10,41 +10,57 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- block:
+- name: "base_exists: Check if {{ basejail }} exists"
+  block:
+
     - name: " >>> TEST START: base_exists: Check if {{ basejail }} exists"
-      iocage:
-        {
-          "name": "{{ basejail }}",
-          "state": "facts"
-        }
       register: result
+      iocage:
+        name: '{{ basejail }}'
+        state: facts
+
     - ansible.builtin.set_fact:
         _crash: false
+
     - ansible.builtin.debug:
         var: result
-      when: debug2|bool
+      when: debug2 | bool
     - ansible.builtin.debug:
         var: result.msg
-      when: debug|bool
+      when: debug | bool
     - ansible.builtin.debug:
-        var: iocage_templates.keys()|list
-      when: debug|bool
+        var: iocage_jails.keys() | list
+      when: debug | bool
+
   rescue:
+
     - ansible.builtin.debug:
         var: ansible_failed_result
-      when: debug|bool
+      when: debug | bool
+
     - ansible.builtin.import_tasks: custom_stats_crash.yml
 
-- block:
+- name: No crash
+  when: not _crash
+  block:
+
     - ansible.builtin.assert:
         fail_msg: "[ERR] {{ _test_name }}: Failed: {{ result.msg }}"
         success_msg: "[OK]  {{ _test_name }}: Passed: {{ result.msg }}"
         that:
-          - basejail in iocage_templates
+          - basejail in iocage_jails
+
     - ansible.builtin.import_tasks: custom_stats_pass.yml
+
   rescue:
+
     - ansible.builtin.debug:
-        msg: "[ERR] {{ _test_name }} failed. Template {{ basejail }} not among iocage_templates"
-      when: debug|bool
+        msg: |
+          [ERR] {{ _test_name }} failed. Jail {{ basejail }} not among iocage_jails
+          {{ ansible_failed_task }}
+          {{ ansible_failed_result }}
+      when: debug | bool
+
     - ansible.builtin.import_tasks: custom_stats_fail.yml
-  when: not _crash
+
+# EOF

@@ -13,3 +13,5 @@ test_restart:
   vars:
     _msg1: "\"Jail '{{ lbr }} jname {{ rbr }}' would restart.\""
     _msg2: "\"Jail '{{ lbr }} jname {{ rbr }}' restarted.\""
+
+# EOF

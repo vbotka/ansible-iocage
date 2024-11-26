@@ -24,3 +24,5 @@
 - ansible.builtin.import_tasks: tasks/test_absent.yml
   vars:
     _test_name: test_absent
+
+# EOF

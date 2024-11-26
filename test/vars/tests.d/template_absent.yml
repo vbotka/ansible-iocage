@@ -14,3 +14,5 @@ template_absent:
     _msg1: "\"'{{ lbr }} basejail {{ rbr }}' already destroyed.\""
     _msg2: "\"'{{ lbr }} basejail {{ rbr }}' was destroyed.\""
     _msg3: "\"'{{ lbr }} basejail {{ rbr }}' would be destroyed.\""
+
+# EOF

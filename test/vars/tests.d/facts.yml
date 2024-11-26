@@ -5,13 +5,15 @@ facts:
   debug:
     - msg: |-
         iocage_releases = {{ lbr }} ansible_facts.iocage_releases {{ rbr }}
-        iocage_templates.keys() = {{ lbr }} ansible_facts.iocage_templates.keys()|list {{ rbr }}
-        iocage_jails.keys() = {{ lbr }} ansible_facts.iocage_jails.keys()|list {{ rbr }}
-        iocage_plugins.keys() = {{ lbr }} ansible_facts.iocage_plugins.keys()|list {{ rbr }}
+        iocage_templates.keys() = {{ lbr }} ansible_facts.iocage_templates.keys() | list {{ rbr }}
+        iocage_jails.keys() = {{ lbr }} ansible_facts.iocage_jails.keys() | list {{ rbr }}
+        iocage_plugins.keys() = {{ lbr }} ansible_facts.iocage_plugins.keys() | list {{ rbr }}
         iocage_states = {{ lbr }} ansible_facts.iocage_states {{ rbr }}
   assert:
     - 'not result.changed'
     - 'not result.failed'
-    - 'result.stderr_lines|length == 0'
-    - 'result.stdout_lines|length == 0'
+    - 'result.stderr_lines | length == 0'
+    - 'result.stdout_lines | length == 0'
   msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed.'
+
+# EOF

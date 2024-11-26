@@ -1,7 +1,10 @@
 ---
 - name: "set_jname: Restore jname from backup"
-  set_fact:
-    jname: "{{_jname_backup }}"
-- debug:
+  ansible.builtin.set_fact:
+    jname: "{{ _jname_backup }}"
+
+- ansible.builtin.debug:
     var: jname
-  when: debug|bool
+  when: debug | bool
+
+# EOF

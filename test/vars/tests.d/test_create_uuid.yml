@@ -1,20 +1,26 @@
 ---
 test_create_uuid:
   template: command
-  label: 'test_create_uuid: Create jail from template'
+  label: "test_create_uuid: Create jail from template."
   iocage:
+    clone_from: "{{ lbr }} basejail | d(omit) {{ rbr }}"
     state: present
-    clone_from: '{{ lbr }} basejail|default(omit) {{ rbr }}'
+    release: "{{ lbr }} release {{ rbr }}"
   debug:
     - var: result.msg
     - var: result.uuid
     - var: result.uuid_short
   debug2:
     - var: iocage_jails[result.uuid_short]
+  set_fact:
+    - 'iocage_jail_uuid: "{{ lbr }} result.uuid {{ rbr }}"'
+    - 'iocage_jail_uuid_short: "{{ lbr }} result.uuid_short {{ rbr }}"'
   assert:
-    - '_msg1 in result.msg or _msg2 in result.msg or _msg3 in result.msg'
-  msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }} or {{ lbr }} _msg2 {{ rbr }} or {{ lbr }} _msg3 {{ rbr }}'
+    - _msg1 in result.msg or _msg2 in result.msg or _msg3 in result.msg
+  msg_err: "[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }} or {{ lbr }} _msg2 {{ rbr }} or {{ lbr }} _msg3 {{ rbr }}"
   vars:
-    _msg1: "\"Jail already exists.\""
-    _msg2: "\"Jail was created.\""
-    _msg3: "\"Jail would be created.\""
+    _msg1: Jail already exists.
+    _msg2: Jail was created.
+    _msg3: Jail would be created.
+
+# EOF

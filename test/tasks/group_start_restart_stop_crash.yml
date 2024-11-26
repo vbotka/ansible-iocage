@@ -12,3 +12,5 @@
 - ansible.builtin.import_tasks: tasks/test_stop_crash.yml
   vars:
     _test_name: test_stop_crash
+
+# EOF

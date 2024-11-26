@@ -6,7 +6,7 @@ test_exec:
     state: exec
     name: '{{ lbr }} jname {{ rbr }}'
     cmd: '{{ lbr }} cmd {{ rbr }}'
-    user: '{{ lbr }} user|d("root") {{ rbr }}'
+    user: '{{ lbr }} user | d("root") {{ rbr }}'
   debug:
     - var: result.msg
   assert:
@@ -15,3 +15,5 @@ test_exec:
   vars:
     _msg1: "\"Jail '{{ lbr }} jname {{ rbr }}' executed command\""
     _msg2: "\"Jail '{{ lbr }} jname {{ rbr }}' would execute command\""
+
+# EOF
