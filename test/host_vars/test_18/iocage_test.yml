@@ -1,0 +1,7 @@
+release: 13.4-RELEASE
+python_required: 3.9
+cmd: /bin/ls -la /root
+properties:
+  vnet: 'on'
+  defaultrouter: 10.1.0.10
+  ip4_addr: "vnet0|10.1.0.199/24"

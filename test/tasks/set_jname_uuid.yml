@@ -1,10 +1,14 @@
 ---
 - name: "set_jname: Backup jname"
-  set_fact:
+  ansible.builtin.set_fact:
     _jname_backup: "{{ jname }}"
+
 - name: "set_jname: Set jname from previous result.uuid_short"
-  set_fact:
+  ansible.builtin.set_fact:
     jname: "{{ result.uuid_short }}"
-- debug:
+
+- ansible.builtin.debug:
     var: jname
-  when: debug|bool
+  when: debug | bool
+
+# EOF

@@ -12,3 +12,5 @@ template_stop:
   msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }}'
   vars:
     _msg1: "\"Jail '{{ lbr }} basejail {{ rbr }}' already stopped.\""
+
+# EOF

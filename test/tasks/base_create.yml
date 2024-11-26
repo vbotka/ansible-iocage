@@ -10,43 +10,59 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- block:
+- name: "base_create: Check if {{ basejail }} can be created"
+  block:
+
     - name: " >>> TEST START: base_create: Check if {{ basejail }} can be created"
-      iocage:
-        {
-          "name": "{{ basejail }}",
-          "release": "{{ my_release|d(omit) }}",
-          "state": "basejail"
-        }
       register: result
+      iocage:
+        name: '{{ basejail }}'
+        release: '{{ release | d(omit) }}'
+        state: basejail
+
     - ansible.builtin.set_fact:
         _crash: false
+
     - ansible.builtin.debug:
         var: result
-      when: debug2|bool
+      when: debug2 | bool
     - ansible.builtin.debug:
         var: result.msg
-      when: debug|bool
+      when: debug | bool
+
   rescue:
+
     - ansible.builtin.debug:
         var: ansible_failed_result
-      when: debug|bool
+      when: debug | bool
+
     - ansible.builtin.import_tasks: custom_stats_crash.yml
 
-- block:
+- name: No crash
+  when: not _crash
+  vars:
+    _msg1: "Jail already exists."
+    _msg2: "Jail was created."
+    _msg3: "Jail would be created."
+  block:
+
     - ansible.builtin.assert:
         fail_msg: "[ERR] {{ _test_name }}: Failed: {{ result.msg }}"
         success_msg: "[OK]  {{ _test_name }}: Passed: {{ result.msg }}"
         that:
           - _msg1 in result.msg or _msg2 in result.msg or _msg3 in result.msg
+
     - ansible.builtin.import_tasks: custom_stats_pass.yml
+
   rescue:
+
     - ansible.builtin.debug:
-        msg: "[ERR] {{ _test_name }} failed. Missing: {{ _msg1 }} or {{ _msg2 }} or {{ _msg3 }}"
-      when: debug|bool
+        msg: |
+          [ERR] {{ _test_name }} failed. Missing: {{ _msg1 }} or {{ _msg2 }} or {{ _msg3 }}
+          {{ ansible_failed_task }}
+          {{ ansible_failed_result }}
+      when: debug | bool
+
     - ansible.builtin.import_tasks: custom_stats_fail.yml
-  vars:
-    _msg1: "Jail already exists."
-    _msg2: "Jail was created."
-    _msg3: "Jail would be created."
-  when: not _crash
+
+# EOF

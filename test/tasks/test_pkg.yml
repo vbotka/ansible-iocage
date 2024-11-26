@@ -10,42 +10,58 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- block:
+- name: "test_pkg: Check if pkg info works in started jail {{ jname }}"
+  block:
+
     - name: " >>> TEST START: test_pkg: Check if pkg info works in started jail {{ jname }}"
-      iocage:
-        {
-          "cmd": "info",
-          "name": "{{ jname }}",
-          "state": "pkg"
-        }
       register: result
+      iocage:
+        cmd: info
+        name: '{{ jname }}'
+        state: pkg
+
     - ansible.builtin.set_fact:
         _crash: false
+
     - ansible.builtin.debug:
         var: result
-      when: debug2|bool
+      when: debug2 | bool
     - ansible.builtin.debug:
         var: result.msg
-      when: debug|bool
+      when: debug | bool
+
   rescue:
+
     - ansible.builtin.debug:
         var: ansible_failed_result
-      when: debug|bool
+      when: debug | bool
+
     - ansible.builtin.import_tasks: custom_stats_crash.yml
 
-- block:
+- name: No crash
+  when: not _crash
+  vars:
+    _msg1: "Jail '{{ jname }}' executed command 'pkg info'"
+    _msg2: "Jail '{{ jname }}' would execute command 'pkg info'"
+  block:
+
     - ansible.builtin.assert:
         fail_msg: "[ERR] {{ _test_name }}: Failed: {{ result.msg }}"
         success_msg: "[OK]  {{ _test_name }}: Passed: {{ result.msg }}"
         that:
           - _msg1 in result.msg or _msg2 in result.msg
+
     - ansible.builtin.import_tasks: custom_stats_pass.yml
+
   rescue:
+
     - ansible.builtin.debug:
-        msg: "[ERR] {{ _test_name }} failed. Missing: {{ _msg1 }} or {{ _msg2 }}"
-      when: debug|bool
+        msg: |
+          [ERR] {{ _test_name }} failed. Missing: {{ _msg1 }} or {{ _msg2 }}
+          {{ ansible_failed_task }}
+          {{ ansible_failed_result }}
+      when: debug | bool
+
     - ansible.builtin.import_tasks: custom_stats_fail.yml
-  vars:
-    _msg1: "Jail '{{ jname }}' executed command 'pkg info'"
-    _msg2: "Jail '{{ jname }}' would execute command 'pkg info'"
-  when: not _crash
+
+# EOF

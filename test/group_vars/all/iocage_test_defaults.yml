@@ -1,0 +1,13 @@
+---
+python_required: '3.11'
+release: 14.0-RELEASE
+
+jname: test_jail
+properties: {}
+iocage_environment:
+  CRYPTOGRAPHY_OPENSSL_NO_LEGACY: '1'
+
+label_default: "{{ release | regex_replace('[\\W]', '_') }}"
+label: "{{ label_default }}"
+basejail_default: "test_basejail_{{ label }}"
+basejail: "{{ basejail_default }}"

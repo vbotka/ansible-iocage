@@ -1,0 +1,11 @@
+---
+my_hosts: test_18
+my_strategy: linear
+
+debug: true
+debug2: false
+cmd: /bin/ls -la /root
+properties:
+  vnet: 'on'
+  defaultrouter: 10.1.0.10
+  ip4_addr: "vnet0|10.1.0.199/24"

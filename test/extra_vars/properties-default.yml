@@ -53,12 +53,12 @@ properties:
   comment: none
   compression: lz4
   compressratio: readonly
-  # coredumpsize: off
+  # coredumpsize: 'off'
   count: 1
-  cpuset: off
-  # cputime: off
-  # datasize: off
-  dedup: off
+  cpuset: 'off'
+  # cputime: 'off'
+  # datasize: 'off'
+  dedup: 'off'
   defaultrouter: auto
   defaultrouter6: auto
   depends: none
@@ -98,50 +98,50 @@ properties:
   localhost_ip: none
   login_flags: -f root
   mac_prefix: 00a098
-  # maxproc: off
-  # memorylocked: off
-  # memoryuse: off
+  # maxproc: 'off'
+  # memorylocked: 'off'
+  # memoryuse: 'off'
   min_dyn_devfs_ruleset: 1000
   mount_devfs: 1
   mount_fdescfs: 1
   mount_linprocfs: 0
   mount_procfs: 0
   mountpoint: readonly
-  # msgqqueued: off
-  # msgqsize: off
+  # msgqqueued: 'off'
+  # msgqsize: 'off'
   nat: 0
   nat_backend: ipfw
   nat_forwards: none
   nat_interface: none
   nat_prefix: 172.16
-  # nmsgq: off
+  # nmsgq: 'off'
   notes: none
-  # nsem: off
-  # nsemop: off
-  # nshm: off
-  # nthr: off
-  # openfiles: off
+  # nsem: 'off'
+  # nsemop: 'off'
+  # nshm: 'off'
+  # nthr: 'off'
+  # openfiles: 'off'
   origin: readonly
   owner: root
-  # pcpu: off
+  # pcpu: 'off'
   plugin_name: none
   plugin_repository: none
   priority: 99
-  #pseudoterminals: off
+  # pseudoterminals: 'off'
   quota: none
-  # readbps: off
-  # readiops: off
+  # readbps: 'off'
+  # readiops: 'off'
   # release: 13.0-RELEASE-p3
   reservation: none
   resolver: /etc/resolv.conf
-  # rlimits: off
+  # rlimits: 'off'
   rtsold: 0
   securelevel: 2
-  # shmsize: off
+  # shmsize: 'off'
   # source_template: test_basejail_13_0_RELEASE
-  # stacksize: off
+  # stacksize: 'off'
   stop_timeout: 35
-  # swapuse: off
+  # swapuse: 'off'
   sync_state: none
   sync_target: none
   sync_tgt_zpool: none
@@ -151,7 +151,7 @@ properties:
   template: 0
   type: jail
   used: readonly
-  # vmemoryuse: off
+  # vmemoryuse: 'off'
   vnet: 0
   vnet0_mac: none
   vnet1_mac: none
@@ -159,6 +159,6 @@ properties:
   vnet3_mac: none
   vnet_default_interface: auto
   vnet_interfaces: none
-  # wallclock: off
-  # writebps: off
-  # writeiops: off
+  # wallclock: 'off'
+  # writebps: 'off'
+  # writeiops: 'off'

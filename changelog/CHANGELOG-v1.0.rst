@@ -5,6 +5,28 @@ vbotka.ansible-iocage 1.0 Release Notes
 .. contents:: Topics
 
 
+1.2.0
+=====
+
+Release Summary
+---------------
+Feature update.
+
+Major Changes
+-------------
+* Add state get.
+* Update documentation.
+* Update tests
+
+Minor Changes
+-------------
+* Update README
+
+Bugfixes
+--------
+* Fix `re.match(r'(\d+|-|None)', _jid)`
+
+
 1.1.2
 =====
 

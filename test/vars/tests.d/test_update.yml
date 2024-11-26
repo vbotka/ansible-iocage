@@ -5,7 +5,8 @@ test_update:
   iocage:
     state: present
     name: '{{ lbr }} jname {{ rbr }}'
-    bupdate: True
+    release: '{{ lbr }} release {{ rbr }}'
+    bupdate: true
   debug:
     - var: result.msg
   assert:
@@ -15,3 +16,5 @@ test_update:
     _msg1: "\"'{{ lbr }} jname {{ rbr }}' is up-to-date.\""
     _msg2: "\"'{{ lbr }} jname {{ rbr }}' was updated\""
     _msg3: "\"'{{ lbr }} jname {{ rbr }}' would be updated.\""
+
+# EOF

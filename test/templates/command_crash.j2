@@ -11,36 +11,52 @@
 - ansible.builtin.set_fact:
     _crash: false
 
-- block:
+- name: "{{ test.label }}"
+  block:
+
     - name: " >>> TEST START: {{ test.label }}"
+      register: result
       iocage:
 {%- if test.iocage is defined %}
-        {{ test.iocage|to_nice_json(indent=2)|indent(width=8) }}
+        {{ test.iocage | to_nice_yaml(indent=2) | indent(width=8) }}
 {%- endif %}
-      register: result
     - ansible.builtin.debug:
         var: result
-      when: debug2|bool
-{%- for i in test.debug|default([]) %}
+      when: debug2 | bool
+
+{%- for i in test.debug | d([]) %}
     - ansible.builtin.debug:
 {%- if i.msg is defined %}
         msg: |-
-          {{ i.msg|indent(width=10) }}
+          {{ i.msg | indent(width=10) }}
 {%- endif %}
 {%- if i.var is defined %}
         var: {{ i.var }}
 {%- endif %}
-      when: debug|bool
+      when: debug | bool
 {%- endfor %}
+
     - ansible.builtin.import_tasks: custom_stats_crash.yml
+
   rescue:
+
     - ansible.builtin.set_fact:
         _crash: true
+
     - ansible.builtin.debug:
         var: ansible_failed_result
-      when: debug|bool
+      when: debug | bool
 
-- block:
+- name: Crash
+  when: _crash
+{%- if test.vars | d({}) | length > 0 %}
+  vars:
+{%- for k,v in (test.vars | d({})).items() %}
+    {{ k }}: {{ v }}
+{%- endfor %}
+{%- endif %}
+  block:
+
     - ansible.builtin.assert:
         fail_msg: "[ERR] {{ lbr }} _test_name {{ rbr }}: Failed: {{ lbr }} ansible_failed_result.msg {{ rbr }}"
         success_msg: "[OK]  {{ lbr }} _test_name {{ rbr }}: Passed: {{ lbr }} ansible_failed_result.msg {{ rbr }}"
@@ -48,16 +64,18 @@
 {%- for i in test.assert %}
           - {{ i }}
 {%- endfor %}
+
     - ansible.builtin.import_tasks: custom_stats_pass.yml
+
   rescue:
+
     - ansible.builtin.debug:
-        msg: "{{ test.msg_err }}"
-      when: debug|bool
+        msg: |
+          {{ test.msg_err }}
+          {{ lbr }} ansible_failed_task {{ rbr }}
+          {{ lbr }} ansible_failed_result {{ rbr }}
+      when: debug | bool
+
     - ansible.builtin.import_tasks: custom_stats_fail.yml
-{%- if test.vars|default({})|length > 0 %}
-  vars:
-{%- for k,v in (test.vars|default({})).items() %}
-    {{ k }}: {{ v }}
-{%- endfor %}
-{%- endif %}
-  when: _crash
+
+# EOF

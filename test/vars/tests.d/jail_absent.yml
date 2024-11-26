@@ -14,3 +14,5 @@ jail_absent:
     _msg1: "\"'{{ lbr }} jname {{ rbr }}' already destroyed.\""
     _msg2: "\"'{{ lbr }} jname {{ rbr }}' was destroyed.\""
     _msg3: "\"'{{ lbr }} jname {{ rbr }}' would be destroyed.\""
+
+# EOF

@@ -4,17 +4,19 @@ fetch:
   label: 'fetch: Fetch release, components and plugin'
   iocage:
     state: fetched
-    bupdate: "{{ lbr }} my_update|d(omit) {{ rbr }}"
-    release: "{{ lbr }} my_release|d(omit) {{ rbr }}"
-    components: "{{ lbr }} my_components|d(omit) {{ rbr }}"
-    plugin: "{{ lbr }} my_plugin|d(omit) {{ rbr }}"
-    args: "{{ lbr }} my_args|d(omit) {{ rbr }}"
+    bupdate: "{{ lbr }} my_update | d(omit) {{ rbr }}"
+    release: "{{ lbr }} release | d(omit) {{ rbr }}"
+    components: "{{ lbr }} my_components | d(omit) {{ rbr }}"
+    plugin: "{{ lbr }} my_plugin | d(omit) {{ rbr }}"
+    args: "{{ lbr }} my_args | d(omit) {{ rbr }}"
   debug:
     - var: result.msg
   assert:
     - '_msg1 in result.msg or _msg2 in result.msg or _msg3 in result.msg'
   msg_err: "[ERR] Fetch failed. Missing: {{ lbr }} _msg1 {{ rbr }} or {{ lbr }} _msg2 {{ rbr }} or {{ lbr }} _msg3 {{ rbr }}"
   vars:
-    _msg1: "\"already fetched\""
-    _msg2: "\"Successfully fetched\""
-    _msg3: "\"Would fetch\""
+    _msg1: '"already fetched"'
+    _msg2: '"Successfully fetched"'
+    _msg3: '"Would fetch"'
+
+# EOF

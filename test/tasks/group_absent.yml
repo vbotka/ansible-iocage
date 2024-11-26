@@ -12,3 +12,5 @@
 - ansible.builtin.import_tasks: tasks/absent_start_crash.yml
   vars:
     _test_name: absent_start_crash
+
+# EOF

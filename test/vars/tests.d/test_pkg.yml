@@ -14,3 +14,5 @@ test_pkg:
   vars:
     _msg1: "\"Jail '{{ lbr }} jname {{ rbr }}' executed command 'pkg info'\""
     _msg2: "\"Jail '{{ lbr }} jname {{ rbr }}' would execute command 'pkg info'\""
+
+# EOF

@@ -1,32 +1,50 @@
 ---
-- block:
+- name: python
+  tags: sanity_python
+  block:
+
     - name: "sanity: Test python required {{ python_required }}"
       ansible.builtin.setup:
         gather_subset: min
-    - ansible.builtin.debug:
-        var: ansible_python.executable
-      when: debug|bool
-    - ansible.builtin.assert:
-        that:
-          - ansible_python.version.major >= python_required.0|int
-          - ansible_python.version.minor >= python_required.1|int
-        fail_msg: "[ERR] {{ _test_name }} failes. Pyhton >= {{ python_required }} is required on the node."
-  tags: sanity_python
 
-- block:
+    - ansible.builtin.debug:
+        var: ansible_python_version
+      when: debug | bool
+
+    - ansible.builtin.assert:
+        that: "ansible_python_version is version(python_required, '>')"
+        success_msg: "[OK]  Pyhton {{ ansible_python_version }} exists on the node."
+        fail_msg: "[ERR] Pyhton >= {{ python_required }} is required on the node."
+
+- name: Test iocage is installed
+  tags: sanity_iocage
+  block:
+
     - name: "sanity: Test iocage is installed"
       ansible.builtin.command:
         cmd: iocage --version
+      changed_when: false
       register: result
+
     - ansible.builtin.debug:
         var: result.stdout
-      when: debug|bool
+      when: debug | bool
+
   rescue:
+
     - ansible.builtin.debug:
         var: ansible_failed_result
-      when: debug|bool
+      when: debug | bool
+
     - ansible.builtin.fail:
-        msg: "[ERR] {{ _test_name }} failes. devel/iocage is required on the node."
-  tags: sanity_iocage
+        msg: |
+          [ERR] iocage is missing.
+          ansible_failed_task: {{ ansible_failed_task }}
+          ansible_failed_result: {{ ansible_failed_result }}
 
 - ansible.builtin.import_tasks: custom_stats_pass.yml
+
+# TODO:
+# * Test no jails are on the node. `iocage start all` might crash.
+
+# EOF

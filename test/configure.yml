@@ -11,60 +11,70 @@
 
     lbr: "{{ '{{' }}"
     rbr: "{{ '}}' }}"
+    backup: false
+    lint: yamllint
 
   tasks:
 
     - name: Create vars
+      tags: [always, create_vars]
       block:
-        - name: Create iocage_test_db and my_tests
+
+        - name: Create iocage_test_db
           ansible.builtin.include_vars:
             dir: vars/tests.d
             name: iocage_test_db
             extensions: ['yaml', 'yml']
             ignore_unknown_extensions: true
-        - ansible.builtin.set_fact:
-            my_tests: "{{ iocage_test_db.keys()|list }}"
+
+        - name: Create my_tests when udefined
           when: my_tests is undefined
-        - name: Create iocage_group_db and my_groups
+          ansible.builtin.set_fact:
+            my_tests: "{{ iocage_test_db.keys() | list }}"
+
+        - name: Create iocage_group_db
           ansible.builtin.include_vars:
             dir: vars/groups.d
             name: iocage_group_db
             extensions: ['yaml', 'yml']
             ignore_unknown_extensions: true
-        - ansible.builtin.set_fact:
-            my_groups: "{{ iocage_group_db.keys()|list }}"
+
+        - name: Create my_groups when udefined
           when: my_groups is undefined
-      tags: [always, create_vars]
+          ansible.builtin.set_fact:
+            my_groups: "{{ iocage_group_db.keys() | list }}"
 
     - name: Create test files in directory tasks
-      ansible.builtin.template:
-        src: '{{ test.template }}.j2'
-        dest: '{{ playbook_dir }}/tasks/{{ item }}.yml'
-        mode: '0664'
-        backup: true
-        validate: ansible-lint %s
-      loop: '{{ [my_tests]|flatten }}'
       vars:
-        test: '{{ iocage_test_db[item] }}'
+        test: "{{ iocage_test_db[item] }}"
       tags: create_tests
+      ansible.builtin.template:
+        src: "{{ test.template }}.j2"
+        dest: "{{ playbook_dir }}/tasks/{{ item }}.yml"
+        mode: '0664'
+        backup: "{{ backup }}"
+        # validate: "{{ lint }} %s"
+      loop: "{{ [my_tests] | flatten }}"
 
     - name: Create group files in directory tasks
-      ansible.builtin.template:
-        src: '{{ group.template }}.j2'
-        dest: '{{ playbook_dir }}/tasks/{{ item }}.yml'
-        mode: '0664'
-        backup: true
-        validate: ansible-lint %s
-      loop: '{{ [my_groups]|flatten }}'
       vars:
-        group: '{{ iocage_group_db[item] }}'
+        group: "{{ iocage_group_db[item] }}"
       tags: create_groups
+      ansible.builtin.template:
+        src: "{{ group.template }}.j2"
+        dest: "{{ playbook_dir }}/tasks/{{ item }}.yml"
+        mode: '0664'
+        backup: "{{ backup }}"
+        # validate: "{{ lint }} %s"
+      loop: "{{ [my_groups] | flatten }}"
 
     - name: Create playbook iocage_test.yml
+      tags: create_iocage_test
       ansible.builtin.template:
         src: iocage_test.yml.j2
         dest: iocage_test.yml
         mode: '0664'
-        backup: true
-        validate: ansible-lint %s
-      tags: create_iocage_test
+        backup: "{{ backup }}"
+        # validate: "{{ lint }} %s"
+
+# EOF

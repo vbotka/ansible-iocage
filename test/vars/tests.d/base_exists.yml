@@ -7,7 +7,9 @@ base_exists:
     name: '{{ lbr }} basejail {{ rbr }}'
   debug:
     - var: result.msg
-    - var: iocage_templates.keys()|list
+    - var: iocage_jails.keys() | list
   assert:
-    - 'basejail in iocage_templates'
-  msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Template {{ lbr }} basejail {{ rbr }} not among iocage_templates'
+    - 'basejail in iocage_jails'
+  msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Jail {{ lbr }} basejail {{ rbr }} not among iocage_jails'
+
+# EOF
