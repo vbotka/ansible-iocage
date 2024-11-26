@@ -541,7 +541,7 @@ def jail_start(module, iocage_path, name=None, args=""):
         rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
                                           errors='surrogate_or_strict')
         if rc != 0:
-            _command_fail(module, f"Jail(s) not started.", cmd, rc, out, err)
+            _command_fail(module, "Jail(s) not started.", cmd, rc, out, err)
         if name is not None:
             if name == "ALL":
                 _msg = f"All jails started.\n{cmd}\n{out}"
@@ -592,7 +592,7 @@ def jail_stop(module, iocage_path, name=None, args=""):
         rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
                                           errors='surrogate_or_strict')
         if rc != 0:
-            _command_fail(module, f"Jail(s) not stopped.", cmd, rc, out, err)
+            _command_fail(module, "Jail(s) not stopped.", cmd, rc, out, err)
         if name is not None:
             if name == 'ALL':
                 _msg = f"All jails stopped.\n{cmd}\n{out}"
@@ -634,7 +634,7 @@ def jail_restart(module, iocage_path, name=None, args=""):
         rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
                                           errors='surrogate_or_strict')
         if rc != 0:
-            _command_fail(module, f"Jail(s) not restarted.", cmd, rc, out, err)
+            _command_fail(module, "Jail(s) not restarted.", cmd, rc, out, err)
         if name == 'ALL':
             _msg = f"ALL jails restarted.\n{cmd}\n{out}"
         else:
@@ -675,7 +675,7 @@ def release_fetch(module, iocage_path, bupdate=False, release=None, components=N
         rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
                                           errors='surrogate_or_strict')
         if rc != 0:
-            _command_fail(module, f"Function release_fetch failed.", cmd, rc, out, err)
+            _command_fail(module, "Function release_fetch failed.", cmd, rc, out, err)
         if bupdate:
             _msg = f"Successfully fetched and updated.\n{cmd}\n{out}"
         else:
@@ -804,7 +804,7 @@ def jail_set(module, iocage_path, name, properties=None):
             if need_restart:
                 jail_start(module, iocage_path, name)
             if rc != 0:
-                _command_fail(module, f"properties not set.", cmd, rc, out, err)
+                _command_fail(module, "properties not set.", cmd, rc, out, err)
             _msg = f"properties {str(_props_to_be_changed.keys())} were set in jail '{name}'\n{cmd}"
         else:
             _msg = f"properties {str(_props_to_be_changed.keys())} would be set in jail '{name}'\n{cmd}"
@@ -871,7 +871,7 @@ def jail_create(module, iocage_path, name=None, properties=None, clone_from_name
         rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
                                           errors='surrogate_or_strict')
         if rc != 0:
-            _command_fail(module, f"Jail not created.", cmd, rc, out, err)
+            _command_fail(module, "Jail not created.", cmd, rc, out, err)
         _msg = f"'Jail was created.\n{cmd}\n{out}"
         if name is None or len(name) == 0:
             _uuid = out.split()[0]
@@ -881,7 +881,7 @@ def jail_create(module, iocage_path, name=None, properties=None, clone_from_name
             rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
                                               errors='surrogate_or_strict')
             if rc != 0:
-                _command_fail(module, f"Jail not renamed.", cmd, rc, out, err)
+                _command_fail(module, "Jail not renamed.", cmd, rc, out, err)
         if not jail_exists(module, iocage_path, name):
             module.fail_json(msg=f"'{name}' not created ???\ncmd: {cmd}\nstdout:\n{out}\nstderr:\n{err}")
     else:
@@ -1062,7 +1062,7 @@ def run_module():
         if name is not None and name != 'ALL' and name not in jails:
             module.fail_json(msg=f"Jail '{name}' doesn't exist.")
         if name is not None and name == 'ALL' and _all_jails_started(facts):
-            msgs.append(f"All jails already started.")
+            msgs.append("All jails already started.")
         if name is not None and name != 'ALL' and jails[name]['state'] == 'up':
             msgs.append(f"Jail '{name}' already started.")
         else:
@@ -1080,7 +1080,7 @@ def run_module():
         if name is not None and name != 'ALL' and name not in jails:
             module.fail_json(msg=f"Jail '{name}' doesn't exist.")
         if name is not None and name == 'ALL' and _all_jails_stopped(facts):
-            msgs.append(f"All jails already stopped.")
+            msgs.append("All jails already stopped.")
         if name is not None and name != 'ALL' and jails[name]['state'] == 'down':
             msgs.append(f"Jail '{name}' already stopped.")
         else:
@@ -1096,7 +1096,7 @@ def run_module():
 
     elif p['state'] == 'restarted':
         if name is None:
-            module.fail_json(msg=f"Jail name or ALL is required to restart jail(s).")
+            module.fail_json(msg="Jail name or ALL is required to restart jail(s).")
         if name != 'ALL' and name not in jails:
             module.fail_json(msg=f"Jail '{name}' doesn't exist.")
         else:

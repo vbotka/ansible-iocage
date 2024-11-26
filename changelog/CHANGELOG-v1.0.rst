@@ -24,6 +24,7 @@ Minor Changes
 
 Bugfixes
 --------
+* Fix iocage.py strings formatting.
 * Fix `re.match(r'(\d+|-|None)', _jid)`
 
 
