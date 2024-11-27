@@ -18,6 +18,7 @@ Major Changes
 Minor Changes
 -------------
 * Update test/configure.yml play name
+* Add SPDX-License-Identifier: BSD-2-Clause
 
 
 1.2.1
