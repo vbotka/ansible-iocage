@@ -1,6 +1,6 @@
 ---
 
-- name: Configure iocage
+- name: Configure iocage_test
   hosts: localhost
   connection: local
   gather_facts: false
