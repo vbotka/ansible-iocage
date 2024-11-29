@@ -5,6 +5,22 @@ vbotka.ansible-iocage 1.0 Release Notes
 .. contents:: Topics
 
 
+1.2.2
+=====
+
+Release Summary
+---------------
+Maintenance update.
+
+Major Changes
+-------------
+
+Minor Changes
+-------------
+* Update test/configure.yml play name
+* Add SPDX-License-Identifier: BSD-2-Clause
+
+
 1.2.1
 =====
 
