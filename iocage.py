@@ -177,7 +177,7 @@ EXAMPLES = r'''
         Fetch plugin Tarsnap. Keep jails on failure.
   iocage:
     state: fetched
-    bupdate: True
+    bupdate: true
     components: 'base.txz,doc.txz'
     plugin: Tarsnap
     args: -k
@@ -185,7 +185,7 @@ EXAMPLES = r'''
 - name: Update the jail. This will start the jail.
   iocage:
     state: present
-    bupdate: True
+    bupdate: true
     name: foo
 
 - name: Start jail

@@ -5,6 +5,22 @@ vbotka.ansible-iocage 1.0 Release Notes
 .. contents:: Topics
 
 
+1.2.3
+=====
+
+Release Summary
+---------------
+Maintenance update.
+
+Major Changes
+-------------
+
+Minor Changes
+-------------
+* Move changelog to changelogs.
+* Fix ansible-lint yaml[truthy]: Truthy value should be one of false, true
+
+
 1.2.2
 =====
 
