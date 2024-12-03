@@ -17,6 +17,7 @@ Major Changes
 
 Minor Changes
 -------------
+* Update DOCUMENTATION.
 * Move changelog to changelogs.
 * Fix ansible-lint yaml[truthy]: Truthy value should be one of false, true
 

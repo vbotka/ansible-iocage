@@ -319,7 +319,7 @@ ansible_facts:
       returned: always
       type: list
       elements: str
-      sample: ['13.0-RELEASE']
+      sample: ['13.3-RELEASE', '13.4-RELEASE']
     iocage_templates:
       description: Dictionary of all templates.
       returned: always
@@ -327,6 +327,11 @@ ansible_facts:
       sample: {}
     iocage_jails:
       description: Dictionary of all jails.
+      returned: always
+      type: dict
+      sample: {}
+    iocage_plugins:
+      description: Dictionary of all plugins.
       returned: always
       type: dict
       sample: {}
