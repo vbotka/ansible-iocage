@@ -95,7 +95,7 @@ options:
       description:
         - Specify which RELEASE to fetch, update, or create a jail from. O(release) defaults to the
           release of the remote host if O(state) is one of V(basejail, thickjail, template, fetched,
-          present). O(release) also defaults to the release of the remote host if RV(bupdate=True).
+          present). O(release) also defaults to the release of the remote host if V(bupdate=True).
       type: str
     bupdate:
       description:

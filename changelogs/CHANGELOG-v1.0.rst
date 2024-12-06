@@ -18,6 +18,7 @@ Major Changes
 Minor Changes
 -------------
 * Fix clone cmd.
+* Fix doc. Building docsite crashes on bupdate return value (RV).
 
 
 1.2.3
