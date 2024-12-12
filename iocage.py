@@ -116,7 +116,8 @@ requirements:
 notes:
   - Supports C(check_mode).
   - There is no mandatory option.
-  - The module always creates facts B(iocage_releases), B(iocage_templates), and B(iocage_jails)
+  - The module always creates facts B(iocage_releases), B(iocage_templates), B(iocage_jails), and
+    B(iocage_plugins)
   - Returns B(module_args) when debugging is set E(ANSIBLE_DEBUG=true)
 seealso:
   - name: iocage - A FreeBSD Jail Manager
