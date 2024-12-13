@@ -5,6 +5,21 @@ vbotka.ansible-iocage 1.0 Release Notes
 .. contents:: Topics
 
 
+1.2.4
+=====
+
+Release Summary
+---------------
+Bugfixes.
+
+Bugfixes
+--------
+* Fix clone cmd.
+* Fix doc. Building docsite crashes on bupdate return value (RV).
+* Fix use provided properties in basejail.
+* Fix documentation notes.
+
+
 1.2.3
 =====
 

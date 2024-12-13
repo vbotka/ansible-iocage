@@ -95,7 +95,7 @@ options:
       description:
         - Specify which RELEASE to fetch, update, or create a jail from. O(release) defaults to the
           release of the remote host if O(state) is one of V(basejail, thickjail, template, fetched,
-          present). O(release) also defaults to the release of the remote host if RV(bupdate=True).
+          present). O(release) also defaults to the release of the remote host if V(bupdate=True).
       type: str
     bupdate:
       description:
@@ -116,7 +116,8 @@ requirements:
 notes:
   - Supports C(check_mode).
   - There is no mandatory option.
-  - The module always creates facts B(iocage_releases), B(iocage_templates), and B(iocage_jails)
+  - The module always creates facts B(iocage_releases), B(iocage_templates), B(iocage_jails), and
+    B(iocage_plugins)
   - Returns B(module_args) when debugging is set E(ANSIBLE_DEBUG=true)
 seealso:
   - name: iocage - A FreeBSD Jail Manager
@@ -847,29 +848,28 @@ def jail_create(module, iocage_path, name=None, properties=None, clone_from_name
             cmd += " -b"
         elif thickjail:
             cmd += " -T"
-        if args:
-            cmd += f" {args}"
         if pkglist is not None:
             cmd += f" -p {pkglist}"
+        if args:
+            cmd += f" {args}"
 
     elif clone_from_template is not None:
         if name is None or len(name) == 0:
             cmd = f"{iocage_path} create -t {clone_from_template}"
         else:
             cmd = f"{iocage_path} create -n {name} -t {clone_from_template}"
+        if pkglist is not None:
+            cmd += f" -p {pkglist}"
         if args:
             cmd += f" {args}"
-        if pkglist is not None:
-            cmd += " -p " + pkglist
 
     elif clone_from_name is not None:
         if name is None or len(name) == 0:
-            cmd = f"{iocage_path} clone"
+            cmd = f"{iocage_path} clone {clone_from_name}"
         else:
-            cmd = f"{iocage_path} clone -n {name}"
+            cmd = f"{iocage_path} clone {clone_from_name} -n {name}"
         if args:
             cmd += f" {args}"
-        cmd += f" {clone_from_name}"
 
     if properties is not None:
         cmd += f" {_props_to_str(properties)}"
@@ -1177,7 +1177,6 @@ def run_module():
             properties['boot'] = 0
 
         elif p['state'] == 'basejail':
-            properties = {}
             do_basejail = True
 
         elif p['state'] == 'thickjail':
