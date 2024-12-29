@@ -422,7 +422,7 @@ def _get_iocage_facts(module, iocage_path, artifact='all', name=None):
         releases = [line.strip() for line in out.splitlines()]
         return releases
 
-    elif artifact == 'jails' or artifact == 'templates' or artifact == 'plugins':
+    elif artifact in ('jails', 'templates', 'plugins'):
         _items = {}
         try:
             for line in out.splitlines():
@@ -432,14 +432,17 @@ def _get_iocage_facts(module, iocage_path, artifact='all', name=None):
                     break
                 if re.match(r'(\d+|-|None)', _jid):
                     _fragments = line.split('\t')
-                    if artifact == 'jails' or artifact == 'templates':
+                    if artifact in ('jails', 'templates'):
                         if len(_fragments) == 10:
                             (_jid, _name, _boot, _state, _type, _release, _ip4, _ip6, _template, _basejail) = _fragments
+                            _keys = ('jid', 'name', 'boot', 'state', 'type', 'release', 'ip4', 'ip6', 'template', 'basejail')
                         else:
                             (_jid, _name, _boot, _state, _type, _release, _ip4, _ip6, _template) = _fragments
-                        if _name != '':
+                            _keys = ('jid', 'name', 'boot', 'state', 'type', 'release', 'ip4', 'ip6', 'template')
+                        if _name:
+                            _items[_name] = dict(zip(_keys, _fragments))
                             _properties = _jail_get_properties(module, iocage_path, _name)
-                            _items[_name] = {'jid': _jid, 'name': _name, 'state': _state, 'properties': _properties}
+                            _items[_name]['properties'] = _properties
                     elif artifact == 'plugins':
                         (_jid, _name, _boot, _state, _type, _release, _ip4, _ip6, _template, _portal, _doc_url) = _fragments
                         _keys = ('jid', 'name', 'boot', 'state', 'type', 'release', 'ip4', 'ip6', 'template', 'portal', 'doc_url')

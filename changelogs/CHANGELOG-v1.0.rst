@@ -12,6 +12,10 @@ Release Summary
 ---------------
 Bugfixes.
 
+Minor Changes
+-------------
+* Complete all attributes of jails, templates, and plugins.
+
 Bugfixes
 --------
 * Fix clone cmd.
