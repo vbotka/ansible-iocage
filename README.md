@@ -115,9 +115,10 @@ shell> ansible-playbook playbook.yml
 See *test/tasks/debug.yml* and display the *iocage* lists. Fit *my_hosts* to your needs
 
 ```sh
-shell> ansible-playbook iocage_test.yml -t debug -e my_hosts=test_18 \
-                                                 -e debug=true \
-                                                 -e debug_iocage_lists=true
+shell> ansible-playbook iocage_test.yml -t debug \
+                                        -e my_hosts=test_18 \
+                                        -e debug=true \
+                                        -e debug_iocage_lists=true
 ```
 
 
@@ -371,7 +372,7 @@ Hint: Run the below play with *'-e dry_run=true'* (default) to briefly list all 
 ```sh
 shell> ANSIBLE_SHOW_CUSTOM_STATS=true ansible-playbook iocage_test.yml \
                                       -e my_hosts=test_18,test_23 \
-									  -e dry_run=false \
+                                      -e dry_run=false \
                                       --skip-tags group_all
 ```
 
@@ -384,9 +385,10 @@ test_18: ok=356  changed=40   unreachable=0    failed=0    skipped=158  rescued=
 test_23: ok=356  changed=39   unreachable=0    failed=0    skipped=158  rescued=11   ignored=0
 
 CUSTOM STATS: ********************************************************************************
-	test_18:   a1: Dec 29 14:55:37  a2: Dec 29 15:27:46  crash: fetch,test_clone,  ok: 71
-	test_23:   a1: Dec 29 14:55:37  a2: Dec 29 15:27:46  crash: test_clone,test_restart_all,  ok: 71
+test_18:   a1: Dec 29 14:55:37  a2: Dec 29 15:27:46  crash: fetch,test_clone,  ok: 71
+test_23:   a1: Dec 29 14:55:37  a2: Dec 29 15:27:46  crash: test_clone,test_restart_all,  ok: 71
 ```
+
 
 ## Advanced tests
 
@@ -457,7 +459,7 @@ test_23:   a1: Nov 26 18:29:44  a2: Nov 26 18:30:39  ok: 3
 
 ## Variables and parameters of the tests
 
-There are more sources of the tests' variables in this framework
+There are more sources of the tests' variables in this framework:
 
 * The hard-coded variables in the test files and group files. If you want to
   customize them, change the data in *vars/* and run the playbook
