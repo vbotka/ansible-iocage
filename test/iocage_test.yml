@@ -29,49 +29,94 @@
     - ansible.builtin.import_tasks: tasks/custom_stats_start.yml
       tags: always
 
+    - name: ">>> PROGRESS: 1 of 15 GROUP: group_absent"
+      ansible.builtin.meta: noop
     - ansible.builtin.import_tasks: tasks/group_absent.yml
+      when: not dry_run | d(true) | bool
       tags: group_absent
 
+    - name: ">>> PROGRESS: 2 of 15 GROUP: group_all"
+      ansible.builtin.meta: noop
     - ansible.builtin.import_tasks: tasks/group_all.yml
+      when: not dry_run | d(true) | bool
       tags: group_all
 
+    - name: ">>> PROGRESS: 3 of 15 GROUP: group_base"
+      ansible.builtin.meta: noop
     - ansible.builtin.import_tasks: tasks/group_base.yml
+      when: not dry_run | d(true) | bool
       tags: group_base
 
+    - name: ">>> PROGRESS: 4 of 15 GROUP: group_clone_start_exec_pkg"
+      ansible.builtin.meta: noop
     - ansible.builtin.import_tasks: tasks/group_clone_start_exec_pkg.yml
+      when: not dry_run | d(true) | bool
       tags: group_clone_start_exec_pkg
 
+    - name: ">>> PROGRESS: 5 of 15 GROUP: group_clone_start_exec_pkg_absent"
+      ansible.builtin.meta: noop
     - ansible.builtin.import_tasks: tasks/group_clone_start_exec_pkg_absent.yml
+      when: not dry_run | d(true) | bool
       tags: group_clone_start_exec_pkg_absent
 
+    - name: ">>> PROGRESS: 6 of 15 GROUP: group_jail"
+      ansible.builtin.meta: noop
     - ansible.builtin.import_tasks: tasks/group_jail.yml
+      when: not dry_run | d(true) | bool
       tags: group_jail
 
+    - name: ">>> PROGRESS: 7 of 15 GROUP: group_present_absent_restart"
+      ansible.builtin.meta: noop
     - ansible.builtin.import_tasks: tasks/group_present_absent_restart.yml
+      when: not dry_run | d(true) | bool
       tags: group_present_absent_restart
 
+    - name: ">>> PROGRESS: 8 of 15 GROUP: group_present_start_exec_set1"
+      ansible.builtin.meta: noop
     - ansible.builtin.import_tasks: tasks/group_present_start_exec_set1.yml
+      when: not dry_run | d(true) | bool
       tags: group_present_start_exec_set1
 
+    - name: ">>> PROGRESS: 9 of 15 GROUP: group_setup"
+      ansible.builtin.meta: noop
     - ansible.builtin.import_tasks: tasks/group_setup.yml
+      when: not dry_run | d(true) | bool
       tags: group_setup
 
+    - name: ">>> PROGRESS: 10 of 15 GROUP: group_start_restart_stop"
+      ansible.builtin.meta: noop
     - ansible.builtin.import_tasks: tasks/group_start_restart_stop.yml
+      when: not dry_run | d(true) | bool
       tags: group_start_restart_stop
 
+    - name: ">>> PROGRESS: 11 of 15 GROUP: group_start_restart_stop_all"
+      ansible.builtin.meta: noop
     - ansible.builtin.import_tasks: tasks/group_start_restart_stop_all.yml
+      when: not dry_run | d(true) | bool
       tags: group_start_restart_stop_all
 
+    - name: ">>> PROGRESS: 12 of 15 GROUP: group_start_restart_stop_crash"
+      ansible.builtin.meta: noop
     - ansible.builtin.import_tasks: tasks/group_start_restart_stop_crash.yml
+      when: not dry_run | d(true) | bool
       tags: group_start_restart_stop_crash
 
+    - name: ">>> PROGRESS: 13 of 15 GROUP: group_template"
+      ansible.builtin.meta: noop
     - ansible.builtin.import_tasks: tasks/group_template.yml
+      when: not dry_run | d(true) | bool
       tags: group_template
 
+    - name: ">>> PROGRESS: 14 of 15 GROUP: group_test"
+      ansible.builtin.meta: noop
     - ansible.builtin.import_tasks: tasks/group_test.yml
+      when: not dry_run | d(true) | bool
       tags: group_test
 
+    - name: ">>> PROGRESS: 15 of 15 GROUP: group_test_uuid"
+      ansible.builtin.meta: noop
     - ansible.builtin.import_tasks: tasks/group_test_uuid.yml
+      when: not dry_run | d(true) | bool
       tags: group_test_uuid
 
     - ansible.builtin.import_tasks: tasks/custom_stats_end.yml
