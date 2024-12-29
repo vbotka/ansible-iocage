@@ -5,18 +5,26 @@ vbotka.ansible-iocage 1.0 Release Notes
 .. contents:: Topics
 
 
-1.2.4
+1.2.5
 =====
 
 Release Summary
 ---------------
-Maintenance and bugfixes incl. README update.
+Maintenance incl. README update.
 
 Minor Changes
 -------------
 * Complete all attributes of jails, templates, and plugins.
 * Update test playbook template. Show simple progess. Add var dry_run
   default=true
+
+
+1.2.4
+=====
+
+Release Summary
+---------------
+Bugfixes.
 
 Bugfixes
 --------
