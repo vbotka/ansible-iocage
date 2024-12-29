@@ -8,11 +8,12 @@
 
 ## Use current branch
 
-[Upstream](https://github.com/fractalcells/ansible-iocage/pulls) is too late
-with accepting PRs. No patches were accepted since September 2021. Therefore,
-the development is not submitted to the upstream anymore. Use the current branch
-https://github.com/vbotka/ansible-iocage/tree/current until this problem is
-resolved.
+[Upstream](https://github.com/fractalcells/ansible-iocage/pulls) is too late with accepting PRs. No
+patches were accepted since September 2021. Therefore, the development is not submitted to the
+upstream anymore. Until this problem is resolved use:
+
+* the [current](https://github.com/vbotka/ansible-iocage/tree/current) branch, or
+* the [release](https://github.com/vbotka/ansible-iocage/tree/release) branch.
 
 
 ## Description
@@ -32,9 +33,9 @@ This module is an Ansible 'wrapper' of the iocage command.
 
 ## Installation
 
-The module can be installed either as a standalone module or as a part of the
-collection [vbotka.freebsd](https://galaxy.ansible.com/vbotka/freebsd). Do not
-mix the installations of the collection and the standalone module.
+The module can be installed either as a standalone module or as a part of the collection
+[vbotka.freebsd](https://galaxy.ansible.com/vbotka/freebsd). Do not mix the installations of the
+collection and the standalone module.
 
 
 ### Standalone installation
@@ -50,8 +51,8 @@ DEFAULT_MODULE_PATH(default) = ['/home/admin/.ansible/plugins/modules', '/usr/sh
 
 If you want to use the module
 [for selected playbooks or a single role](https://docs.ansible.com/ansible/latest/dev_guide/developing_locally.html#adding-standalone-local-modules-for-selected-playbooks-or-a-single-role)
-put it into the directory *library*. This is how the module is used by
-the playbook *iocage_test.yml* in the directory *test*.
+put it into the directory *library*. This is how the module is used by the playbook
+*iocage_test.yml* in the directory *test*.
 
 
 ### Install the collection vbotka.freebsd from Ansible Galaxy
@@ -74,8 +75,8 @@ Read the [iocage documentation at readthedocs.io](https://iocage.readthedocs.io/
 
 ## Example
 
-The module requires no options. Without any option the module gathers
-facts about the jails. For example, the play below
+The module requires no options. Without any option the module gathers facts about the jails. For
+example, the play below
 
 ```yaml
 shell> cat playbook.yml
@@ -111,8 +112,7 @@ shell> ansible-playbook playbook.yml
     iocage_plugins: []
 ```
 
-See *test/tasks/debug.yml* and display the *iocage* lists. Fit
-*my_hosts* to your needs
+See *test/tasks/debug.yml* and display the *iocage* lists. Fit *my_hosts* to your needs
 
 ```sh
 shell> ansible-playbook iocage_test.yml -t debug -e my_hosts=test_18 \
@@ -242,33 +242,29 @@ shell> ansible-playbook iocage_test.yml -t debug -e my_hosts=test_18 \
 
 ## Tests
 
-The project comes with a set of tests stored in the directory
-*test*. It is expected that
-[iocage](https://man.freebsd.org/cgi/man.cgi?iocage) has already been
-installed and activated.
+The project comes with a set of tests stored in the directory *test*. It is expected that
+[iocage](https://man.freebsd.org/cgi/man.cgi?iocage) has already been installed and activated.
 
 See the Ansible role
 [vbotka.freebsd_iocage](https://galaxy.ansible.com/ui/standalone/roles/vbotka/freebsd_iocage/)
 
+By default, the playbook *iocage_test.yml* does nothing but shows the imported tasks. Set the
+variable *dry_run=false* to run the tests.
 
 ### Configure tests
 
-Optionally, you can configure the tests. Take a look at the playbook
-*configure.yml*, *templates*, and *vars*. The playbook *configure.yml*
-creates:
+Optionally, you can configure the tests. Take a look at the playbook *configure.yml*, *templates*,
+and *vars*. The playbook *configure.yml* creates:
 
 * the playbook *iocage_test.yml* from the template *iocage_test.yml.j2*
-* the test files *tasks/\** from the *templates* and variables in
-  *vars/tests.d*
-* the groups of test files *tasks/group_\** from the *templates* and
-  variables in *vars/groups.d*
+* the test files *tasks/\** from the *templates* and variables in *vars/tests.d*
+* the groups of test files *tasks/group_\** from the *templates* and variables in *vars/groups.d*
 
-Note: Some files in the directory *tasks* are not created from a
-template. You can recognize them by missing `# Ansible managed` first
-line in the file. Update these file directly if you want to.
+Note: Some files in the directory *tasks* are not created from a template. You can recognize them by
+missing `# Ansible managed` first line in the file. Update these file directly if you want to.
 
-The play should be idempotent. You're encouraged to fit the *vars* and
-*templates* to your needs and run
+The play should be idempotent. You're encouraged to fit the *vars* and *templates* to your needs and
+run
 
 ```sh
 shell> ansible-playbook configure.yml
@@ -365,16 +361,17 @@ ok: [test_23] =>
       vnet: 'off'
 ```
 
-Note: See *tasks/debug.yml* on how to display *iocage* lists and all
-*iocage_\** variables.
+Note: See *tasks/debug.yml* on how to display *iocage* lists and all *iocage_\** variables.
 
-Fit the configuration *ansible.cfg* and inventory *hosts* to your needs and run
-all tests except the group of all tasks *group_all*. For example, enable custom
-stats at hosts *test_18* and *test_23*
+Fit the configuration *ansible.cfg* and inventory *hosts* to your needs and run all tests except the
+group of all tasks *group_all*. For example, enable custom stats at hosts *test_18* and *test_23*
+
+Hint: Run the below play with *'-e dry_run=true'* (default) to briefly list all tasks.
 
 ```sh
 shell> ANSIBLE_SHOW_CUSTOM_STATS=true ansible-playbook iocage_test.yml \
                                       -e my_hosts=test_18,test_23 \
+									  -e dry_run=false \
                                       --skip-tags group_all
 ```
 
@@ -383,23 +380,21 @@ This should display a report similar to this one
 ```yaml
   ...
 PLAY RECAP ***********************************************************************************
-test_18: ok=358  changed=41   unreachable=0    failed=0    skipped=158  rescued=11   ignored=0
-test_23: ok=361  changed=42   unreachable=0    failed=0    skipped=157  rescued=10   ignored=0
+test_18: ok=356  changed=40   unreachable=0    failed=0    skipped=158  rescued=11   ignored=0
+test_23: ok=356  changed=39   unreachable=0    failed=0    skipped=158  rescued=11   ignored=0
 
 CUSTOM STATS: ********************************************************************************
-test_18:   a1: Nov 26 16:35:09  a2: Nov 26 17:07:01  crash: fetch,  fail: base_exists,  ok: 71
-test_23:   a1: Nov 26 16:35:09  a2: Nov 26 17:07:01  fail: base_exists,  ok: 72
+	test_18:   a1: Dec 29 14:55:37  a2: Dec 29 15:27:46  crash: fetch,test_clone,  ok: 71
+	test_23:   a1: Dec 29 14:55:37  a2: Dec 29 15:27:46  crash: test_clone,test_restart_all,  ok: 71
 ```
-
 
 ## Advanced tests
 
-Most of the tests and groups are generated from templates (see the directory
-*templates*) using the dictionaries *iocage_test_db* and *iocage_group_db*
-stored in the directories *vars/tests.d* and *vars/groups.d*. Do not edit these
-tasks and groups manually. Instead, modify or create new templates and
-dictionary entries. Then, run the playbook *configure.yml* and update or create
-new tasks and groups. For example, add new group of existing tests in
+Most of the tests and groups are generated from templates (see the directory *templates*) using the
+dictionaries *iocage_test_db* and *iocage_group_db* stored in the directories *vars/tests.d* and
+*vars/groups.d*. Do not edit these tasks and groups manually. Instead, modify or create new
+templates and dictionary entries. Then, run the playbook *configure.yml* and update or create new
+tasks and groups. For example, add new group of existing tests in
 *vars/groups.d/group_present_absent_restart.yml*
 
 ```yaml
@@ -411,12 +406,12 @@ group_present_absent_restart:
     - test: test_restart_crash
 ```
 
-Run playbook *configure.yml*, create the group
-*tasks/group_present_absent_restart.yml* and import it in the playbook
-*iocage_test.yml*
+Run playbook *configure.yml*, create the group *tasks/group_present_absent_restart.yml* and import
+it in the playbook *iocage_test.yml*
 
 ```sh
 shell> ansible-playbook configure.yml -e my_groups=group_present_absent_restart \
+									  -e dry_run=false \
                                       -t create_groups,create_iocage_test
   ...
 TASK [Create group files in directory tasks] *************************************************
@@ -426,9 +421,8 @@ TASK [Create playbook iocage_test.yml] *****************************************
 ok: [localhost]
 ```
 
-Create file with the parameters of the tests. For example, run tests on the
-nodes *test_18,test_23*, set strategy *free*, use jail *test_31*, and enable
-debug
+Create file with the parameters of the tests. For example, run tests on the nodes *test_18,test_23*,
+set strategy *free*, use jail *test_31*, and enable debug
 
 ```yaml
 shell> cat extra_vars/test_31-debug-n2.yml
@@ -443,6 +437,7 @@ Run the tests and display custom stats
 ```sh
 shell> ANSIBLE_SHOW_CUSTOM_STATS=true ansible-playbook iocage_test.yml \
                                       -e @extra_vars/test_31-debug-n2.yml \
+									  -e dry_run=false \
                                       -t group_present_absent_restart
 ```
 

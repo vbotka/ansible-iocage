@@ -30,7 +30,10 @@
     - ansible.builtin.import_tasks: tasks/custom_stats_start.yml
       tags: always
 {% for i in iocage_group_db.keys() | sort %}
+    - name: ">>> PROGRESS: {{ loop.index }} of {{ loop.length }} GROUP: {{ i }}"
+      ansible.builtin.meta: noop
     - ansible.builtin.import_tasks: tasks/{{ i }}.yml
+      when: not dry_run | d(true) | bool
       tags: {{ i }}
 {% endfor %}
     - ansible.builtin.import_tasks: tasks/custom_stats_end.yml
