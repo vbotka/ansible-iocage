@@ -376,7 +376,7 @@ def _props_to_str(props):
         elif isinstance(_val, str):
             argstr += f'{_prop}="{_val}" '
         else:
-            argstr += f"{_prop}={str(_val)} "
+            argstr += f"{_prop}={_val} "
 
     return argstr
 
@@ -471,7 +471,7 @@ def _jail_get_properties(module, iocage_path, name):
                     if len(_property) == 2:
                         properties[_property[0]] = _property[1]
                     else:
-                        module.fail_json(msg=f"error parsing property {p} from {str(properties)}")
+                        module.fail_json(msg=f"error parsing property {p} from {properties}")
         else:
             _command_fail(module, f"_jail_get_properties({name})", cmd, rc, out, err)
     else:
