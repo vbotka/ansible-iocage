@@ -381,13 +381,15 @@ This should display a report similar to this one
 ```yaml
   ...
 PLAY RECAP ***********************************************************************************
-test_18: ok=356  changed=40   unreachable=0    failed=0    skipped=158  rescued=11   ignored=0
-test_23: ok=356  changed=39   unreachable=0    failed=0    skipped=158  rescued=11   ignored=0
+test_18: ok=370  changed=45   unreachable=0    failed=0    skipped=162  rescued=11   ignored=0
+test_23: ok=370  changed=45   unreachable=0    failed=0    skipped=162  rescued=11   ignored=0
 
 CUSTOM STATS: ********************************************************************************
-test_18:   a1: Dec 29 14:55:37  a2: Dec 29 15:27:46  crash: fetch,test_clone,  ok: 71
-test_23:   a1: Dec 29 14:55:37  a2: Dec 29 15:27:46  crash: test_clone,test_restart_all,  ok: 71
+test_18: a1: Dec 30 20:13:31  a2: Dec 30 20:41:13 fail: base_exists,base_set_template_no, ok: 73
+test_23: a1: Dec 30 20:13:31  a2: Dec 30 20:41:13 fail: base_exists,base_set_template_no, ok: 73
 ```
+
+TODO: group_base: base_exists,base_set_template_no
 
 
 ## Advanced tests

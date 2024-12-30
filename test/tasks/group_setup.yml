@@ -9,6 +9,5 @@
 - ansible.builtin.import_tasks: tasks/fetch.yml
   vars:
     _test_name: fetch
-    release: "{{ (lookup('file', 'extra_vars/fetch_release.yml') | from_yaml).release }}"
 
 # EOF

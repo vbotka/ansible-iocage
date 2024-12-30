@@ -18,6 +18,7 @@ Minor Changes
 * Simplify conditions in jail_create
 * Update docs. Template can not boot.
 * Do not skip template on setting properties.
+* Update test.
 
 
 1.2.5
