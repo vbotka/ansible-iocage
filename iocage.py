@@ -778,8 +778,6 @@ def jail_set(module, iocage_path, name, properties=None):
             continue
         if _existing_props[_property] == '-' and not properties[_property]:
             continue
-        if _property == 'template':
-            continue
         _val = properties[_property]
         _oval = _existing_props[_property]
         if _val in [0, 'no', 'off', False]:
