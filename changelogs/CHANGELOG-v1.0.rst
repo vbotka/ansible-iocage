@@ -15,6 +15,7 @@ Maintenance update.
 Minor Changes
 -------------
 * Update README.
+* Simplify conditions in jail_create
 
 
 1.2.5
