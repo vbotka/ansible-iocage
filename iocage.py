@@ -257,8 +257,8 @@ EXAMPLES = r'''
     name: tplfoo
     pkglist: /path/to/pkglist.json
     properties:
-      ip4_addr: 'lo1|10.1.0.5'
-      boot: true
+      ip4_addr: 'vnet0|10.1.0.5/24'
+      boot: false
       allow_sysvipc: true
       defaultrouter: '10.1.0.1'
 
@@ -269,7 +269,7 @@ EXAMPLES = r'''
     clone_from: tplfoo
     pkglist: /path/to/pkglist.json
     properties:
-      ip4_addr: 'lo1|10.1.0.5'
+      ip4_addr: 'vnet0|10.1.0.5/24'
       boot: true
       allow_sysvipc: true
       defaultrouter: '10.1.0.1'

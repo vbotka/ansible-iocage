@@ -16,6 +16,7 @@ Minor Changes
 -------------
 * Update README.
 * Simplify conditions in jail_create
+* Update docs. Template can not boot.
 
 
 1.2.5
