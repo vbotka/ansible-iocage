@@ -5,6 +5,22 @@ vbotka.ansible-iocage 1.0 Release Notes
 .. contents:: Topics
 
 
+1.2.6
+=====
+
+Release Summary
+---------------
+Maintenance update.
+
+Minor Changes
+-------------
+* Update README.
+* Simplify conditions in jail_create
+* Update docs. Template can not boot.
+* Do not skip template on setting properties.
+* Update test.
+
+
 1.2.5
 =====
 

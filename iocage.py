@@ -257,8 +257,8 @@ EXAMPLES = r'''
     name: tplfoo
     pkglist: /path/to/pkglist.json
     properties:
-      ip4_addr: 'lo1|10.1.0.5'
-      boot: true
+      ip4_addr: 'vnet0|10.1.0.5/24'
+      boot: false
       allow_sysvipc: true
       defaultrouter: '10.1.0.1'
 
@@ -269,7 +269,7 @@ EXAMPLES = r'''
     clone_from: tplfoo
     pkglist: /path/to/pkglist.json
     properties:
-      ip4_addr: 'lo1|10.1.0.5'
+      ip4_addr: 'vnet0|10.1.0.5/24'
       boot: true
       allow_sysvipc: true
       defaultrouter: '10.1.0.1'
@@ -778,8 +778,6 @@ def jail_set(module, iocage_path, name, properties=None):
             continue
         if _existing_props[_property] == '-' and not properties[_property]:
             continue
-        if _property == 'template':
-            continue
         _val = properties[_property]
         _oval = _existing_props[_property]
         if _val in [0, 'no', 'off', False]:
@@ -843,7 +841,7 @@ def jail_create(module, iocage_path, name=None, properties=None, clone_from_name
     _uuid_short = ""
 
     if clone_from_name is None and clone_from_template is None:
-        if name is None or len(name) == 0:
+        if not name:
             cmd = f"{iocage_path} create -r {release}"
         else:
             cmd = f"{iocage_path} create -n {name} -r {release}"
@@ -851,30 +849,30 @@ def jail_create(module, iocage_path, name=None, properties=None, clone_from_name
             cmd += " -b"
         elif thickjail:
             cmd += " -T"
-        if pkglist is not None:
+        if pkglist:
             cmd += f" -p {pkglist}"
         if args:
             cmd += f" {args}"
 
     elif clone_from_template is not None:
-        if name is None or len(name) == 0:
+        if not name:
             cmd = f"{iocage_path} create -t {clone_from_template}"
         else:
             cmd = f"{iocage_path} create -n {name} -t {clone_from_template}"
-        if pkglist is not None:
+        if pkglist:
             cmd += f" -p {pkglist}"
         if args:
             cmd += f" {args}"
 
     elif clone_from_name is not None:
-        if name is None or len(name) == 0:
+        if not name:
             cmd = f"{iocage_path} clone {clone_from_name}"
         else:
             cmd = f"{iocage_path} clone {clone_from_name} -n {name}"
         if args:
             cmd += f" {args}"
 
-    if properties is not None:
+    if properties:
         cmd += f" {_props_to_str(properties)}"
 
     if not module.check_mode:
@@ -883,7 +881,7 @@ def jail_create(module, iocage_path, name=None, properties=None, clone_from_name
         if rc != 0:
             _command_fail(module, "Jail not created.", cmd, rc, out, err)
         _msg = f"'Jail was created.\n{cmd}\n{out}"
-        if name is None or len(name) == 0:
+        if not name:
             _uuid = out.split()[0]
             _uuid_short = _uuid.split('-')[0]
             name = _uuid_short
