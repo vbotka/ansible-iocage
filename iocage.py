@@ -85,7 +85,12 @@ options:
       type: str
     clone_from:
       description:
-        - Clone the jail O(clone_from) to O(name). Use O(properties) to configure the clone.
+        - Use B(state=cloned).
+        - If O(clone_from) is a template C(create) the new jail C(uuid) or O(name) if defined.
+        - If O(clone_from) is a jail C(clone) the new jail C(uuid) or O(name) if defined.
+        - Use O(properties) to configure the new jail.
+        - Use O(args) to configure the C(iocage) command.
+        - Use O(pkglist) if O(clone_from) is a template.
       type: str
     plugin:
       description:
@@ -829,10 +834,13 @@ def jail_set(module, iocage_path, name, properties=None):
 def jail_create(module, iocage_path, name=None, properties=None, clone_from_name=None,
                 clone_from_template=None, release=None, basejail=False, thickjail=False,
                 pkglist=None, args=""):
-    '''Create a jail.
+    '''Create or clone  a jail.
 
        $ iocage create --help
        Usage: iocage create [OPTIONS] [PROPS]...
+
+       $ iocage clone --help
+       Usage: iocage clone [OPTIONS] SOURCE [PROPS]...
        (cont.)
     '''
 
