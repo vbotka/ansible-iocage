@@ -14,6 +14,7 @@ Maintenance update.
 
 Minor Changes
 -------------
+* Simplify conditions.
 
 
 1.2.6
