@@ -374,9 +374,9 @@ def _props_to_str(props):
         _val = props[_prop]
         if _val == '-' or _val == '' or _val is None:
             continue
-        if _val in ['yes', 'on', True]:
+        if _val in ('yes', 'on', True):
             argstr += f"{_prop}=1 "
-        elif _val in ['no', 'off', False]:
+        elif _val in ('no', 'off', False):
             argstr += f"{_prop}=0 "
         elif isinstance(_val, str):
             argstr += f'{_prop}="{_val}" '
@@ -785,9 +785,9 @@ def jail_set(module, iocage_path, name, properties=None):
             continue
         _val = properties[_property]
         _oval = _existing_props[_property]
-        if _val in [0, 'no', 'off', False]:
+        if _val in (0, 'no', 'off', False):
             propval = 0
-        elif _val in [1, 'yes', 'on', True]:
+        elif _val in (1, 'yes', 'on', True):
             propval = 1
         elif isinstance(_oval, str):
             if _val == '':
@@ -1039,12 +1039,12 @@ def run_module():
     # Input validation
 
     # states that need name of jail
-    if p['state'] in ['restarted', 'get', 'set', 'exec', 'pkg', 'absent']:
+    if p['state'] in ('restarted', 'get', 'set', 'exec', 'pkg', 'absent'):
         if name is None:
             module.fail_json(msg=f"name needed for state {p['state']}")
 
     # states that need release defined
-    if p['state'] in ['basejail', 'thickjail', 'template', 'fetched', 'present'] or bupdate:
+    if p['state'] in ('basejail', 'thickjail', 'template', 'fetched', 'present') or bupdate:
         if not release:
             rc, out, err = module.run_command("uname -r")
             if rc != 0:
@@ -1056,7 +1056,7 @@ def run_module():
                 module.fail_json(msg=f"Release not recognised: {out}")
 
     # need existing jail
-    if p['state'] in ['set', 'exec', 'pkg']:
+    if p['state'] in ('set', 'exec', 'pkg'):
         if name not in jails:
             module.fail_json(msg=f"Jail '{name}' doesn't exist.")
     if name and bupdate:
@@ -1064,7 +1064,7 @@ def run_module():
             module.fail_json(msg=f"Jail '{name}' doesn't exist.")
 
     # states that need running jail
-    if p['state'] in ['exec', 'pkg']:
+    if p['state'] in ('exec', 'pkg'):
         if jails[name]['state'] != 'up':
             module.fail_json(msg=f"Jail '{name}' not running.")
 
@@ -1166,7 +1166,7 @@ def run_module():
         if not module.check_mode:
             facts['iocage_jails'] = _get_iocage_facts(module, iocage_path, 'jails')
 
-    elif p['state'] in ['present', 'cloned', 'template', 'basejail', 'thickjail']:
+    elif p['state'] in ('present', 'cloned', 'template', 'basejail', 'thickjail'):
 
         do_basejail = False
         do_thickjail = False

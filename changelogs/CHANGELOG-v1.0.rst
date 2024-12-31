@@ -15,6 +15,7 @@ Maintenance update.
 Minor Changes
 -------------
 * Simplify conditions.
+* Test in sets.
 
 
 1.2.6
