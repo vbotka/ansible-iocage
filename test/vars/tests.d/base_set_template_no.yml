@@ -1,7 +1,7 @@
 ---
 base_set_template_no:
   template: command
-  label: 'base_set_template_no: Verify that {{ lbr }} basejail {{ rbr }} can be converted'
+  label: 'base_set_template_no: Verify that basejail can be converted.'
   iocage:
     state: set
     name: '{{ lbr }} basejail {{ rbr }}'

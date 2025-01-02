@@ -10,10 +10,10 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- name: "template_stop: Check if template {{ basejail }} can not be stopped"
+- name: "template_stop: Check if template can be stopped."
   block:
 
-    - name: " >>> TEST START: template_stop: Check if template {{ basejail }} can not be stopped"
+    - name: " >>> TEST START: template_stop: Check if template can be stopped."
       register: result
       iocage:
         name: '{{ basejail }}'

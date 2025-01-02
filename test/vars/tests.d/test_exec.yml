@@ -1,7 +1,7 @@
 ---
 test_exec:
   template: command
-  label: 'test_exec: Check if exec works in jail {{ lbr }} jname {{ rbr }}'
+  label: 'test_exec: Check if exec works in jail.'
   iocage:
     state: exec
     name: '{{ lbr }} jname {{ rbr }}'

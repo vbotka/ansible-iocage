@@ -1,7 +1,7 @@
 ---
 test_update:
   template: command
-  label: 'test_update: Check if test jail can be updated'
+  label: 'test_update: Check if test jail can be updated.'
   iocage:
     state: present
     name: '{{ lbr }} jname {{ rbr }}'

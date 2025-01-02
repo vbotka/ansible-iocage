@@ -10,15 +10,15 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- name: "test_pkg: Check if pkg info works in started jail."
+- name: "absent_basejail: Check if test basejail can be destroyed."
   block:
 
-    - name: " >>> TEST START: test_pkg: Check if pkg info works in started jail."
+    - name: " >>> TEST START: absent_basejail: Check if test basejail can be destroyed."
       register: result
       iocage:
-        cmd: info
-        name: '{{ jname }}'
-        state: pkg
+        args: --recursive
+        name: '{{ basejail }}'
+        state: absent
 
     - ansible.builtin.set_fact:
         _crash: false
@@ -41,8 +41,8 @@
 - name: No crash
   when: not _crash
   vars:
-    _msg1: "Jail '{{ jname }}' executed command 'pkg info'"
-    _msg2: "Jail '{{ jname }}' would execute command 'pkg info'"
+    _msg1: "was destroyed."
+    _msg2: "already destroyed."
   block:
 
     - ansible.builtin.assert:
@@ -57,7 +57,7 @@
 
     - ansible.builtin.debug:
         msg: |
-          [ERR] {{ _test_name }} failed. Missing: {{ _msg1 }} or {{ _msg2 }}
+          [ERR] {{ basejail }} not destroyed. Missing: {{ _msg1 }}
           {{ ansible_failed_task }}
           {{ ansible_failed_result }}
       when: debug | bool

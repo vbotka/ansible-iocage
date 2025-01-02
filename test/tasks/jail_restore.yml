@@ -10,10 +10,10 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- name: "jail_restore: Verify that base jail {{ basejail }} can be converted back"
+- name: "jail_restore: Verify that base jail can be converted back."
   block:
 
-    - name: " >>> TEST START: jail_restore: Verify that base jail {{ basejail }} can be converted back"
+    - name: " >>> TEST START: jail_restore: Verify that base jail can be converted back."
       register: result
       iocage:
         name: '{{ basejail }}'

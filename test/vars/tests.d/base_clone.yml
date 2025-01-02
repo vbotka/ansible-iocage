@@ -1,7 +1,7 @@
 ---
 base_clone:
   template: command
-  label: 'base_clone: Check if {{ lbr }} jname {{ rbr }} can be cloned'
+  label: 'base_clone: Check if {{ lbr }} jname {{ rbr }} can be cloned.'
   iocage:
     state: cloned
     name: '{{ lbr }} jname {{ rbr }}'

@@ -10,10 +10,10 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- name: "fetch: Fetch release, components and plugin"
+- name: "fetch: Fetch release, components and plugin."
   block:
 
-    - name: " >>> TEST START: fetch: Fetch release, components and plugin"
+    - name: " >>> TEST START: fetch: Fetch release, components and plugin."
       register: result
       iocage:
         args: '{{ my_args | d(omit) }}'

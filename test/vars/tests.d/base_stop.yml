@@ -1,7 +1,7 @@
 ---
 base_stop:
   template: command
-  label: 'base_stop: Check if {{ lbr }} basejail {{ rbr }} can be stopped'
+  label: 'base_stop: Check if basejail can be stopped.'
   iocage:
     state: stopped
     name: '{{ lbr }} basejail {{ rbr }}'

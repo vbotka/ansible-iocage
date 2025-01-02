@@ -1,7 +1,7 @@
 ---
 test_absent:
   template: command
-  label: "test_absent: Check if jail {{ lbr }} jname {{ rbr }} can be destroyed"
+  label: "test_absent: Check if jail can be destroyed."
   iocage:
     state: absent
     name: "{{ lbr }} jname {{ rbr }}"

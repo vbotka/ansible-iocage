@@ -1,7 +1,7 @@
 ---
 absent_stop_crash:
   template: command_crash
-  label: 'absent_stop_crash: Check if absent jail can not be stopped'
+  label: 'absent_stop_crash: Check if absent jail can not be stopped.'
   iocage:
     state: stopped
     name: absent

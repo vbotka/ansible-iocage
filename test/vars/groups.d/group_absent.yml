@@ -2,6 +2,8 @@
 group_absent:
   template: group
   tests:
+    - test: absent_jail
+    - test: absent_basejail
     - test: absent_absent
     - test: absent_stop_crash
     - test: absent_restart_crash

@@ -10,10 +10,10 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- name: "test_restart_all: Check if ALL jails can be restarted"
+- name: "test_restart_all: Check if ALL jails can be restarted."
   block:
 
-    - name: " >>> TEST START: test_restart_all: Check if ALL jails can be restarted"
+    - name: " >>> TEST START: test_restart_all: Check if ALL jails can be restarted."
       register: result
       iocage:
         name: ALL

@@ -1,7 +1,7 @@
 ---
 test_present:
   template: command
-  label: "test_present: Check if {{ lbr }} jname {{ rbr }} can be created"
+  label: "test_present: Check if jail can be created."
   iocage:
     name: "{{ lbr }} jname {{ rbr }}"
     release: "{{ lbr }} release {{ rbr }}"

@@ -1,7 +1,7 @@
 ---
 test_stop_crash:
   template: command_crash
-  label: 'test_stop_crash: Check if not-existent jail {{ lbr }} jname {{ rbr }} can not be stopped'
+  label: 'test_stop_crash: Check if not-existent jail can not be stopped.'
   iocage:
     state: stopped
     name: '{{ lbr }} jname {{ rbr }}'

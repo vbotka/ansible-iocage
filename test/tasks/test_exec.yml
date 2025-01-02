@@ -10,10 +10,10 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- name: "test_exec: Check if exec works in jail {{ jname }}"
+- name: "test_exec: Check if exec works in jail."
   block:
 
-    - name: " >>> TEST START: test_exec: Check if exec works in jail {{ jname }}"
+    - name: " >>> TEST START: test_exec: Check if exec works in jail."
       register: result
       iocage:
         cmd: '{{ cmd }}'

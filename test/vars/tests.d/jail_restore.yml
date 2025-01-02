@@ -1,7 +1,7 @@
 ---
 jail_restore:
   template: command
-  label: 'jail_restore: Verify that base jail {{ lbr }} basejail {{ rbr }} can be converted back'
+  label: 'jail_restore: Verify that base jail can be converted back.'
   iocage:
     state: set
     name: '{{ lbr }} basejail {{ rbr }}'

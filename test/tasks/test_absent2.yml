@@ -10,10 +10,10 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- name: "test_absent2: Check if jail {{ jname }} can be destroyed again"
+- name: "test_absent2: Check if jail can be destroyed again."
   block:
 
-    - name: " >>> TEST START: test_absent2: Check if jail {{ jname }} can be destroyed again"
+    - name: " >>> TEST START: test_absent2: Check if jail can be destroyed again."
       register: result
       iocage:
         name: '{{ jname }}'

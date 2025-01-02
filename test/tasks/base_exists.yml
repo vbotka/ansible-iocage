@@ -10,10 +10,10 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- name: "base_exists: Check if {{ basejail }} exists"
+- name: "base_exists: Check if basejail exists."
   block:
 
-    - name: " >>> TEST START: base_exists: Check if {{ basejail }} exists"
+    - name: " >>> TEST START: base_exists: Check if basejail exists."
       register: result
       iocage:
         name: '{{ basejail }}'

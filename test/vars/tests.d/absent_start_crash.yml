@@ -1,7 +1,7 @@
 ---
 absent_start_crash:
   template: command_crash
-  label: 'absent_start_crash: Check if absent jail can not be started'
+  label: 'absent_start_crash: Check if absent jail can not be started.'
   iocage:
     state: started
     name: absent

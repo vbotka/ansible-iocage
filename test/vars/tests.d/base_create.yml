@@ -1,7 +1,7 @@
 ---
 base_create:
   template: command
-  label: 'base_create: Check if {{ lbr }} basejail {{ rbr }} can be created'
+  label: 'base_create: Check if basejail can be created.'
   iocage:
     state: basejail
     name: '{{ lbr }} basejail {{ rbr }}'

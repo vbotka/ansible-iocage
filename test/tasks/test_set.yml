@@ -10,10 +10,10 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- name: "test_set: Set properties at {{ jname }}"
+- name: "test_set: Set properties."
   block:
 
-    - name: " >>> TEST START: test_set: Set properties at {{ jname }}"
+    - name: " >>> TEST START: test_set: Set properties."
       register: result
       iocage:
         name: '{{ jname }}'

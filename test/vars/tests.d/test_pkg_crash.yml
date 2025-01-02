@@ -1,7 +1,7 @@
 ---
 test_pkg_crash:
   template: command_crash
-  label: 'test_pkg_crash: Check if pkg info does not work in not-started jail {{ lbr }} jname {{ rbr }}'
+  label: 'test_pkg_crash: Check if pkg info does not work in not-started jail.'
   iocage:
     state: pkg
     name: '{{ lbr }} jname {{ rbr }}'

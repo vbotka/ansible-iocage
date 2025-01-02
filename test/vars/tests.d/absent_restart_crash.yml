@@ -1,7 +1,7 @@
 ---
 absent_restart_crash:
   template: command_crash
-  label: 'absent_restart_crash: Check if absent jail can not be restarted'
+  label: 'absent_restart_crash: Check if absent jail can not be restarted.'
   iocage:
     state: restarted
     name: absent

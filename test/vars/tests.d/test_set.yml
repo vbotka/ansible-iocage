@@ -1,7 +1,7 @@
 ---
 test_set:
   template: command
-  label: 'test_set: Set properties at {{ lbr }} jname {{ rbr }}'
+  label: 'test_set: Set properties.'
   iocage:
     state: set
     name: '{{ lbr }} jname {{ rbr }}'

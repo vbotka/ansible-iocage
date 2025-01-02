@@ -1,0 +1,17 @@
+---
+absent_jail:
+  template: command
+  label: 'absent_jail: Check if test jail can be destroyed.'
+  iocage:
+    state: absent
+    name: '{{ lbr }} jname {{ rbr }}'
+  debug:
+    - var: result.msg
+  assert:
+    - '_msg1 in result.msg or _msg2 in result.msg'
+  msg_err: '[ERR] {{ lbr }} jname {{ rbr }} not destroyed. Missing: {{ lbr }} _msg1 {{ rbr }}'
+  vars:
+    _msg1: '"was destroyed."'
+    _msg2: '"already destroyed."'
+
+# EOF

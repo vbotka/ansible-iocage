@@ -1,7 +1,7 @@
 ---
 test_clone:
   template: command
-  label: 'test_clone: Check if test jail can be cloned'
+  label: 'test_clone: Check if test jail can be cloned.'
   iocage:
     state: cloned
     name: '{{ lbr }} jname {{ rbr }}'
