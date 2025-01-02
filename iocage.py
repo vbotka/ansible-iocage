@@ -57,7 +57,7 @@ options:
       type: str
       default: facts
       choices:
-        absent: iocage destroy --force [args] name
+        absent: iocage destroy --force [args] <name>
         basejail: iocage create -b [-n name] [-r release] [-p pkglist] [args] [properties]
         cloned: iocage create -t <clone_from> [-n name] [-p pkglist] [args] [properties] or iocage clone <clone_from> [-n name] [args] [properties]
         exec: iocage exec -u <user> <name> -- <cmd>
@@ -179,9 +179,9 @@ EXAMPLES = r'''
   debug:
     msg: |-
       {{ iocage_releases }}
-      {{ iocage_plugins.keys()|list }}
-      {{ iocage_templates.keys()|list }}
-      {{ iocage_jails.keys()|list }}
+      {{ iocage_plugins.keys() | list }}
+      {{ iocage_templates.keys() | list }}
+      {{ iocage_jails.keys() | list }}
 
 - name: Fetch the remote host's version of base
   iocage:
