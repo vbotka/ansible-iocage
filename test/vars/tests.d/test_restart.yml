@@ -1,7 +1,7 @@
 ---
 test_restart:
   template: command
-  label: 'test_restart: Check if jail {{ lbr }} jname {{ rbr }} can be restarted'
+  label: 'test_restart: Check if jail can be restarted.'
   iocage:
     state: restarted
     name: '{{ lbr }} jname {{ rbr }}'

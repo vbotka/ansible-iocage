@@ -1,7 +1,7 @@
 ---
 test_restart_all:
   template: command
-  label: 'test_restart_all: Check if ALL jails can be restarted'
+  label: 'test_restart_all: Check if ALL jails can be restarted.'
   iocage:
     state: restarted
     name: ALL

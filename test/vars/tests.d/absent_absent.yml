@@ -1,7 +1,7 @@
 ---
 absent_absent:
   template: command
-  label: 'absent_absent: Check if absent jail can be destroyed'
+  label: 'absent_absent: Check if absent jail can be destroyed.'
   iocage:
     state: absent
     name: absent

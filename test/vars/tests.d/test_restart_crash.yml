@@ -1,7 +1,7 @@
 ---
 test_restart_crash:
   template: command_crash
-  label: 'test_restart_crash: Check if not-existent jail {{ lbr }} jname {{ rbr }} can not be restarted'
+  label: 'test_restart_crash: Check if not-existent jail can not be restarted.'
   iocage:
     state: restarted
     name: '{{ lbr }} jname {{ rbr }}'

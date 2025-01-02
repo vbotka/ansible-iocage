@@ -1,7 +1,7 @@
 ---
 test_start_all:
   template: command
-  label: 'test_start_all: Check if jail {{ lbr }} jname {{ rbr }} can be started'
+  label: 'test_start_all: Check if ALL jails can be started.'
   iocage:
     state: started
     name: ALL

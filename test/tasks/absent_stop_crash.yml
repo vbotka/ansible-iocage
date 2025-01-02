@@ -10,10 +10,10 @@
 - ansible.builtin.set_fact:
     _crash: false
 
-- name: "absent_stop_crash: Check if absent jail can not be stopped"
+- name: "absent_stop_crash: Check if absent jail can not be stopped."
   block:
 
-    - name: " >>> TEST START: absent_stop_crash: Check if absent jail can not be stopped"
+    - name: " >>> TEST START: absent_stop_crash: Check if absent jail can not be stopped."
       register: result
       iocage:
         name: absent

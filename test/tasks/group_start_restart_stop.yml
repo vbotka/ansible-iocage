@@ -1,5 +1,11 @@
 ---
 # Ansible managed
+- ansible.builtin.import_tasks: tasks/template_absent.yml
+  vars:
+    _test_name: template_absent
+- ansible.builtin.import_tasks: tasks/template_create.yml
+  vars:
+    _test_name: template_create
 - ansible.builtin.import_tasks: tasks/test_clone.yml
   vars:
     _test_name: test_clone

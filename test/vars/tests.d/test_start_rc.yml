@@ -1,7 +1,7 @@
 ---
 test_start_rc:
   template: command
-  label: 'test_start_rc: Check if jails boot=on can be started'
+  label: 'test_start_rc: Check if jails boot=on can be started.'
   iocage:
     state: started
     args: --rc

@@ -1,7 +1,7 @@
 ---
 test_pkg:
   template: command
-  label: 'test_pkg: Check if pkg info works in started jail {{ lbr }} jname {{ rbr }}'
+  label: 'test_pkg: Check if pkg info works in started jail.'
   iocage:
     state: pkg
     name: '{{ lbr }} jname {{ rbr }}'

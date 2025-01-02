@@ -10,10 +10,10 @@
 - ansible.builtin.set_fact:
     _crash: false
 
-- name: "test_pkg_crash: Check if pkg info does not work in not-started jail {{ jname }}"
+- name: "test_pkg_crash: Check if pkg info does not work in not-started jail."
   block:
 
-    - name: " >>> TEST START: test_pkg_crash: Check if pkg info does not work in not-started jail {{ jname }}"
+    - name: " >>> TEST START: test_pkg_crash: Check if pkg info does not work in not-started jail."
       register: result
       iocage:
         cmd: info

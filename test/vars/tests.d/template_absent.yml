@@ -1,7 +1,7 @@
 ---
 template_absent:
   template: command
-  label: 'template_absent: Check if template {{ lbr }} basejail {{ rbr }} can be destroyed'
+  label: 'template_absent: Check if template can be destroyed.'
   iocage:
     state: absent
     name: '{{ lbr }} basejail {{ rbr }}'

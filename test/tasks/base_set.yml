@@ -10,10 +10,10 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- name: "base_set: Set properties in {{ basejail }}"
+- name: "base_set: Set properties in basejail."
   block:
 
-    - name: " >>> TEST START: base_set: Set properties in {{ basejail }}"
+    - name: " >>> TEST START: base_set: Set properties in basejail."
       register: result
       iocage:
         name: '{{ basejail }}'

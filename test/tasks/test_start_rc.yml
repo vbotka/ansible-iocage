@@ -10,10 +10,10 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- name: "test_start_rc: Check if jails boot=on can be started"
+- name: "test_start_rc: Check if jails boot=on can be started."
   block:
 
-    - name: " >>> TEST START: test_start_rc: Check if jails boot=on can be started"
+    - name: " >>> TEST START: test_start_rc: Check if jails boot=on can be started."
       register: result
       iocage:
         args: --rc

@@ -1,7 +1,7 @@
 ---
 jail_absent:
   template: command
-  label: 'jail_absent: Check if cloned jail {{ lbr }} jname {{ rbr }} can be destroyed'
+  label: 'jail_absent: Check if cloned jail can be destroyed.'
   iocage:
     state: absent
     name: '{{ lbr }} jname {{ rbr }}'

@@ -1,5 +1,11 @@
 ---
 # Ansible managed
+- ansible.builtin.import_tasks: tasks/absent_jail.yml
+  vars:
+    _test_name: absent_jail
+- ansible.builtin.import_tasks: tasks/absent_basejail.yml
+  vars:
+    _test_name: absent_basejail
 - ansible.builtin.import_tasks: tasks/absent_absent.yml
   vars:
     _test_name: absent_absent

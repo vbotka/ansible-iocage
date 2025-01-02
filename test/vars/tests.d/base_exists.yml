@@ -1,7 +1,7 @@
 ---
 base_exists:
   template: command
-  label: 'base_exists: Check if {{ lbr }} basejail {{ rbr }} exists'
+  label: 'base_exists: Check if basejail exists.'
   iocage:
     state: facts
     name: '{{ lbr }} basejail {{ rbr }}'

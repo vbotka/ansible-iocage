@@ -10,10 +10,10 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- name: "template_absent: Check if template {{ basejail }} can be destroyed"
+- name: "template_absent: Check if template can be destroyed."
   block:
 
-    - name: " >>> TEST START: template_absent: Check if template {{ basejail }} can be destroyed"
+    - name: " >>> TEST START: template_absent: Check if template can be destroyed."
       register: result
       iocage:
         name: '{{ basejail }}'

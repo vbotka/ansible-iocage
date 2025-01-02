@@ -5,6 +5,22 @@ vbotka.ansible-iocage 1.0 Release Notes
 .. contents:: Topics
 
 
+1.2.7
+=====
+
+Release Summary
+---------------
+Maintenance update.
+
+Minor Changes
+-------------
+* Simplify conditions.
+* Update documentation.
+* Test in sets.
+* Add tests absent_jail and absent_basejail
+* Update test task formatting.
+
+
 1.2.6
 =====
 

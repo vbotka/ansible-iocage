@@ -1,7 +1,7 @@
 ---
 facts:
   template: command
-  label: 'facts: Get all iocage_* facts by default'
+  label: 'facts: Get all iocage_* facts by default.'
   debug:
     - msg: |-
         iocage_releases = {{ lbr }} ansible_facts.iocage_releases {{ rbr }}

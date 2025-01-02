@@ -10,10 +10,10 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- name: "facts: Get all iocage_* facts by default"
+- name: "facts: Get all iocage_* facts by default."
   block:
 
-    - name: " >>> TEST START: facts: Get all iocage_* facts by default"
+    - name: " >>> TEST START: facts: Get all iocage_* facts by default."
       register: result
       iocage:
     - ansible.builtin.set_fact:

@@ -10,10 +10,10 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- name: "base_clone: Check if {{ jname }} can be cloned"
+- name: "base_clone: Check if {{ jname }} can be cloned."
   block:
 
-    - name: " >>> TEST START: base_clone: Check if {{ jname }} can be cloned"
+    - name: " >>> TEST START: base_clone: Check if {{ jname }} can be cloned."
       register: result
       iocage:
         clone_from: '{{ basejail }}'

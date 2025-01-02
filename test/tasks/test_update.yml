@@ -10,10 +10,10 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- name: "test_update: Check if test jail can be updated"
+- name: "test_update: Check if test jail can be updated."
   block:
 
-    - name: " >>> TEST START: test_update: Check if test jail can be updated"
+    - name: " >>> TEST START: test_update: Check if test jail can be updated."
       register: result
       iocage:
         bupdate: true

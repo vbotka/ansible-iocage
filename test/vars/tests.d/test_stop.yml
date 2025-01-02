@@ -1,7 +1,7 @@
 ---
 test_stop:
   template: command
-  label: 'test_stop: Check if jail {{ lbr }} jname {{ rbr }} can be stopped'
+  label: 'test_stop: Check if jail can be stopped.'
   iocage:
     state: stopped
     name: '{{ lbr }} jname {{ rbr }}'

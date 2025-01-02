@@ -10,10 +10,10 @@
 - ansible.builtin.set_fact:
     _crash: true
 
-- name: "base_set_template_no: Verify that {{ basejail }} can be converted"
+- name: "base_set_template_no: Verify that basejail can be converted."
   block:
 
-    - name: " >>> TEST START: base_set_template_no: Verify that {{ basejail }} can be converted"
+    - name: " >>> TEST START: base_set_template_no: Verify that basejail can be converted."
       register: result
       iocage:
         name: '{{ basejail }}'
