@@ -15,6 +15,7 @@ Maintenance update.
 Minor Changes
 -------------
 * Update documentation.
+* Format documentation.
 
 
 1.2.7
