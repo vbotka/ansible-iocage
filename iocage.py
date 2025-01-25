@@ -27,119 +27,115 @@
 
 # SPDX-License-Identifier: BSD-2-Clause
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 DOCUMENTATION = r'''
----
 module: iocage
-
 short_description: FreeBSD iocage jail handling
-
 description:
-    - The M(iocage) module is wrapper to B(iocage) command.
-
+  - The M(iocage) module is wrapper to B(iocage) command.
 options:
-    state:
-      description:
-          - O(state) of the desired result.
-          - State V(cloned) uses C(iocage create ...) if O(clone_from) is a template.
-          - State V(cloned) uses C(iocage clone ...) if O(clone_from) is a jail.
-          - State V(absent) by default force the destruction C(iocage destroy --force name).
-          - V(started, stopped, restarted, get, set, exec, pkg, absent) require O(name).
-          - V(started, stopped, restarted, get, set, exec, pkg) require existing jail.
-          - V(exec, pkg) require running jail.
-          - For V(basejail, thickjail, template, fetched, present) the default
-            O(release)=C("uname -r").
-          - For O(bupdate) the default O(release)=C("uname -r").
-          - O(bupdate) requires existing jail if O(name) is used.
-          - The choices below provide the command synopsis.
-      type: str
-      default: facts
-      choices:
-        absent: iocage destroy --force [args] name
-        basejail: iocage create -b [-n name] [-r release] [-p pkglist] [args] [properties]
-        cloned: iocage create -t <clone_from> [-n name] [-p pkglist] [args] [properties] or iocage clone <clone_from> [-n name] [args] [properties]
-        exec: iocage exec -u <user> <name> -- <cmd>
-        facts: iocage list -hl|-hP|-hlt|-hr
-        fetched: iocage fetch [-U] [-r release] [-F components] [-P plugin]
-        get: iocage get --all <name>
-        pkg: iocage pkg <name> <cmd>
-        present: iocage create [-n name] [-r release] [-p pkglist] [args] [properties]
-        restarted: iocage restart [args] [name]
-        set: iocage set <properties> <name>
-        started: iocage start [args] [name]
-        stopped: iocage stop [args] [name]
-        template: iocage create [-n name] [-r release] [-p pkglist] [args] [properties] template=1 boot=0
-        thickjail: iocage create -T [-n name] [-r release] [-p pkglist] [args] [properties]
-    name:
-      description:
-          - O(name) of the jail.
-          - States V(started, stopped, restarted) accept V(ALL) to start, stop, or restart all jails.
-          - States V(present, cloned, template, basejail, thickjail) will return RV(uuid) and RV(uuid_short)
-            if O(name) is V(None) or empty.
-      type: str
-    pkglist:
-      description:
-          - Path to a JSON file containing packages to install. Only applicable when creating a jail.
-      type: path
-    properties:
-      description:
-          - O(properties) of the jail. The jail will restart if any of the properties B(ip4_addr,
-            ip6_addr, template, interfaces, vnet, host_hostname) changes.
-          - The strings C('yes') and C('on'), and boolean C(True) or C(true) will be converted to C(1).
-          - The strings C('no') and C('off'), and boolean C(False) or C(false) will be converted to C(0).
-      type: dict
-    args:
-      description:
-        - Additional arguments of M(iocage) applied to the O(state). They will be applied
-          to the sub-command B(create) if the O(state) is V(basejail, thickjail, template, present).
-          If the same Ansible task also fetches a release as apart of the creation
-          the arguments will not be applied to the sub-command B(fetch). Use separate task
-          B(state=fetched) and set O(args) there if needed.
-      type: str
-      default: ""
-    user:
-      description:
-        - O(user) who runs the command O(cmd).
-      type: str
-      default: root
-    cmd:
-      description:
-        - Execute the command O(cmd) inside the specified jail O(name).
-      type: str
-    clone_from:
-      description:
-        - Use B(state=cloned).
-        - If O(clone_from) is a template C(create) the new jail C(uuid) or O(name) if defined.
-        - If O(clone_from) is a jail C(clone) the new jail C(uuid) or O(name) if defined.
-        - Use O(properties) to configure the new jail.
-        - Use O(args) to configure the C(iocage) command.
-        - Use O(pkglist) if O(clone_from) is a template.
-      type: str
-    plugin:
-      description:
-        - Specify which plugin to fetch or update.
-      type: str
-    release:
-      description:
-        - Specify which RELEASE to fetch, update, or create a jail from. O(release) defaults to the
-          release of the remote host if O(state) is one of V(basejail, thickjail, template, fetched,
-          present). O(release) also defaults to the release of the remote host if V(bupdate=True).
-      type: str
-    bupdate:
-      description:
-        - Update the fetch to the latest patch level when B(state=fetched).
-          Fetch and install binary updates when O(name) is defined. This will start the jail.
-      type: bool
-      default: False
-    components:
-      description:
-        - Uses a local file directory for the root directory instead of HTTP to downloads and/or
-          updates releases.
-      type: list
-      elements: path
-      aliases: [files, component]
+  state:
+    description:
+      - O(state) of the desired result.
+      - State V(cloned) uses C(iocage create ...) if O(clone_from) is a template.
+      - State V(cloned) uses C(iocage clone ...) if O(clone_from) is a jail.
+      - State V(absent) by default force the destruction C(iocage destroy --force name).
+      - V(started, stopped, restarted, get, set, exec, pkg, absent) require O(name).
+      - V(started, stopped, restarted, get, set, exec, pkg) require existing jail.
+      - V(exec, pkg) require running jail.
+      - For V(basejail, thickjail, template, fetched, present) the default
+        O(release)=C("uname -r").
+      - For O(bupdate) the default O(release)=C("uname -r").
+      - O(bupdate) requires existing jail if O(name) is used.
+      - The choices below provide the command synopsis.
+    type: str
+    default: facts
+    choices:
+      absent: iocage destroy --force [args] <name>
+      basejail: iocage create -b [-n name] [-r release] [-p pkglist] [args] [properties]
+      cloned: iocage create -t <clone_from> [-n name] [-p pkglist] [args] [properties] or iocage clone <clone_from> [-n name] [args] [properties]
+      exec: iocage exec -u <user> <name> -- <cmd>
+      facts: iocage list -hl|-hP|-hlt|-hr
+      fetched: iocage fetch [-U] [-r release] [-F components] [-P plugin]
+      get: iocage get --all <name>
+      pkg: iocage pkg <name> <cmd>
+      present: iocage create [-n name] [-r release] [-p pkglist] [args] [properties]
+      restarted: iocage restart [args] [name]
+      set: iocage set <properties> <name>
+      started: iocage start [args] [name]
+      stopped: iocage stop [args] [name]
+      template: iocage create [-n name] [-r release] [-p pkglist] [args] [properties] template=1 boot=0
+      thickjail: iocage create -T [-n name] [-r release] [-p pkglist] [args] [properties]
+  name:
+    description:
+      - O(name) of the jail.
+      - States V(started, stopped, restarted) accept V(ALL) to start, stop, or restart all jails.
+      - States V(present, cloned, template, basejail, thickjail) will return RV(uuid) and RV(uuid_short)
+        if O(name) is V(None) or empty.
+    type: str
+  pkglist:
+    description:
+      - Path to a JSON file containing packages to install. Only applicable when creating a jail.
+    type: path
+  properties:
+    description:
+      - O(properties) of the jail. The jail will restart if any of the properties B(ip4_addr,
+        ip6_addr, template, interfaces, vnet, host_hostname) changes.
+      - The strings C('yes') and C('on'), and boolean C(True) or C(true) will be converted to C(1).
+      - The strings C('no') and C('off'), and boolean C(False) or C(false) will be converted to C(0).
+    type: dict
+  args:
+    description:
+      - Additional arguments of M(iocage) applied to the O(state). They will be applied
+        to the sub-command B(create) if the O(state) is V(basejail, thickjail, template, present).
+        If the same Ansible task also fetches a release as apart of the creation
+        the arguments will not be applied to the sub-command B(fetch). Use separate task
+        B(state=fetched) and set O(args) there if needed.
+    type: str
+    default: ""
+  user:
+    description:
+      - O(user) who runs the command O(cmd).
+    type: str
+    default: root
+  cmd:
+    description:
+      - Execute the command O(cmd) inside the specified jail O(name).
+    type: str
+  clone_from:
+    description:
+      - Use B(state=cloned).
+      - If O(clone_from) is a template C(create) the new jail C(uuid) or O(name) if defined.
+      - If O(clone_from) is a jail C(clone) the new jail C(uuid) or O(name) if defined.
+      - Use O(properties) to configure the new jail.
+      - Use O(args) to configure the C(iocage) command.
+      - Use O(pkglist) if O(clone_from) is a template.
+    type: str
+  plugin:
+    description:
+      - Specify which plugin to fetch or update.
+    type: str
+  release:
+    description:
+      - Specify which RELEASE to fetch, update, or create a jail from. O(release) defaults to the
+        release of the remote host if O(state) is one of V(basejail, thickjail, template, fetched,
+        present). O(release) also defaults to the release of the remote host if V(bupdate=True).
+    type: str
+  bupdate:
+    description:
+      - Update the fetch to the latest patch level when B(state=fetched).
+        Fetch and install binary updates when O(name) is defined. This will start the jail.
+    type: bool
+    default: False
+  components:
+    description:
+      - Uses a local file directory for the root directory instead of HTTP to downloads and/or
+        updates releases.
+    type: list
+    elements: path
+    aliases: [files, component]
 requirements:
   - lang/python >= 3.6
   - sysutils/iocage
@@ -179,9 +175,9 @@ EXAMPLES = r'''
   debug:
     msg: |-
       {{ iocage_releases }}
-      {{ iocage_plugins.keys()|list }}
-      {{ iocage_templates.keys()|list }}
-      {{ iocage_jails.keys()|list }}
+      {{ iocage_plugins.keys() | list }}
+      {{ iocage_templates.keys() | list }}
+      {{ iocage_jails.keys() | list }}
 
 - name: Fetch the remote host's version of base
   iocage:

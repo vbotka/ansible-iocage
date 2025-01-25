@@ -5,6 +5,19 @@ vbotka.ansible-iocage 1.0 Release Notes
 .. contents:: Topics
 
 
+1.2.8
+=====
+
+Release Summary
+---------------
+Maintenance update.
+
+Minor Changes
+-------------
+* Update documentation.
+* Format documentation.
+
+
 1.2.7
 =====
 
