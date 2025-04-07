@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # Copyright 2015, Perceivon Hosting Inc.
@@ -1084,7 +1083,7 @@ def run_module():
             if matches:
                 release = matches.group(1) + '-RELEASE'
             else:
-                module.fail_json(msg=f"Release not recognised: {out}")
+                module.fail_json(msg=f"Release not recognized: {out}")
 
     # Execution of states
 
@@ -1144,7 +1143,7 @@ def run_module():
         msgs.append(_msg)
 
     elif p['state'] == 'fetched':
-        # Fetch or update release and componenets. The var release is always defined.
+        # Fetch or update release and components. The var release is always defined.
         if bupdate or release not in facts['iocage_releases']:
             _changed, _msg, out, err = release_fetch(module, iocage_path, bupdate, release, components, None, args)
             msgs.append(_msg)
