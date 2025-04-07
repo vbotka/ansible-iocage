@@ -14,6 +14,7 @@ Maintenance update.
 
 Minor Changes
 -------------
+* Cleanup strings.
 
 
 1.2.8
