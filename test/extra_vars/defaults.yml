@@ -1,11 +1,9 @@
 ---
-my_hosts: test_23
+my_hosts: test_18
 my_strategy: linear
-my_debug: true
-my_debug2: false
 
-my_cmd: /bin/ls -la /root
-cmd: "{{ my_cmd }}"
-
-my_properties:
-  ip4_addr: "em0|10.1.0.99/24"
+debug: true
+debug2: false
+cmd: /bin/ls -la /root
+properties:
+  ip4_addr: "em0|10.1.0.199/24"

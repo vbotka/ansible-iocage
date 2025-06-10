@@ -12,3 +12,5 @@
 - ansible.builtin.import_tasks: tasks/base_clone.yml
   vars:
     _test_name: base_clone
+
+# EOF

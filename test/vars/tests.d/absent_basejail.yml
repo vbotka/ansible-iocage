@@ -1,0 +1,18 @@
+---
+absent_basejail:
+  template: command
+  label: 'absent_basejail: Check if test basejail can be destroyed.'
+  iocage:
+    state: absent
+    name: '{{ lbr }} basejail {{ rbr }}'
+    args: '--recursive'
+  debug:
+    - var: result.msg
+  assert:
+    - '_msg1 in result.msg or _msg2 in result.msg'
+  msg_err: '[ERR] {{ lbr }} basejail {{ rbr }} not destroyed. Missing: {{ lbr }} _msg1 {{ rbr }}'
+  vars:
+    _msg1: '"was destroyed."'
+    _msg2: '"already destroyed."'
+
+# EOF

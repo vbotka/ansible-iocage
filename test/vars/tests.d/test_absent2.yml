@@ -1,7 +1,7 @@
 ---
 test_absent2:
   template: command
-  label: 'test_absent2: Check if jail {{ lbr }} jname {{ rbr }} can be destroyed again'
+  label: 'test_absent2: Check if jail can be destroyed again.'
   iocage:
     state: absent
     name: '{{ lbr }} jname {{ rbr }}'
@@ -12,3 +12,5 @@ test_absent2:
   msg_err: '[ERR] {{ lbr }} _test_name {{ rbr }} failed. Missing: {{ lbr }} _msg1 {{ rbr }}'
   vars:
     _msg1: "\"'{{ lbr }} jname {{ rbr }}' already destroyed.\""
+
+# EOF

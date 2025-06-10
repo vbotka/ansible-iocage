@@ -1,7 +1,7 @@
 ---
 test_start3:
   template: command
-  label: 'test_start3: Check if jail {{ lbr }} jname {{ rbr }} can be started again'
+  label: 'test_start3: Check if jail can be started again.'
   iocage:
     state: started
     name: '{{ lbr }} jname {{ rbr }}'
@@ -13,3 +13,5 @@ test_start3:
   vars:
     _msg1: "\"Jail '{{ lbr }} jname {{ rbr }}' already started.\""
     _msg2: "\"Jail '{{ lbr }} jname {{ rbr }}' started.\""
+
+# EOF

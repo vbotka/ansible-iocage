@@ -1,7 +1,7 @@
 ---
 test_stop_all:
   template: command
-  label: 'test_stop_all: Check if jail {{ lbr }} jname {{ rbr }} can be stopped'
+  label: 'test_stop_all: Check if ALL jails can be stopped.'
   iocage:
     state: stopped
     name: ALL
@@ -14,3 +14,5 @@ test_stop_all:
     _msg1: "\"All jails would stop.\""
     _msg2: "\"All jails stopped.\""
     _msg3: "\"All jails already stopped.\""
+
+# EOF

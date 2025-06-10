@@ -1,0 +1,47 @@
+---
+- name: Debug
+  ansible.builtin.debug:
+    msg: |
+      sanity: {{ sanity }}
+
+      python_required: {{ python_required }}
+      release: {{ release }}
+
+      jname: {{ jname }}
+      basejail: {{ basejail }}
+      label: {{ label }}
+
+      properties:
+        {{ properties | to_nice_yaml(indent=2) | indent(2) }}
+
+- name: Debug iocage lists
+  when: debug_iocage_lists | bool
+  block:
+
+    - name: "Debug: Get iocage lists debug_iocage_lists={{ debug_iocage_lists }}"
+      iocage:
+
+    - name: "Debug: Display iocage lists debug_iocage_lists={{ debug_iocage_lists }}"
+      ansible.builtin.debug:
+        msg: |
+          iocage_releases:
+            {{ iocage_releases | to_nice_yaml(indent=2) | indent(2) }}
+          iocage_templates:
+            {{ iocage_templates.keys() | list | to_nice_yaml(indent=2) | indent(2) }}
+          iocage_jails:
+            {{ iocage_jails.keys() | list | to_nice_yaml(indent=2) | indent(2) }}
+          iocage_plugins:
+            {{ iocage_plugins.keys() | list | to_nice_yaml(indent=2) | indent(2) }}
+
+- name: "Debug: Display all iocage_* variables debug2={{ debug2 }}"
+  when: debug2 | bool
+  vars:
+    pattern: '^iocage_.+$'
+    keys: "{{ q('varnames', pattern) }}"
+    vals: "{{ q('vars', *q('varnames', pattern)) }}"
+    vars_iocage: "{{ dict(keys | zip(vals)) }}"
+  ansible.builtin.debug:
+    msg: |
+      {{ vars_iocage }}
+
+# EOF

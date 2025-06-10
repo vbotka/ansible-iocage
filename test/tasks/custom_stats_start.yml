@@ -2,4 +2,6 @@
 - ansible.builtin.set_stats:
     per_host: true
     data:
-      a1: "{{ '%b %d %H:%M:%S'|strftime }}"
+      a1: "{{ '%b %d %H:%M:%S' | strftime }}"
+
+# EOF

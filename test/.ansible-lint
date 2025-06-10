@@ -1,9 +1,19 @@
 ---
 verbosity: 1
-quiet: False
-parseable: True
-use_default_rules: True
-rulesdir:
-  - $HOME/.ansible/ansible-lint-rules
+quiet: false
+parseable: true
+use_default_rules: true
 skip_list:
   - unnamed-task
+  - name[casing]
+  - name[template]
+  - args[module]
+
+# Notes:
+#
+# * The option *get* is in the module choices. The warning below must be
+#   a bug:
+#   tasks/misc_get_all.yml:8: args[module]: value of state must be one of:
+#   absent, basejail, cloned, exec, facts, fetched, pkg, present,
+#   restarted, set, started, stopped, template, thickjail, got: gett
+#   (warning)

@@ -1,7 +1,7 @@
 ---
 test_set:
   template: command
-  label: 'test_set: Set properties at {{ lbr }} jname {{ rbr }}'
+  label: 'test_set: Set properties.'
   iocage:
     state: set
     name: '{{ lbr }} jname {{ rbr }}'
@@ -17,3 +17,5 @@ test_set:
     _msg1: "\"already set in jail '{{ lbr }} jname {{ rbr }}'\""
     _msg2: "\"were set in jail '{{ lbr }} jname {{ rbr }}'\""
     _msg3: "\"would be set in jail '{{ lbr }} jname {{ rbr }}'\""
+
+# EOF

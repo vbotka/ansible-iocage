@@ -2,6 +2,8 @@
 group_start_restart_stop:
   template: group
   tests:
+    - test: template_absent
+    - test: template_create
     - test: test_clone
     - test: test_start
     - test: test_start

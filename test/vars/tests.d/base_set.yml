@@ -1,7 +1,7 @@
 ---
 base_set:
   template: command
-  label: 'base_set: Set properties in {{ lbr }} basejail {{ rbr }}'
+  label: 'base_set: Set properties in basejail.'
   iocage:
     state: set
     name: '{{ lbr }} basejail {{ rbr }}'
@@ -16,3 +16,5 @@ base_set:
     _msg1: "\"already set in jail '{{ lbr }} basejail {{ rbr }}'\""
     _msg2: "\"were set in jail '{{ lbr }} basejail {{ rbr }}'\""
     _msg3: "\"would be set in jail '{{ lbr }} basejail {{ rbr }}'\""
+
+# EOF

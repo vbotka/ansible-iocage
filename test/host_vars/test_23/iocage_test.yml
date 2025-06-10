@@ -1,0 +1,6 @@
+release: 14.1-RELEASE
+python_required: 3.11
+cmd: /bin/ls -la /root
+properties:
+  vnet: 'off'
+  ip4_addr: "em0|10.1.0.199/24"
