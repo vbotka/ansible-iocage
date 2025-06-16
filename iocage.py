@@ -46,7 +46,7 @@ author:
 requirements:
   - lang/python >= 3.6
   - sysutils/iocage
-description: A wrapper to c(iocage) command.
+description: A wrapper to C(iocage) command.
 options:
   state:
     description:
