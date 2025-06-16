@@ -26,14 +26,27 @@
 
 # SPDX-License-Identifier: BSD-2-Clause
 
-from __future__ import absolute_import, division, print_function
-__metaclass__ = type
+from __future__ import annotations
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 module: iocage
 short_description: FreeBSD iocage jail handling
-description:
-  - The M(iocage) module is wrapper to B(iocage) command.
+author:
+  - Johannes Meixner (@xmj)
+  - Vladimir Botka (@vbotka)
+  - dgeo (@dgeo)
+  - Berend de Boer (@berenddeboer)
+  - Dr Josef Karthauser (@Infiniverse)
+  - Kevin P. Fleming (@kpfleming)
+  - Ross Williams (@overhacked)
+  - david8001 (@david8001)
+  - luto (@luto)
+  - Keve Müller (@kevemueller)
+  - Mårten Lindblad (@martenlindblad)
+requirements:
+  - lang/python >= 3.6
+  - sysutils/iocage
+description: A wrapper to c(iocage) command.
 options:
   state:
     description:
@@ -135,9 +148,6 @@ options:
     type: list
     elements: path
     aliases: [files, component]
-requirements:
-  - lang/python >= 3.6
-  - sysutils/iocage
 notes:
   - Supports C(check_mode).
   - There is no mandatory option.
@@ -151,21 +161,9 @@ seealso:
   - name: iocage - jail manager using ZFS and VNET
     description: FreeBSD System Manager's Manual
     link: https://www.freebsd.org/cgi/man.cgi?query=iocage
-author:
-  - Johannes Meixner (@xmj)
-  - Vladimir Botka (@vbotka)
-  - dgeo (@dgeo)
-  - Berend de Boer (@berenddeboer)
-  - Dr Josef Karthauser (@Infiniverse)
-  - Kevin P. Fleming (@kpfleming)
-  - Ross Williams (@overhacked)
-  - david8001 (@david8001)
-  - luto (@luto)
-  - Keve Müller (@kevemueller)
-  - Mårten Lindblad (@martenlindblad)
-'''
+"""
 
-EXAMPLES = r'''
+EXAMPLES = r"""
 - name: Create Ansible facts iocage_*. This is the default state.
   iocage:
     state: facts
@@ -326,9 +324,9 @@ EXAMPLES = r'''
   iocage:
     state: absent
     name: foo
-'''
+"""
 
-RETURN = r'''
+RETURN = r"""
 uuid:
   description: Automatically generated unique ID of a jail.
   returned: States I(present, cloned, template, basejail, thickjail) if I(name) is C(None) or empty.
@@ -367,7 +365,7 @@ module_args:
   description: Information on how the module was invoked.
   returned: debug
   type: dict
-'''
+"""
 
 import json
 import re
@@ -377,19 +375,19 @@ from ansible.module_utils._text import to_bytes
 
 
 def _all_jails_started(facts):
-    '''Test all jail started.'''
+    """Test all jail started."""
     states = set([facts['iocage_jails'][jail]['state'] for jail in facts['iocage_jails'].keys()])
     return len(states) == 1 and next(iter(states)) == 'up'
 
 
 def _all_jails_stopped(facts):
-    '''Test all jail stopped.'''
+    """Test all jail stopped."""
     states = set([facts['iocage_jails'][jail]['state'] for jail in facts['iocage_jails'].keys()])
     return len(states) == 1 and next(iter(states)) == 'down'
 
 
 def _props_to_str(props):
-    '''Convert dictionary of properties to iocage arguments'''
+    """Convert dictionary of properties to iocage arguments"""
 
     argstr = ""
     for _prop in props:
@@ -409,12 +407,12 @@ def _props_to_str(props):
 
 
 def _command_fail(module, label, cmd, rc, stdout, stderr):
-    '''Command fail. Create message and terminate module.'''
+    """Command fail. Create message and terminate module."""
     module.fail_json(msg=f"{label}\ncmd: '{cmd}' return: {rc}\nstdout: '{stdout}'\nstderr: '{stderr}'")
 
 
 def _get_iocage_facts(module, iocage_path, artifact='all', name=None):
-    '''Collect facts.'''
+    """Collect facts."""
 
     opt = dict(jails="list -hl",
                plugins="list -hP",
@@ -511,7 +509,7 @@ def _jail_get_properties(module, iocage_path, name):
 
 
 def jail_started(module, iocage_path, name):
-    '''Test jail name is started(up) or not(down). Return Boolean.'''
+    """Test jail name is started(up) or not(down). Return Boolean."""
 
     cmd = f"{iocage_path} list -h"
     rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
@@ -536,7 +534,7 @@ def jail_started(module, iocage_path, name):
 
 
 def jail_exists(module, iocage_path, name):
-    '''Test jail name exists. Return Boolean.'''
+    """Test jail name exists. Return Boolean."""
 
     cmd = f"{iocage_path} get host_hostuuid {name}"
     rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
@@ -553,17 +551,18 @@ def jail_exists(module, iocage_path, name):
 
 
 def jail_start(module, iocage_path, name, args=""):
-    '''Starts the specified jails or ALL. Multiple names are not supported. If you want to start a list of
-       jails iterate the module.
+    """
+    Starts the specified jails or ALL. Multiple names are not supported. If you want to start a list of
+    jails iterate the module.
 
-       # iocage start help
-       Usage:  [OPTIONS] [JAILS]...
-       Options:
-         --rc          Will start all jails with boot=on, in the specified order with
-                       smaller value for priority starting first.
-         -i, --ignore  Suppress exceptions for jails which fail to start
-         --help        Show this message and exit.
-    '''
+    shell> iocage start --help
+    Usage:  [OPTIONS] [JAILS]...
+    Options:
+      --rc          Will start all jails with boot=on, in the specified order with
+                    smaller value for priority starting first.
+      -i, --ignore  Suppress exceptions for jails which fail to start
+      --help        Show this message and exit.
+    """
 
     _changed = True
     cmd = f"{iocage_path} start"
@@ -598,19 +597,20 @@ def jail_start(module, iocage_path, name, args=""):
 
 
 def jail_stop(module, iocage_path, name, args=""):
-    '''Stops the specified jails or ALL. Multiple names are not supported. If you want to stop a list of
-       jails iterate the module.
+    """
+    Stops the specified jails or ALL. Multiple names are not supported. If you want to stop a list of
+    jails iterate the module.
 
-       $ iocage stop --help
-       Usage: iocage stop [OPTIONS] [JAILS]...
-       Options:
-         --rc          Will stop all jails with boot=on, in the specified order with
-                       higher value for priority stopping first.
-         -f, --force   Skips all pre-stop actions like stop services. Gently shuts
-                       down and kills the jail process.
-         -i, --ignore  Suppress exceptions for jails which fail to stop
-         --help        Show this message and exit.
-    '''
+    shell> iocage stop --help
+    Usage: iocage stop [OPTIONS] [JAILS]...
+    Options:
+      --rc          Will stop all jails with boot=on, in the specified order with
+                    higher value for priority stopping first.
+      -f, --force   Skips all pre-stop actions like stop services. Gently shuts
+                    down and kills the jail process.
+      -i, --ignore  Suppress exceptions for jails which fail to stop
+      --help        Show this message and exit.
+    """
 
     _changed = True
     cmd = f"{iocage_path} stop"
@@ -645,14 +645,15 @@ def jail_stop(module, iocage_path, name, args=""):
 
 
 def jail_restart(module, iocage_path, name, args=""):
-    '''Restarts the specified jails or ALL.
+    """
+    Restarts the specified jails or ALL.
 
-       $ iocage restart --help
-       Usage: iocage restart [OPTIONS] JAIL
-       Options:
-         -s, --soft  Restarts the jail but does not tear down the network stack.
-         --help      Show this message and exit.
-    '''
+    shell> iocage restart --help
+    Usage: iocage restart [OPTIONS] JAIL
+    Options:
+      -s, --soft  Restarts the jail but does not tear down the network stack.
+      --help      Show this message and exit.
+    """
 
     _changed = True
     cmd = f"{iocage_path} restart"
@@ -681,12 +682,13 @@ def jail_restart(module, iocage_path, name, args=""):
 
 
 def release_fetch(module, iocage_path, bupdate=False, release=None, components=None, plugin=None, args=""):
-    '''Fetch a version of FreeBSD for jail usage or a preconfigured plugin.
+    """
+    Fetch a version of FreeBSD for jail usage or a preconfigured plugin.
 
-       $ iocage fetch --help
-       Usage: iocage fetch [OPTIONS] [PROPS]...
-       (cont.)
-    '''
+    shell> iocage fetch --help
+    Usage: iocage fetch [OPTIONS] [PROPS]...
+    (cont.)
+    """
 
     _changed = True
     if bupdate:
@@ -722,16 +724,17 @@ def release_fetch(module, iocage_path, bupdate=False, release=None, components=N
 
 
 def jail_exec(module, iocage_path, name, user='root', _cmd='/usr/bin/true'):
-    '''Run a command inside a specified jail.
+    """
+    Run a command inside a specified jail.
 
-       $ iocage exec --help
-       Usage: iocage exec [OPTIONS] JAIL [COMMAND]...
-       Options:
-         -u, --host_user TEXT  The host user to use.
-         -U, --jail_user TEXT  The jail user to use.
-         -f, --force           Start the jail if it's not running.
-         --help                Show this message and exit.
-    '''
+    shell> iocage exec --help
+    Usage: iocage exec [OPTIONS] JAIL [COMMAND]...
+    Options:
+      -u, --host_user TEXT  The host user to use.
+      -U, --jail_user TEXT  The jail user to use.
+      -f, --force           Start the jail if it's not running.
+      --help                Show this message and exit.
+    """
 
     _changed = True
     cmd = f"{iocage_path} exec -u {user} {name} -- {_cmd}"
@@ -751,13 +754,14 @@ def jail_exec(module, iocage_path, name, user='root', _cmd='/usr/bin/true'):
 
 
 def jail_pkg(module, iocage_path, name, _cmd='info'):
-    '''Use pkg inside a specified jail.
+    """
+    Use pkg inside a specified jail.
 
-       $ iocage pkg --help
-       Usage: iocage pkg [OPTIONS] JAIL [COMMAND]...
-       Options:
-         --help  Show this message and exit.
-    '''
+    shell> iocage pkg --help
+    Usage: iocage pkg [OPTIONS] JAIL [COMMAND]...
+    Options:
+      --help  Show this message and exit.
+    """
 
     _changed = True
     cmd = f"{iocage_path} pkg {name} {_cmd}"
@@ -777,15 +781,16 @@ def jail_pkg(module, iocage_path, name, _cmd='info'):
 
 
 def jail_set(module, iocage_path, name, properties=None):
-    '''Sets the specified property.
+    """
+    Sets the specified property.
 
-       $ iocage set --help
-       Usage: iocage set [OPTIONS] [PROPS]... JAIL
-       Options:
-         -P, --plugin  Set the specified key for a plugin jail, if accessing a nested key use . as a
-                         separator. Example: iocage set -P foo.bar.baz=VALUE PLUGIN
-         --help        Show this message and exit.
-    '''
+    shell> iocage set --help
+    Usage: iocage set [OPTIONS] [PROPS]... JAIL
+    Options:
+      -P, --plugin  Set the specified key for a plugin jail, if accessing a nested key use . as a
+                      separator. Example: iocage set -P foo.bar.baz=VALUE PLUGIN
+      --help        Show this message and exit.
+    """
 
     if properties is None:
         properties = {}
@@ -848,15 +853,15 @@ def jail_set(module, iocage_path, name, properties=None):
 def jail_create(module, iocage_path, name=None, properties=None, clone_from_name=None,
                 clone_from_template=None, release=None, basejail=False, thickjail=False,
                 pkglist=None, args=""):
-    '''Create or clone  a jail.
+    """
+    Create or clone  a jail.
 
-       $ iocage create --help
-       Usage: iocage create [OPTIONS] [PROPS]...
-
-       $ iocage clone --help
-       Usage: iocage clone [OPTIONS] SOURCE [PROPS]...
-       (cont.)
-    '''
+    shell> iocage create --help
+    Usage: iocage create [OPTIONS] [PROPS]...
+     $ iocage clone --help
+    Usage: iocage clone [OPTIONS] SOURCE [PROPS]...
+    (cont.)
+    """
 
     _changed = True
     _uuid = ""
@@ -921,15 +926,16 @@ def jail_create(module, iocage_path, name=None, properties=None, clone_from_name
 
 
 def jail_update(module, iocage_path, name):
-    '''Run freebsd-update to update a specified jail to the latest patch level.
+    """
+    Run freebsd-update to update a specified jail to the latest patch level.
 
-       $ iocage update --help
-       Usage: iocage update [OPTIONS] JAIL
-       Options:
-         -P, --pkgs  Decide whether or not to update the pkg repositories and all
-                     installed packages in jail( this has no effect for plugins ).
-         --help      Show this message and exit.
-    '''
+    shell> iocage update --help
+    Usage: iocage update [OPTIONS] JAIL
+    Options:
+      -P, --pkgs  Decide whether or not to update the pkg repositories and all
+                  installed packages in jail( this has no effect for plugins ).
+      --help      Show this message and exit.
+    """
 
     _changed = True
     cmd = f"{iocage_path} update {name}"
@@ -954,18 +960,19 @@ def jail_update(module, iocage_path, name):
 
 
 def jail_destroy(module, iocage_path, name, args=""):
-    '''Destroy specified jail(s).
+    """
+    Destroy specified jail(s).
 
-       $ iocage destroy --help
-       Usage: iocage destroy [OPTIONS] [JAILS]...
-       Options:
-         -f, --force      Destroy the jail without warnings or more user input.
-         -r, --release    Destroy a specified RELEASE dataset.
-         -R, --recursive  Bypass the children prompt, best used with --force (-f).
-         -d, --download   Destroy the download dataset of the specified RELEASE as
-                          well.
-         --help           Show this message and exit.
-    '''
+    shell> iocage destroy --help
+    Usage: iocage destroy [OPTIONS] [JAILS]...
+    Options:
+      -f, --force      Destroy the jail without warnings or more user input.
+      -r, --release    Destroy a specified RELEASE dataset.
+      -R, --recursive  Bypass the children prompt, best used with --force (-f).
+      -d, --download   Destroy the download dataset of the specified RELEASE as
+                       well.
+      --help           Show this message and exit.
+    """
 
     _changed = True
     _args = '--force'
