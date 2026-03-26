@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Copyright 2015, Perceivon Hosting Inc.
-# Copyright 2021, Vladimir Botka <vbotka@gmail.com>
+# Copyright 2021-2026, Vladimir Botka <vbotka@gmail.com>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -171,10 +171,10 @@ EXAMPLES = r"""
 - name: Display lists of bases, plugins, templates, and jails
   debug:
     msg: |-
-      {{ iocage_releases }}
-      {{ iocage_plugins.keys() | list }}
-      {{ iocage_templates.keys() | list }}
-      {{ iocage_jails.keys() | list }}
+      {{ ansible_facts.iocage_releases }}
+      {{ ansible_facts.iocage_plugins.keys() | list }}
+      {{ ansible_facts.iocage_templates.keys() | list }}
+      {{ ansible_facts.iocage_jails.keys() | list }}
 
 - name: Fetch the remote host's version of base
   iocage:
