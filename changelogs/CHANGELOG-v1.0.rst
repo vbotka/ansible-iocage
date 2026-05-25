@@ -16,6 +16,8 @@ Minor Changes
 -------------
 * Updated documentation and docstrings.
 * Updated documentation examples. The dictionary ansible_facts will be mandatory.
+* Fix properties parsing.
+
 
 1.2.9
 =====

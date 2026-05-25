@@ -493,7 +493,7 @@ def _jail_get_properties(module, iocage_path, name):
         rc, out, err = module.run_command(to_bytes(cmd, errors='surrogate_or_strict'),
                                           errors='surrogate_or_strict')
         if rc == 0:
-            _properties = [line.strip() for line in out.strip().split('\n')]
+            _properties = [line for line in out.strip().split('\n') if line.strip()]
             for p in _properties:
                 for _property in [p.split(':', 1)]:
                     if len(_property) == 2:
