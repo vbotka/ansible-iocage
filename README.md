@@ -8,10 +8,8 @@
 
 Use the [release](https://github.com/vbotka/ansible-iocage/tree/release) branch, or the [current](https://github.com/vbotka/ansible-iocage/tree/current) branch.
 
-<small>
-([Upstream](https://github.com/fractalcells/ansible-iocage/pulls) has not accepted patches since
-September 2021. Since then, the development has not been submitted to the upstream.)
-</small>
+> [!NOTE]
+> [Upstream](https://github.com/fractalcells/ansible-iocage/pulls) has not accepted patches since September 2021. Since then, the development has not been submitted to the upstream.
 
 
 ## Description
