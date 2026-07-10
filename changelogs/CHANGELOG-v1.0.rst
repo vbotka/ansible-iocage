@@ -16,7 +16,11 @@ Minor Changes
 -------------
 * Updated documentation and docstrings.
 * Updated documentation examples. The dictionary ansible_facts will be mandatory.
+
+Bugfixes
+--------
 * Fix properties parsing.
+* Fix parsing of an empty jails list.
 
 
 1.2.9

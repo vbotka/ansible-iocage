@@ -450,7 +450,9 @@ def _get_iocage_facts(module, iocage_path, artifact='all', name=None):
     elif artifact in ('jails', 'templates', 'plugins'):
         _items = {}
         try:
-            for line in out.splitlines():
+            for line in out.strip('\r\n').splitlines():
+                if not line.strip():
+                    continue
                 _jid = line.split('\t')[0]
                 if _jid == '---':
                     # non-iocage jails: skip all

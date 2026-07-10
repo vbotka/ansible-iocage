@@ -6,14 +6,12 @@
 [iocage](https://github.com/iocage/iocage) module for Ansible.
 
 
-## Use current branch
+Use the [release](https://github.com/vbotka/ansible-iocage/tree/release) branch, or the [current](https://github.com/vbotka/ansible-iocage/tree/current) branch.
 
-[Upstream](https://github.com/fractalcells/ansible-iocage/pulls) is too late with accepting PRs. No
-patches were accepted since September 2021. Therefore, the development is not submitted to the
-upstream anymore. Until this problem is resolved use:
-
-* the [current](https://github.com/vbotka/ansible-iocage/tree/current) branch, or
-* the [release](https://github.com/vbotka/ansible-iocage/tree/release) branch.
+<small>
+([Upstream](https://github.com/fractalcells/ansible-iocage/pulls) has not accepted patches since
+September 2021. Since then, the development has not been submitted to the upstream.)
+</small>
 
 
 ## Description
