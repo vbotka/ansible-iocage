@@ -23,15 +23,27 @@ This module is an Ansible 'wrapper' of the iocage command.
 
 ## Requirements (on the node)
 
-* lang/python >= 3.6
-* sysutils/iocage
+See [REQUIREMENTS](https://github.com/iocage/iocage#requirements)
+
+
+## Examples
+
+See the Index [module vbotka.freebsd.iocage](https://ansible-collection-freebsd.readthedocs.io/en/latest/genindex.html#M)
 
 
 ## Installation
 
-The module can be installed either as a standalone module or as a part of the collection
-[vbotka.freebsd](https://galaxy.ansible.com/vbotka/freebsd). Do not mix the installations of the
-collection and the standalone module.
+The module is included in the Ansible collection
+[vbotka.freebsd](https://galaxy.ansible.com/vbotka/freebsd). Install the collection vbotka.freebsd
+from Ansible Galaxy
+
+
+```sh
+shell> ansible-galaxy collection install vbotka.freebsd
+```
+
+> [!NOTE]
+> The module can be also installed as a standalone module. Do not mix the installations of the collection and the standalone module.
 
 
 ### Standalone installation
@@ -49,13 +61,6 @@ If you want to use the module
 [for selected playbooks or a single role](https://docs.ansible.com/ansible/latest/dev_guide/developing_locally.html#adding-standalone-local-modules-for-selected-playbooks-or-a-single-role)
 put it into the directory *library*. This is how the module is used by the playbook
 *iocage_test.yml* in the directory *test*.
-
-
-### Install the collection vbotka.freebsd from Ansible Galaxy
-
-```sh
-shell> ansible-galaxy collection install vbotka.freebsd
-```
 
 
 ## Documentation
