@@ -3,7 +3,7 @@
 [![license](https://img.shields.io/badge/license-BSD-red.svg)](https://www.freebsd.org/doc/en/articles/bsdl-gpl/article.html)
 [![GitHub tag](https://img.shields.io/github/v/tag/vbotka/ansible-iocage)](https://github.com/vbotka/ansible-iocage/tags)
 
-[iocage](https://github.com/iocage/iocage) module for Ansible.
+[iocage](https://github.com/freebsd/iocage) module for Ansible.
 
 
 Use the [release](https://github.com/vbotka/ansible-iocage/tree/release) branch, or the [current](https://github.com/vbotka/ansible-iocage/tree/current) branch.
@@ -23,7 +23,7 @@ This module is an Ansible 'wrapper' of the iocage command.
 
 ## Requirements (on the node)
 
-See [REQUIREMENTS](https://github.com/iocage/iocage#requirements)
+See [REQUIREMENTS](https://github.com/freebsd/iocage#requirements)
 
 
 ## Examples
