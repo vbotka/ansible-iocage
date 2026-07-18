@@ -20,6 +20,7 @@ Minor Changes
 
 Bugfixes
 --------
+* Fix DOCUMENTATION formatting.
 
 Breaking Changes / Porting Guide
 --------------------------------

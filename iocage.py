@@ -57,29 +57,43 @@ options:
       - V(started, stopped, restarted, get, set, exec, pkg, absent) require O(name).
       - V(started, stopped, restarted, get, set, exec, pkg) require existing jail.
       - V(exec, pkg) require running jail.
-      - For V(basejail, thickjail, template, fetched, present) the default
-        O(release)=C("uname -r").
+      - For V(basejail, thickjail, template, fetched, present) the default O(release)=C("uname -r").
       - For O(bupdate) the default O(release)=C("uname -r").
       - O(bupdate) requires existing jail if O(name) is used.
-      - The choices below provide the command synopsis.
+      - "Command synopsis for states:"
+      - "  - V(get): iocage get --all <name>"
+      - "  - V(pkg): iocage pkg <name> <cmd>"
+      - "  - V(set): iocage set <properties> <name>"
+      - "  - V(exec): iocage exec -u <user> <name> -- <cmd>"
+      - "  - V(facts): iocage list -hl|-hP|-hlt|-hr"
+      - "  - V(absent): iocage destroy --force [args] <name>"
+      - "  - V(cloned): iocage create -t <clone_from> [-n name] [-p pkglist] [args] [properties] or iocage clone <clone_from> [-n name] [args] [properties]"
+      - "  - V(fetched): iocage fetch [-U] [-r release] [-F components] [-P plugin]"
+      - "  - V(present): iocage create [-n name] [-r release] [-p pkglist] [args] [properties]"
+      - "  - V(started): iocage start [args] [name]"
+      - "  - V(stopped): iocage stop [args] [name]"
+      - "  - V(basejail): iocage create -b [-n name] [-r release] [-p pkglist] [args] [properties]"
+      - "  - V(template): iocage create [-n name] [-r release] [-p pkglist] [args] [properties] template=1 boot=0"
+      - "  - V(restarted): iocage restart [args] [name]"
+      - "  - V(thickjail): iocage create -T [-n name] [-r release] [-p pkglist] [args] [properties]"
     type: str
     default: facts
     choices:
-      absent: iocage destroy --force [args] <name>
-      basejail: iocage create -b [-n name] [-r release] [-p pkglist] [args] [properties]
-      cloned: iocage create -t <clone_from> [-n name] [-p pkglist] [args] [properties] or iocage clone <clone_from> [-n name] [args] [properties]
-      exec: iocage exec -u <user> <name> -- <cmd>
-      facts: iocage list -hl|-hP|-hlt|-hr
-      fetched: iocage fetch [-U] [-r release] [-F components] [-P plugin]
-      get: iocage get --all <name>
-      pkg: iocage pkg <name> <cmd>
-      present: iocage create [-n name] [-r release] [-p pkglist] [args] [properties]
-      restarted: iocage restart [args] [name]
-      set: iocage set <properties> <name>
-      started: iocage start [args] [name]
-      stopped: iocage stop [args] [name]
-      template: iocage create [-n name] [-r release] [-p pkglist] [args] [properties] template=1 boot=0
-      thickjail: iocage create -T [-n name] [-r release] [-p pkglist] [args] [properties]
+      - get
+      - pkg
+      - set
+      - exec
+      - facts
+      - absent
+      - cloned
+      - fetched
+      - present
+      - started
+      - stopped
+      - basejail
+      - template
+      - restarted
+      - thickjail
   name:
     description:
       - O(name) of the jail.
