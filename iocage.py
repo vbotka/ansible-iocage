@@ -31,6 +31,8 @@ from __future__ import annotations
 DOCUMENTATION = r"""
 module: iocage
 short_description: FreeBSD iocage jail handling
+description:
+  - A wrapper to C(iocage) command.
 author:
   - Johannes Meixner (@xmj)
   - Vladimir Botka (@vbotka)
@@ -46,60 +48,59 @@ author:
 requirements:
   - lang/python >= 3.6
   - sysutils/iocage
-description: A wrapper to C(iocage) command.
 options:
   state:
     description:
-      - O(state) of the desired result.
-      - State V(cloned) uses C(iocage create ...) if O(clone_from) is a template.
-      - State V(cloned) uses C(iocage clone ...) if O(clone_from) is a jail.
-      - State V(absent) by default force the destruction C(iocage destroy --force name).
-      - V(started, stopped, restarted, get, set, exec, pkg, absent) require O(name).
-      - V(started, stopped, restarted, get, set, exec, pkg) require existing jail.
-      - V(exec, pkg) require running jail.
-      - For V(basejail, thickjail, template, fetched, present) the default O(release)=C("uname -r").
-      - For O(bupdate) the default O(release)=C("uname -r").
-      - O(bupdate) requires existing jail if O(name) is used.
-      - "Command synopsis for states:"
-      - "  - V(get): iocage get --all <name>"
-      - "  - V(pkg): iocage pkg <name> <cmd>"
-      - "  - V(set): iocage set <properties> <name>"
-      - "  - V(exec): iocage exec -u <user> <name> -- <cmd>"
-      - "  - V(facts): iocage list -hl|-hP|-hlt|-hr"
-      - "  - V(absent): iocage destroy --force [args] <name>"
-      - "  - V(cloned): iocage create -t <clone_from> [-n name] [-p pkglist] [args] [properties] or iocage clone <clone_from> [-n name] [args] [properties]"
-      - "  - V(fetched): iocage fetch [-U] [-r release] [-F components] [-P plugin]"
-      - "  - V(present): iocage create [-n name] [-r release] [-p pkglist] [args] [properties]"
-      - "  - V(started): iocage start [args] [name]"
-      - "  - V(stopped): iocage stop [args] [name]"
-      - "  - V(basejail): iocage create -b [-n name] [-r release] [-p pkglist] [args] [properties]"
-      - "  - V(template): iocage create [-n name] [-r release] [-p pkglist] [args] [properties] template=1 boot=0"
-      - "  - V(restarted): iocage restart [args] [name]"
-      - "  - V(thickjail): iocage create -T [-n name] [-r release] [-p pkglist] [args] [properties]"
+      - "O(state) of the desired result."
+      - "State V(cloned) uses C(iocage create ...) if O(clone_from) is a template."
+      - "State V(cloned) uses C(iocage clone ...) if O(clone_from) is a jail."
+      - "State V(absent) by default force the destruction C(iocage destroy --force name)."
+      - "V(started, stopped, restarted, get, set, exec, pkg, absent) require O(name)."
+      - "V(started, stopped, restarted, get, set, exec, pkg) require existing jail."
+      - "V(exec, pkg) requires running jail."
+      - "For V(basejail, thickjail, template, fetched, present) the default O(release) is C('uname -r')."
+      - "For O(bupdate) the default O(release) is C('uname -r')."
+      - "O(bupdate) requires existing jail if O(name) is used."
+      - "The choices below provide the command synopsis:"
+      - "V(absent) - iocage destroy --force [args] <name>"
+      - "V(basejail) - iocage create -b [-n name] [-r release] [-p pkglist] [args] [properties]"
+      - "V(cloned) - iocage create -t <clone_from> [-n name] [-p pkglist] [args] [properties] or iocage clone <clone_from> [-n name] [args] [properties]"
+      - "V(exec) - iocage exec -u <user> <name> -- <cmd>"
+      - "V(facts) - iocage list -hl|-hP|-hlt|-hr"
+      - "V(fetched) - iocage fetch [-U] [-r release] [-F components] [-P plugin]"
+      - "V(get) - iocage get --all <name>"
+      - "V(pkg) - iocage pkg <name> <cmd>"
+      - "V(present) - iocage create [-n name] [-r release] [-p pkglist] [args] [properties]"
+      - "V(restarted) - iocage restart [args] [name]"
+      - "V(set) - iocage set <properties> <name>"
+      - "V(started) - iocage start [args] [name]"
+      - "V(stopped) - iocage stop [args] [name]"
+      - "V(template) - iocage create [-n name] [-r release] [-p pkglist] [args] [properties] template=1 boot=0"
+      - "V(thickjail) - iocage create -T [-n name] [-r release] [-p pkglist] [args] [properties]"
     type: str
     default: facts
     choices:
-      - get
-      - pkg
-      - set
+      - absent
+      - basejail
+      - cloned
       - exec
       - facts
-      - absent
-      - cloned
       - fetched
+      - get
+      - pkg
       - present
+      - restarted
+      - set
       - started
       - stopped
-      - basejail
       - template
-      - restarted
       - thickjail
   name:
     description:
-      - O(name) of the jail.
-      - States V(started, stopped, restarted) accept V(ALL) to start, stop, or restart all jails.
-      - States V(present, cloned, template, basejail, thickjail) will return RV(uuid) and RV(uuid_short)
-        if O(name) is V(None) or empty.
+      - "O(name) of the jail."
+      - "States V(started, stopped, restarted) accept V(ALL) to start, stop, or restart all jails."
+      - "States V(present, cloned, template, basejail, thickjail) will return RV(uuid) and RV(uuid_short) if O(name) is
+        V(None) or empty."
     type: str
   pkglist:
     description:
@@ -107,10 +108,10 @@ options:
     type: path
   properties:
     description:
-      - O(properties) of the jail. The jail will restart if any of the properties B(ip4_addr,
-        ip6_addr, template, interfaces, vnet, host_hostname) changes.
-      - The strings C('yes') and C('on'), and boolean C(True) or C(true) will be converted to C(1).
-      - The strings C('no') and C('off'), and boolean C(False) or C(false) will be converted to C(0).
+      - "O(properties) of the jail. The jail will restart if any of the properties B(ip4_addr,
+        ip6_addr, template, interfaces, vnet, host_hostname) changes."
+      - "The strings C('yes') and C('on'), and boolean C(True) or C(true) will be converted to C(1)."
+      - "The strings C('no') and C('off'), and boolean C(False) or C(false) will be converted to C(0)."
     type: dict
   args:
     description:
@@ -167,7 +168,7 @@ notes:
   - There is no mandatory option.
   - The module always creates facts B(iocage_releases), B(iocage_templates), B(iocage_jails), and
     B(iocage_plugins)
-  - Returns B(module_args) when debugging is set E(ANSIBLE_DEBUG=true)
+  - Returns B(module_args) when debugging is set E(ANSIBLE_DEBUG) is set to V(true).
 seealso:
   - name: iocage - A FreeBSD Jail Manager
     description: iocage 1.2 documentation
