@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright 2015, Perceivon Hosting Inc.
 # Copyright 2021-2026, Vladimir Botka <vbotka@gmail.com>
 #

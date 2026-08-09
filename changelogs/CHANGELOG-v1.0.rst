@@ -16,6 +16,7 @@ Major Changes
 
 Minor Changes
 -------------
+* Remove encoding declaration.
 * Update README.md
 
 Bugfixes
