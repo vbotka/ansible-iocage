@@ -22,6 +22,10 @@ Minor Changes
 Bugfixes
 --------
 * Fix DOCUMENTATION formatting.
+* Workaround for Docs formatting broken on Galaxy
+  (https://github.com/ansible/ansible-hub-ui/issues/5586) In iocage
+  module documentation replace M(iocage) by C(iocage).
+
 
 Breaking Changes / Porting Guide
 --------------------------------

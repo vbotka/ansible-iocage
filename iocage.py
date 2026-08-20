@@ -113,7 +113,7 @@ options:
     type: dict
   args:
     description:
-      - Additional arguments of M(iocage) applied to the O(state). They will be applied
+      - Additional arguments of C(iocage) applied to the O(state). They will be applied
         to the sub-command B(create) if the O(state) is V(basejail, thickjail, template, present).
         If the same Ansible task also fetches a release as apart of the creation
         the arguments will not be applied to the sub-command B(fetch). Use separate task
