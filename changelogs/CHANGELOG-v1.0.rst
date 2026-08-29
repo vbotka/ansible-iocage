@@ -25,6 +25,10 @@ Bugfixes
 * Workaround for Docs formatting broken on Galaxy
   (https://github.com/ansible/ansible-hub-ui/issues/5586) In iocage
   module documentation replace M(iocage) by C(iocage).
+* Update the module and fix [DEPRECATION WARNING]: Importing 'to_bytes' from
+  'ansible.module_utils._text' is deprecated. This feature will be removed from
+  ansible-core version 2.24. Use ansible.module_utils.common.text.converters
+  instead.
 
 
 Breaking Changes / Porting Guide
